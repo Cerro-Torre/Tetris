@@ -1,6 +1,10 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+// int ROWS = 10;
+// int COLS = 20;
+
+// _______frogger's__________________________
 #define WIN_INIT(time)    \
   {                       \
     initscr();            \
@@ -21,15 +25,15 @@
 #define YOU_WON "tests/game_progress/you_won.txt"
 #define YOU_LOSE "tests/game_progress/you_lose.txt"
 #define LEVEL_DIR "tests/levels/level_"
-#define INTRO_MESSAGE "Press ENTER to start!"
-#define INTRO_MESSAGE_LEN 21
+#define INTRO_MESSAGE "Press ANY KEY to start!"
+#define INTRO_MESSAGE_LEN 23
 #define LEVEL_CNT 5
 #define LEVELNAME_MAX 25
 
 #define MAX_WIN_COUNT 10
 
-#define ROWS_MAP 20
-#define COLS_MAP 10
+#define ROWS_MAP 10
+#define COLS_MAP 20
 
 #define BOARDS_BEGIN 2
 

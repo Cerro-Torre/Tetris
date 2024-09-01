@@ -2,7 +2,7 @@
 #define OBJECTS_H
 
 #include <ncurses.h>
-#include "defines.h"
+#include "./defines.h"
 
 typedef struct
 {
