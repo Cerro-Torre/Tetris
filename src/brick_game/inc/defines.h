@@ -22,10 +22,10 @@
 #define MVADDCH(y, x, c) mvaddch(BOARDS_BEGIN + (y), BOARDS_BEGIN + (x), c)
 #define CLEAR_BACKPOS(y, x) mvaddch(BOARDS_BEGIN + (y), BOARDS_BEGIN + (x), ' ')
 
-#define YOU_WON "tests/game_progress/you_won.txt"
-#define YOU_LOSE "tests/game_progress/you_lose.txt"
-#define LEVEL_DIR "tests/levels/level_"
-#define INTRO_MESSAGE "Press ANY KEY to start!"
+// #define YOU_WON "tests/game_progress/you_won.txt"
+// #define YOU_LOSE "tests/game_progress/you_lose.txt"
+// #define LEVEL_DIR "tests/levels/level_"
+#define INTRO_MESSAGE "Press \"t\" to start tetris!"
 #define INTRO_MESSAGE_LEN 23
 #define LEVEL_CNT 5
 #define LEVELNAME_MAX 25
@@ -37,12 +37,16 @@
 
 #define BOARDS_BEGIN 2
 
-#define FROGSTART_X (BOARD_M / 2)
-#define FROGSTART_Y (BOARD_N)
-#define INITIAL_TIMEOUT 150
+// #define FROGSTART_X (GAME_SCREEN_WIDTH / 2)
+// #define FROGSTART_Y (GAME_SCREEN_HEIGHT)
+// #define INITIAL_TIMEOUT 150
 
-#define BOARD_N (ROWS_MAP + MAP_PADDING * 2)
-#define BOARD_M 30
+// #define GAME_SCREEN_HEIGHT (ROWS_MAP + MAP_PADDING * 2)
+// #define GAME_SCREEN_WIDTH 30
+
+#define GAME_SCREEN_HEIGHT (ROWS_MAP + MAP_PADDING * 2)
+#define GAME_SCREEN_WIDTH 30
+
 #define HUD_WIDTH 12
 #define MAP_PADDING 3
 
@@ -52,9 +56,9 @@
 #define SUCCESS 0
 #define ERROR 1
 
-#define NO_INPUT -1
+// #define NO_INPUT -1
 
-#define ESCAPE 27
-#define ENTER_KEY 10
+// #define ESCAPE 27
+// #define ENTER_KEY 10
 
 #endif

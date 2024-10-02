@@ -26,4 +26,50 @@ typedef struct {
   int pause;
 } GameInfo_t;
 
+// _________custom objects_________
+
+typedef struct {
+  int x;
+  int y;
+  int **field;
+} Game_field_t;
+
+typedef struct {
+  int **figure;
+  int figure_size;
+  int **next_figure;
+  int next_figure_size;
+  int type;
+} Figure_t;
+
+typedef struct {
+  int status;
+  int pause;
+  int win;
+  int is_playing;
+} Game_status_t;
+
+typedef enum {
+  INIT = 0,
+  SPAWN,
+  MOVING,
+  SHIFTING,
+  ATTACHING,
+  GAMEOVER
+} Game_enum_t;
+
+typedef struct {
+  int score;
+  int high_score;
+  int level;
+  int speed;
+} Game_stats_t;
+
+typedef struct {
+  Game_field_t field;
+  Figure_t figure;
+  Game_status_t status;
+  Game_stats_t stats;
+} Game_state_t;
+
 #endif
