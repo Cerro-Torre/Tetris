@@ -7,24 +7,22 @@ int main() {
 
   // int key = 0;
 
-  GameInfo_t ups;
-  init_game(&ups);
+  // GameInfo_t ups;
+  Game_state_t asd;
+  // Game_state_t *game_state = get_game_state();
 
-  // printw("%d\n", ups.score);
+  // init_game(&ups);
+  // init_game_state(game_state);
+
+  init_field(&asd.field);
+  free_field(&asd.field);
+  printf("%d", asd.field.x);
 
   print_overlay();
 
-  // print_menu();
-  // refresh();
-  // if (key == 't') {
-  //   print_tetris_overlay();
-  //   refresh();
-  //   getch();
-  // }
+  // free_game(&ups);
+  // free_field(&game_state->field);
 
-  // print_figure();
-
-  free_game(&ups);
   // print_rectangle(0, GAME_SCREEN_HEIGHT + 1, 0, GAME_SCREEN_WIDTH + 1);
   // refresh();
 

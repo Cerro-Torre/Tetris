@@ -26,14 +26,18 @@
 // #define YOU_LOSE "tests/game_progress/you_lose.txt"
 // #define LEVEL_DIR "tests/levels/level_"
 #define INTRO_MESSAGE "Press \"t\" to start tetris!"
-#define INTRO_MESSAGE_LEN 23
+#define INTRO_MESSAGE_LEN 28
+
 #define LEVEL_CNT 5
 #define LEVELNAME_MAX 25
 
 #define MAX_WIN_COUNT 10
 
-#define ROWS_MAP 10
-#define COLS_MAP 20
+#define ROWS_MAP 20
+#define COLS_MAP 10
+
+#define FIGURE_N 4
+#define FIGURE_M 4
 
 #define BOARDS_BEGIN 2
 

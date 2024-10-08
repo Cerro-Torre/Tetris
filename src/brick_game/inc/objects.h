@@ -1,8 +1,6 @@
 #ifndef __OBJECTS_H
 #define __OBJECTS_H
 
-#include <ncurses.h>
-
 #include "./defines.h"
 
 typedef enum {
@@ -35,9 +33,9 @@ typedef struct {
 } Game_field_t;
 
 typedef struct {
-  int **figure;
+  char figure[FIGURE_N][FIGURE_M];
   int figure_size;
-  int **next_figure;
+  char next_figure[FIGURE_N][FIGURE_M];
   int next_figure_size;
   int type;
 } Figure_t;

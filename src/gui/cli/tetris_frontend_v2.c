@@ -62,7 +62,8 @@ WINDOW *print_menu() {
 
   mvwprintw(win, 0, xMax / 4 - 6, "s21_BrickGame");
 
-  mvwprintw(win, yMax / 4 - 1, xMax / 4 - 12, INTRO_MESSAGE);
+  mvwprintw(win, yMax / 4 - 1, xMax / 4 - (INTRO_MESSAGE_LEN / 2 - 1),
+            INTRO_MESSAGE);
 
   // wgetch(win);
   // wrefresh(win);
@@ -82,12 +83,6 @@ WINDOW *print_tetris_overlay() {
 
   box(win_tetris, 0, 0);
 
-  // mvwprintw(win, 0, xMax / 4 - 6, "s21_BrickGame");
-
-  // mvwprintw(win, yMax / 4 - 1, xMax / 4 - 11, INTRO_MESSAGE);
-
-  // wgetch(win_tetris);
-  // print_figure();
   // delwin(win_tetris);
   return win_tetris;
 }

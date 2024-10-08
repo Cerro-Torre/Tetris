@@ -2,6 +2,7 @@
 #define FROGGER_FRONTEND_H
 
 #include <locale.h>
+#include <ncurses.h>
 #include <string.h>
 
 #include "defines.h"

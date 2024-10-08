@@ -1,18 +1,22 @@
 #ifndef TETRIS_BACKEND_H
 #define TETRIS_BACKEND_H
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 #include "defines.h"
 #include "objects.h"
-#include "string.h"
 
 void userInput(UserAction_t action, bool hold);
 GameInfo_t updateCurrentState();
 
 // ___________custom functions_________
 
-Game_state_t get_game_state();
+Game_state_t *get_game_state();
+
+int init_field(Game_field_t *field_t);
+void init_game_state(Game_state_t *game_state);
+void free_field(Game_field_t *field_t);
 
 void draw_figure_1(GameInfo_t *game);
 void init_game(GameInfo_t *game);
