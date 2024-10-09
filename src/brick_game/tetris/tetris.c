@@ -7,16 +7,24 @@ int main() {
 
   // int key = 0;
 
-  // GameInfo_t ups;
-  Game_state_t asd;
-  // Game_state_t *game_state = get_game_state();
+  // GameInfo_t g_info;
+  Game_state_t *g_state = get_game_state();
 
   // init_game(&ups);
   // init_game_state(game_state);
 
-  init_field(&asd.field);
-  free_field(&asd.field);
-  printf("%d", asd.field.x);
+  // init_field(&g_state->field);
+  // init_figure(&g_state->figure);
+  // init_game_status(&g_state->status);
+  // init_game_stats(&g_state->stats);
+
+  init_game_state(g_state);
+  printf("type = %d", g_state->figure.figure_size);
+  printf(" %d", g_state->field.x);
+
+  // free_field(&g_state->field);
+  free_field_gs(g_state);
+  // printf("%d", asd.field.x);
 
   print_overlay();
 

@@ -83,6 +83,14 @@ void free_field(Game_field_t *field_t) {
   free(field_t->field);
 }
 
+void free_field_gs(Game_state_t *game_state) {
+  // Game_field_t *field_t = &game_state->field;
+  for (int i = 0; i < ROWS_MAP; i++) {
+    free(game_state->field.field[i]);
+  }
+  free(game_state->field.field);
+}
+
 void init_figure(Figure_t *figure_t) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
@@ -120,12 +128,20 @@ Game_state_t *get_game_state() {
   return &game_state;
 }
 
+// ________инициализация одной функцией________
 void init_game_state(Game_state_t *game_state) {
   game_state = get_game_state();
 
+  // Game_field_t field;
   init_field(&game_state->field);
+
+  // Figure_t figure;
   init_figure(&game_state->figure);
+
+  // Game_status_t status;
   init_game_status(&game_state->status);
+
+  // Game_stats_t stats;
   init_game_stats(&game_state->stats);
 }
 

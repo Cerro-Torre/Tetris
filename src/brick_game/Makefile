@@ -19,7 +19,6 @@ $(LIBNAME): $(OBJS_FSMTABLE)
 		mkdir libs; \
 	fi
 	ar rcs libs/$(LIBNAME) $^
-	# rm -f $(OBJS_FSMTABLE)
 
 back_lib: $(OBJS_FSMTABLE)
 	ar rcs backend_lib.a $^
@@ -34,7 +33,7 @@ out/%.o: ../gui/cli/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f out/*.o tests/*.o $(GAMENAME) *.a libs/* *.out $(VG_LOG_FILE)
+	rm -f out/*.o tests/*.o $(GAMENAME) test_res *.a libs/* *.out $(VG_LOG_FILE)
 	rm -rf libs
 
 rebuild:
@@ -46,13 +45,8 @@ front:
 $(LIB_BACKEND): $(OBJS_FSMTABLE)
 	$(CC) $(CFLAGS) tetris/backend.c -o out/backend.out
 
-# test: clean $(LIBNAME) $(TESTS_O)
-# 	$(CC) $(CFLAGS) $(TESTS_O) -L../ -l$(LIBNAME) -o test -lcheck -lsubunit
-# 	./test
-
 tests: $(LIBNAME) $(TESTS_O)
-	$(CC) $(CFLAGS) $(TESTS_O) -L: ./libs/$(LIBNAME) -lcheck -lsubunit -o qqq -lm
-
+	$(CC) $(CFLAGS) $(TESTS_O) -L: ./libs/$(LIBNAME) -lcheck -lsubunit -o test_res -lm
 
 vg: tests
-	$(VALGRIND) ./qqq
+	$(VALGRIND) ./test_res
