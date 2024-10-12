@@ -183,13 +183,13 @@ UserAction_t get_user_action(int ch) {
     action = Pause;
   else if (ch == KEY_Q)
     action = Terminate;
-  else if (ch == 0404)
+  else if (ch == KEY_LEFT)
     action = Left;
-  else if (ch == 0405)
+  else if (ch == KEY_RIGHT)
     action = Right;
-  else if (ch == 0403)
+  else if (ch == KEY_UP)
     action = Up;
-  else if (ch == 0402)
+  else if (ch == KEY_DOWN)
     action = Down;
   else if (ch == KEY_Z)
     action = Action;

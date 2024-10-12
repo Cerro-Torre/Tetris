@@ -16,31 +16,53 @@
 // }
 
 void print_overlay() {
-  int key = 0;
+  // int key = 0;
+
+  // WINDOW *menu = print_menu();
+  // wrefresh(menu);
+  // key = wgetch(menu);
+
+  // while (key != 't') {
+  //   print_menu();
+  //   wrefresh(menu);
+  //   key = wgetch(menu);
+  // }
+
+  // delwin(menu);
+  // refresh();
 
   WINDOW *menu = print_menu();
-  wrefresh(menu);
+  int key = 0;
+  print_menu();
   key = wgetch(menu);
+
+  // wrefresh(menu);
+  // delwin(menu);
 
   while (key != 't') {
     print_menu();
     wrefresh(menu);
     key = wgetch(menu);
   }
-
   delwin(menu);
-  refresh();
 
   // int key = 0;
-  WINDOW *tetris = print_tetris_overlay();
-  wrefresh(tetris);
-  key = wgetch(tetris);
+  // WINDOW *tetris = print_tetris_overlay();
+  // wrefresh(tetris);
+  // key = wgetch(tetris);
 
-  while (key != 'q') {
-    print_tetris_overlay();
-    wrefresh(tetris);
-    key = wgetch(tetris);
-  }
+  // while (key != 'q') {
+  //   print_tetris_overlay();
+  //   wrefresh(tetris);
+  //   key = wgetch(tetris);
+  // }
+
+  // delwin(tetris);
+
+  WINDOW *tetris = print_tetris_overlay();
+  print_tetris_overlay();
+  wrefresh(tetris);
+  delwin(tetris);
 
   // key = wgetch(menu);
 
@@ -49,12 +71,35 @@ void print_overlay() {
   // refresh();
   // }
 
-  delwin(tetris);
-
   // print_tetris_overlay();
   // print_figure();
 }
 
+// WINDOW *print_menu() {
+//   int yMax = 0;
+//   int xMax = 0;
+//   getmaxyx(stdscr, yMax, xMax);
+
+//   // yMax / 2 is the size of window (half of the screen), yMax / 4 is the
+//   // position of window
+//   WINDOW *win = newwin(yMax / 2, xMax / 2, yMax / 4, xMax / 4);
+
+//   box(win, 0, 0);
+
+//   mvwprintw(win, 0, xMax / 4 - 6, "s21_BrickGame");
+
+//   mvwprintw(win, yMax / 4 - 1, xMax / 4 - (INTRO_MESSAGE_LEN / 2 - 1),
+//             INTRO_MESSAGE);
+
+//   // wgetch(win);
+//   // wrefresh(win);
+//   // getch();
+
+//   // delwin(win);
+//   return win;
+// }
+
+// prin_menu_v2
 WINDOW *print_menu() {
   int yMax = 0;
   int xMax = 0;
@@ -62,22 +107,53 @@ WINDOW *print_menu() {
 
   // yMax / 2 is the size of window (half of the screen), yMax / 4 is the
   // position of window
-  WINDOW *win = newwin(yMax / 2, xMax / 2, yMax / 4, xMax / 4);
+  WINDOW *menu = newwin(yMax / 2, xMax / 2, yMax / 4, xMax / 4);
 
-  box(win, 0, 0);
+  box(menu, 0, 0);
 
-  mvwprintw(win, 0, xMax / 4 - 6, "s21_BrickGame");
+  mvwprintw(menu, 0, xMax / 4 - 6, "s21_BrickGame");
 
-  mvwprintw(win, yMax / 4 - 1, xMax / 4 - (INTRO_MESSAGE_LEN / 2 - 1),
+  mvwprintw(menu, yMax / 4 - 1, xMax / 4 - (INTRO_MESSAGE_LEN / 2 - 1),
             INTRO_MESSAGE);
 
-  // wgetch(win);
-  // wrefresh(win);
-  // getch();
+  // WINDOW *menu = print_menu();
+  wrefresh(menu);
+  // int key = 0;
+  // key = wgetch(menu);
 
-  // delwin(win);
-  return win;
+  // while (key != 't') {
+  //   if (key == 'q') {
+  //     break;
+  //   }
+  //   // print_menu();
+  //   // wrefresh(menu);
+  //   // key = wgetch(menu);
+  //   wprintw(menu, "%d", key);
+  //   wrefresh(menu);
+  //   key = wgetch(menu);
+  // }
+
+  return menu;
+  // delwin(menu);
+  // refresh();
 }
+
+// WINDOW *print_tetris_overlay() {
+//   int yMax = 0;
+//   int xMax = 0;
+//   getmaxyx(stdscr, yMax, xMax);
+
+//   // yMax / 2 is the size of window (half of the screen), yMax / 4 is the
+//   // position of window
+//   WINDOW *win_tetris = newwin(10, 20, yMax / 4, xMax / 4);
+
+//   box(win_tetris, 0, 0);
+
+//   // delwin(win_tetris);
+//   return win_tetris;
+// }
+
+// print_tetris_overlay_v2
 WINDOW *print_tetris_overlay() {
   int yMax = 0;
   int xMax = 0;
@@ -85,12 +161,22 @@ WINDOW *print_tetris_overlay() {
 
   // yMax / 2 is the size of window (half of the screen), yMax / 4 is the
   // position of window
-  WINDOW *win_tetris = newwin(10, 20, yMax / 4, xMax / 4);
+  WINDOW *tetris = newwin(10, 20, yMax / 4, xMax / 4);
 
-  box(win_tetris, 0, 0);
+  box(tetris, 0, 0);
 
-  // delwin(win_tetris);
-  return win_tetris;
+  // int key = 0;
+  wrefresh(tetris);
+  // key = wgetch(tetris);
+
+  // while (key != 'q') {
+  //   print_tetris_overlay();
+  //   wrefresh(tetris);
+  //   key = wgetch(tetris);
+  // }
+
+  return tetris;
+  // delwin(tetris);
 }
 
 void print_figure() {
