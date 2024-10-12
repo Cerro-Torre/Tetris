@@ -77,21 +77,28 @@ int init_field(Game_field_t *field_t) {
 }
 
 void free_field(Game_field_t *field_t) {
-  for (int i = 0; i < ROWS_MAP; i++) {
-    free(field_t->field[i]);
+  if (field_t->field != NULL) {
+    for (int i = 0; i < ROWS_MAP; i++) {
+      free(field_t->field[i]);
+    }
+    free(field_t->field);
   }
-  free(field_t->field);
 }
 
 void free_field_gs(Game_state_t *game_state) {
   // Game_field_t *field_t = &game_state->field;
-  for (int i = 0; i < ROWS_MAP; i++) {
-    free(game_state->field.field[i]);
+  if (game_state->field.field != NULL) {
+    for (int i = 0; i < ROWS_MAP; i++) {
+      free(game_state->field.field[i]);
+    }
+    free(game_state->field.field);
   }
-  free(game_state->field.field);
 }
 
 void init_figure(Figure_t *figure_t) {
+  figure_t->x = 0;
+  figure_t->y = 0;
+
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       figure_t->figure[i][j] = 1;
@@ -113,12 +120,12 @@ void init_game_status(Game_status_t *game_status) {
   game_status->status = INIT;
   game_status->pause = 0;
   game_status->win = 0;
-  game_status->is_playing = 0;
+  game_status->is_playing = 1;
 }
 
 void init_game_stats(Game_stats_t *game_stats) {
   game_stats->level = 1;
-  game_stats->score = 21;
+  game_stats->score = 0;
   game_stats->high_score = 1;
   game_stats->speed = 1;
 }
@@ -147,46 +154,103 @@ void init_game_state(Game_state_t *game_state) {
 
 // ______________
 
-void free_game(GameInfo_t *game) {
-  for (int i = 0; i < GAME_SCREEN_WIDTH; i++) {
-    free(game->field[i]);
-    free(game->next[i]);
-  }
-  free(game->field);
-  free(game->next);
+void free_game(Game_state_t *game) {
+  free_field_gs(game);
 
-  game->level = 0;
-  game->score = 0;
-  game->high_score = 0;
-  game->speed = 0;
-  game->pause = 0;
+  // game->figure.figure[FIGURE_N][FIGURE_M] = 0;
+  // game->figure.next_figure[FIGURE_N][FIGURE_M] = 0;
+  game->figure.figure_size = 0;
+  game->figure.next_figure_size = 0;
+  game->figure.type = 0;
+
+  game->status.status = 0;
+  game->status.pause = 0;
+  game->status.win = 0;
+  game->status.is_playing = 0;
+
+  game->stats.score = 0;
+  game->stats.high_score = 0;
+  game->stats.level = 0;
+  game->stats.speed = 0;
 }
 
-// void userInput(UserAction_t action, bool hold) {
-//   switch (action) {
-//     case Start:
-//       break;
-//     case Pause:
-//       break;
-//     case Terminate:
-//       break;
-//     case Left:
-//       break;
-//     case Right:
-//       break;
-//     case Up:
-//       break;
-//     case Down:
-//       break;
-//     case Action:
-//       break;
-//     default:
-//       break;
+UserAction_t get_user_action(int ch) {
+  UserAction_t action = {-1};
+
+  if (ch == KEY_R) {
+    action = Start;
+  } else if (ch == KEY_P)
+    action = Pause;
+  else if (ch == KEY_Q)
+    action = Terminate;
+  else if (ch == 0404)
+    action = Left;
+  else if (ch == 0405)
+    action = Right;
+  else if (ch == 0403)
+    action = Up;
+  else if (ch == 0402)
+    action = Down;
+  else if (ch == KEY_Z)
+    action = Action;
+
+  return action;
+}
+
+// void userInput(Game_state_t *gs, UserAction_t action) {
+//   if (gs->status == Initial) {
+//     if (action == Terminate)
+//       finish_game(gs);
+//     else if (action == Start)
+//       gs->status = Spawn;
+
+//   } else if (gs->status == Spawn) {
+//     if (action == Terminate || gs->win)
+//       finish_game(gs);
+//     else
+//       spawn_figure(gs);
+
+//   } else if (gs->status == Moving) {
+//     move_figure(gs, action);
+//   } else if (gs->status == Shifting) {
+//     move_down(gs);
+//   } else if (gs->status == Attaching) {
+//     attach_figure(gs);
+//   } else if (gs->status == GameOver) {
+//     finish_game(gs);
 //   }
+// }
 
 //   // updateCurrentState();
 
 //   // if (hold) {
 //   //   userInput(action, hold);
 //   // }
+// }
+
+void create_figure(ShapeType type, int figure[4][4], int *figures[type][4][4]) {
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      figure[i][j] = *figures[type][i][j];
+    }
+  }
+}
+
+void update_field(Game_state_t *game_state) {
+  for (int i = 0; i < FIGURE_M; i++) {
+    for (int j = 0; j < FIGURE_N; j++) {
+      int x = game_state->figure.x + i;
+      int y = game_state->figure.y + j;
+
+      if (game_state->figure.figure[i][j] == 1 && game_state->figure.y > -1 &&
+          game_state->field.y < COLS_MAP && game_state->figure.x > -1 &&
+          game_state->field.x < ROWS_MAP) {
+        game_state->field.field[x][y] = game_state->figure.figure[i][j];
+      }
+    }
+  }
+}
+// bool check_collision(Game_field_t * field_t, Figure_t * figure_t) {
+//   ;
+//   ;
 // }

@@ -18,12 +18,27 @@ START_TEST(test_init_field_success) {
 }
 END_TEST
 
+START_TEST(test_init_game_state) {
+  Game_state_t *game_state = get_game_state();
+  init_game_state(game_state);
+  ck_assert_ptr_ne(game_state, NULL);
+  ck_assert_ptr_ne(game_state->field.field, NULL);
+  ck_assert_int_lt(game_state->figure.type, 5);
+  ck_assert_int_eq(game_state->status.is_playing, 1);
+  ck_assert_int_eq(game_state->stats.score, 0);
+
+  free_game(game_state);
+}
+END_TEST
+
 Suite *test_init_field_suite(void) {
   Suite *s;
   TCase *tc_core;
   s = suite_create("test_init_field");
   tc_core = tcase_create("Core");
   tcase_add_test(tc_core, test_init_field_success);
+  tcase_add_test(tc_core, test_init_game_state);
+
   suite_add_tcase(s, tc_core);
 
   return s;

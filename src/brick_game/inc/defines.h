@@ -4,6 +4,14 @@
 // int ROWS = 10;
 // int COLS = 20;
 
+#define FIELD_N 20
+#define FIELD_M 10
+
+#define KEY_R 114
+#define KEY_P 112
+#define KEY_Q 113
+#define KEY_Z 122
+
 // _______frogger's__________________________
 #define WIN_INIT(time)    \
   {                       \

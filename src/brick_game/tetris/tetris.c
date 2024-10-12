@@ -26,7 +26,38 @@ int main() {
   free_field_gs(g_state);
   // printf("%d", asd.field.x);
 
+  int figure[FIGURE_M][FIGURE_N] = {
+      {0, 1, 0, 0},
+      {0, 1, 0, 0},
+      {0, 1, 0, 0},
+      {0, 1, 0, 0},
+  };
+
+  g_state->figure.figure_size = 4;
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      g_state->figure.figure[i][j] = figure[i][j];
+    }
+  }
+
+  UserAction_t action = -1;
+
+  // for (int i = 0; i < 4; i++) {
+  //   for (int j = 0; j < 4; j++) {
+  //     figure[i][j] = 1;
+  //   }
+  // }
+
+  // create_figure(1, figure, figures[1][FIGURE_M][FIGURE_N]);
+  // create_figure(1, figure, figures);
+
   print_overlay();
+
+  get_user_action(action);
+  wprintw(stdscr, "action = %d", action);
+  // refresh();
+
+  // update_field(g_state);
 
   // free_game(&ups);
   // free_field(&game_state->field);

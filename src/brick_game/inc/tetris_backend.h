@@ -22,13 +22,19 @@ void init_game_state(Game_state_t *game_state);
 
 void free_field(Game_field_t *field_t);
 void free_field_gs(Game_state_t *game_state);
+void free_game(Game_state_t *game);
 
+void create_figure(ShapeType type, int figure[4][4],
+                   int *figures[type][FIGURE_M][FIGURE_N]);
 void draw_figure_1(GameInfo_t *game);
 void init_game(GameInfo_t *game);
+void update_field(Game_state_t *game_state);
+
+UserAction_t get_user_action(int ch);
+
 // void free_field(GameInfo_t *game);
 // void free_next(GameInfo_t *game);
 // void free_objects(GameInfo_t *game);
-void free_game(GameInfo_t *game);
 void print_test();
 
 // void draw_field(GameInfo_t *game);

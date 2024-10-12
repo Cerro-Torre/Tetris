@@ -36,6 +36,12 @@ void print_overlay() {
   wrefresh(tetris);
   key = wgetch(tetris);
 
+  while (key != 'q') {
+    print_tetris_overlay();
+    wrefresh(tetris);
+    key = wgetch(tetris);
+  }
+
   // key = wgetch(menu);
 
   // if (key == 't') {
