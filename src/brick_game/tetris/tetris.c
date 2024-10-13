@@ -13,27 +13,24 @@ int main() {
 
   int key = 0;
 
-  key = wgetch(menu);
+  // key = wgetch(menu);
 
-  while (key != 't') {
-    if (key == 'q') {
+  while (key != 'q') {
+    key = wgetch(menu);
+
+    if (key == 't') {
+      g_state->status.is_playing = 1;
       delwin(menu);
       refresh();
-      endwin();
-      g_state->status.is_playing = 0;
-      free_game(g_state);
       break;
     }
-    wrefresh(menu);
-    key = wgetch(menu);
   }
-  delwin(menu);
 
-  if (g_state->status.is_playing != 0) {
-    refresh();
-
+  if (g_state->status.is_playing == 1) {
     WINDOW *tetris = print_tetris_overlay();
     wrefresh(tetris);
+    // wprintw(tetris, "\nstatus = %d\n", g_state->status.is_playing);
+
     key = wgetch(tetris);
 
     // while (key != 'q') {
@@ -51,11 +48,10 @@ int main() {
     // init_game_stats(&g_state->stats);
 
     // init_game_state(g_state);
-    printf("type = %d", g_state->figure.figure_size);
-    printf(" %d", g_state->field.x);
+    // printf("type = %d", g_state->figure.figure_size);
+    // printf(" %d", g_state->field.x);
 
     // free_field(&g_state->field);
-    free_field_gs(g_state);
     // printf("%d", asd.field.x);
 
     int figure[FIGURE_M][FIGURE_N] = {
@@ -71,48 +67,65 @@ int main() {
         g_state->figure.figure[i][j] = figure[i][j];
       }
     }
+    wgetch(tetris);
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        wprintw(tetris, "%p", &g_state->figure.figure);
+      }
+      update_field(g_state);
+      wrefresh(tetris);
+      getch();
+      // free_field_gs(g_state);
 
-    // print_overlay();
-    // print_menu();
+      // print_overlay();
+      // print_menu();
 
-    // getch();
-    // UserAction_t action = -1;
+      // getch();
+      // UserAction_t action = -1;
 
-    // for (int i = 0; i < 4; i++) {
-    //   for (int j = 0; j < 4; j++) {
-    //     figure[i][j] = 1;
-    //   }
-    // }
+      // for (int i = 0; i < 4; i++) {
+      //   for (int j = 0; j < 4; j++) {
+      //     figure[i][j] = 1;
+      //   }
+      // }
 
-    // create_figure(1, figure, figures[1][FIGURE_M][FIGURE_N]);
-    // create_figure(1, figure, figures);
+      // create_figure(1, figure, figures[1][FIGURE_M][FIGURE_N]);
+      // create_figure(1, figure, figures);
 
-    // print_overlay();
+      // print_overlay();
 
-    // get_user_action(action);
-    // printf("\naction = %d\n", action);
-    // refresh();
+      // get_user_action(action);
+      // printf("\naction = %d\n", action);
+      // refresh();
 
-    // update_field(g_state);
+      // if (key != 'q') {
+      //   update_field(g_state);
+      //   refresh();
 
-    // free_game(&ups);
-    // free_field(&game_state->field);
+      //   wrefresh(tetris);
+      // }
 
-    // print_rectangle(0, GAME_SCREEN_HEIGHT + 1, 0, GAME_SCREEN_WIDTH + 1);
-    // refresh();
+      // free_game(&ups);
+      // free_field(&game_state->field);
 
-    // while (key != 'q') {
-    //   if (key == 'd') {
-    //     // draw_figure_1(&ups);
-    //     print_test();
-    //     refresh();
-    //   }
-    //   // userInput(key, false);
-    //   key = getch();
-    // }
+      // print_rectangle(0, GAME_SCREEN_HEIGHT + 1, 0, GAME_SCREEN_WIDTH + 1);
+      // refresh();
 
+      // while (key != 'q') {
+      //   if (key == 'd') {
+      //     // draw_figure_1(&ups);
+      //     print_test();
+      //     refresh();
+      //   }
+      //   // userInput(key, false);
+      //   key = getch();
+      // }
+      // }
+    }
+    refresh();
     endwin();
     // }
+    free_game(g_state);
     return 0;
   }
 }

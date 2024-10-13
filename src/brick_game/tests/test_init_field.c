@@ -24,7 +24,7 @@ START_TEST(test_init_game_state) {
   ck_assert_ptr_ne(game_state, NULL);
   ck_assert_ptr_ne(game_state->field.field, NULL);
   ck_assert_int_lt(game_state->figure.type, 5);
-  ck_assert_int_eq(game_state->status.is_playing, 1);
+  ck_assert_int_eq(game_state->status.is_playing, 0);
   ck_assert_int_eq(game_state->stats.score, 0);
 
   free_game(game_state);

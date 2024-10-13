@@ -65,6 +65,7 @@ typedef struct {
 
 typedef enum {
   INIT = 0,
+  START,
   SPAWN,
   MOVING,
   SHIFTING,

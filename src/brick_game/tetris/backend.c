@@ -120,7 +120,7 @@ void init_game_status(Game_status_t *game_status) {
   game_status->status = INIT;
   game_status->pause = 0;
   game_status->win = 0;
-  game_status->is_playing = 1;
+  game_status->is_playing = 0;
 }
 
 void init_game_stats(Game_stats_t *game_stats) {
