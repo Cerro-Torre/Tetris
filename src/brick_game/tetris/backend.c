@@ -36,24 +36,24 @@
 //   }
 // }
 
-void init_game(GameInfo_t *game) {
-  game->level = 1;
-  game->score = 1;
-  game->high_score = 1;
-  game->speed = 1;
-  game->pause = 1;
-  game->next = (int **)calloc(GAME_SCREEN_WIDTH, sizeof(int *));
+// void init_game(GameInfo_t *game) {
+//   game->level = 1;
+//   game->score = 1;
+//   game->high_score = 1;
+//   game->speed = 1;
+//   game->pause = 1;
+//   game->next = (int **)calloc(GAME_SCREEN_WIDTH, sizeof(int *));
 
-  for (int i = 0; i < GAME_SCREEN_WIDTH; i++) {
-    game->next[i] = (int *)calloc(COLS_MAP, sizeof(int));
-  }
+//   for (int i = 0; i < GAME_SCREEN_WIDTH; i++) {
+//     game->next[i] = (int *)calloc(COLS_MAP, sizeof(int));
+//   }
 
-  game->field = (int **)calloc(GAME_SCREEN_WIDTH, sizeof(int *));
+//   game->field = (int **)calloc(GAME_SCREEN_WIDTH, sizeof(int *));
 
-  for (int i = 0; i < GAME_SCREEN_WIDTH; i++) {
-    game->field[i] = (int *)calloc(COLS_MAP, sizeof(int));
-  }
-}
+//   for (int i = 0; i < GAME_SCREEN_WIDTH; i++) {
+//     game->field[i] = (int *)calloc(COLS_MAP, sizeof(int));
+//   }
+// }
 
 // __________________
 
@@ -82,16 +82,21 @@ void free_field(Game_field_t *field_t) {
       free(field_t->field[i]);
     }
     free(field_t->field);
+
+    field_t->field = NULL;
+
+    field_t->x = 0;
+    field_t->y = 0;
   }
 }
 
 void free_field_gs(Game_state_t *game_state) {
   // Game_field_t *field_t = &game_state->field;
-  if (game_state->field.field != NULL) {
+  if (game_state->field->field != NULL) {
     for (int i = 0; i < ROWS_MAP; i++) {
-      free(game_state->field.field[i]);
+      free(game_state->field->field[i]);
     }
-    free(game_state->field.field);
+    free(game_state->field->field);
   }
 }
 
@@ -136,11 +141,13 @@ Game_state_t *get_game_state() {
 }
 
 // ________инициализация одной функцией________
-void init_game_state(Game_state_t *game_state) {
+void init_game_state(Game_state_t *game_state, Game_field_t *field) {
   game_state = get_game_state();
 
-  // Game_field_t field;
-  init_field(&game_state->field);
+  init_field(field);
+  game_state->field = field;
+
+  // init_field(game_state->field);
 
   // Figure_t figure;
   init_figure(&game_state->figure);
@@ -154,8 +161,14 @@ void init_game_state(Game_state_t *game_state) {
 
 // ______________
 
-void free_game(Game_state_t *game) {
-  free_field_gs(game);
+void free_game(Game_state_t *game, Game_field_t *field) {
+  // free_field_gs(game);
+  // if (game->field != NULL) {
+  free_field(field);
+  free_field(game->field);
+  // }
+
+  // free_field_gs(game);
 
   // game->figure.figure[FIGURE_N][FIGURE_M] = 0;
   // game->figure.next_figure[FIGURE_N][FIGURE_M] = 0;
@@ -172,6 +185,8 @@ void free_game(Game_state_t *game) {
   game->stats.high_score = 0;
   game->stats.level = 0;
   game->stats.speed = 0;
+
+  // game = NULL;
 }
 
 UserAction_t get_user_action(int ch) {
@@ -243,14 +258,23 @@ void update_field(Game_state_t *game_state) {
       int y = game_state->figure.y + j;
 
       if (game_state->figure.figure[i][j] == 1 && game_state->figure.y > -1 &&
-          game_state->field.y < COLS_MAP && game_state->figure.x > -1 &&
-          game_state->field.x < ROWS_MAP) {
-        // game_state->field.field[x][y] = game_state->figure.figure[i][j];
-        game_state->field.field[x][y] = 9;
+          game_state->field->y < COLS_MAP && game_state->figure.x > -1 &&
+          game_state->field->x < ROWS_MAP) {
+        game_state->field->field[x][y] = game_state->figure.figure[i][j];
+        // game_state->field->field[x][y] = '#';
       }
     }
   }
 }
+
+void fill_field(Game_state_t *game_state) {
+  for (int i = 0; i < ROWS_MAP; i++) {
+    for (int j = 0; j < COLS_MAP; j++) {
+      game_state->field->field[i][j] = '#';
+    }
+  }
+}
+
 // bool check_collision(Game_field_t * field_t, Figure_t * figure_t) {
 //   ;
 //   ;

@@ -2,6 +2,7 @@
 #define TETRIS_BACKEND_H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "defines.h"
@@ -14,20 +15,23 @@ GameInfo_t updateCurrentState();
 
 Game_state_t *get_game_state();
 
+// ________inits________
 int init_field(Game_field_t *field_t);
 void init_figure(Figure_t *figure_t);
 void init_game_status(Game_status_t *game_status);
 void init_game_stats(Game_stats_t *game_stats);
-void init_game_state(Game_state_t *game_state);
+void init_game_state(Game_state_t *game_state, Game_field_t *field);
 
+// ________frees________
 void free_field(Game_field_t *field_t);
 void free_field_gs(Game_state_t *game_state);
-void free_game(Game_state_t *game);
+void free_game(Game_state_t *game, Game_field_t *field);
 
+// ________draws________
+void fill_field(Game_state_t *game_state);
 void create_figure(ShapeType type, int figure[4][4],
                    int *figures[type][FIGURE_M][FIGURE_N]);
 void draw_figure_1(GameInfo_t *game);
-void init_game(GameInfo_t *game);
 void update_field(Game_state_t *game_state);
 
 UserAction_t get_user_action(int ch);

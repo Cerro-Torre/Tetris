@@ -57,7 +57,7 @@ typedef struct {
 } Game_stats_t;
 
 typedef struct {
-  Game_field_t field;
+  Game_field_t *field;
   Figure_t figure;
   Game_status_t status;
   Game_stats_t stats;
@@ -84,7 +84,7 @@ typedef enum {
   NUM_SHAPES
 } ShapeType;
 
-// // Определение трехмерного массива для хранения фигур
+// Определение трехмерного массива для хранения фигур
 // static int figures[NUM_SHAPES][4][4] = {
 //     // I-образная фигура
 //     {{1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
