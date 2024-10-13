@@ -40,7 +40,7 @@ int main() {
     fill_field(g_state);
 
     // _______________
-    init_figure_type(&g_state->figure, I_SHAPE, 3, 3);
+    init_figure_type(&g_state->figure, Z_SHAPE, 6, 3);
 
     // wprintw(tetris, "fig_x = %d, fig_y = %d", g_state->figure.x,
     //         g_state->figure.y);

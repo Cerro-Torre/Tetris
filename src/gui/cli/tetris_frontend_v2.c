@@ -105,28 +105,11 @@ WINDOW *print_tetris_overlay() {
 
   // yMax / 2 is the size of window (half of the screen), yMax / 4 is the
   // position of window
-  WINDOW *tetris = newwin(10, 20, yMax / 4, xMax / 4);
+  WINDOW *tetris = newwin(20, 10, yMax / 10, xMax / 4);
 
   box(tetris, 0, 0);
 
   wrefresh(tetris);
 
   return tetris;
-}
-
-void print_figure() {
-  int figure[5][5] = {
-      {'0', '0', '1', '0', '0'}, {'0', '0', '1', '0', '0'},
-      {'0', '0', '1', '0', '0'}, {'0', '0', '1', '0', '0'},
-      {'0', '0', '1', '0', '0'},
-  };
-
-  for (int i = ROWS_MAP; i < 5; i++) {
-    for (int j = COLS_MAP; j < 5; j++) {
-      if (figure[i][j] == '1') {
-        mvaddch((GAME_SCREEN_HEIGHT - ROWS_MAP) / 2 + i,
-                (GAME_SCREEN_WIDTH - COLS_MAP) / 2 + j, ACS_BLOCK);
-      }
-    }
-  }
 }

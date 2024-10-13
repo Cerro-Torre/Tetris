@@ -274,7 +274,7 @@ void update_field(Game_state_t *game_state) {
 void fill_field(Game_state_t *game_state) {
   for (int i = 0; i < ROWS_MAP; i++) {
     for (int j = 0; j < COLS_MAP; j++) {
-      game_state->field->field[i][j] = '#';
+      game_state->field->field[i][j] = '.';
     }
   }
 }
@@ -304,7 +304,7 @@ void draw_figure(Game_state_t *game_state, int figures[NUM_SHAPES][4][4]) {
 }
 // }
 
-void init_figure_type(Figure_t *figure_t, int type, int x, int y) {
+void init_figure_type(Figure_t *figure_t, int type, int y, int x) {
   figure_t->type = type;
   figure_t->x = x;
   figure_t->y = y;

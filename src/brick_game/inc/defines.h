@@ -1,8 +1,8 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-// int ROWS = 10;
-// int COLS = 20;
+#define ROWS_W_B = 15;
+#define COLS_W_B = 25;
 
 #define FIELD_N 20
 #define FIELD_M 10
