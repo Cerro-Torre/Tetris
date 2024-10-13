@@ -245,7 +245,8 @@ void update_field(Game_state_t *game_state) {
       if (game_state->figure.figure[i][j] == 1 && game_state->figure.y > -1 &&
           game_state->field.y < COLS_MAP && game_state->figure.x > -1 &&
           game_state->field.x < ROWS_MAP) {
-        game_state->field.field[x][y] = game_state->figure.figure[i][j];
+        // game_state->field.field[x][y] = game_state->figure.figure[i][j];
+        game_state->field.field[x][y] = 9;
       }
     }
   }

@@ -26,6 +26,9 @@ int main() {
     }
   }
 
+  // refresh();
+  // endwin();
+
   if (g_state->status.is_playing == 1) {
     WINDOW *tetris = print_tetris_overlay();
     wrefresh(tetris);
@@ -122,10 +125,14 @@ int main() {
       // }
       // }
     }
-    refresh();
-    endwin();
+    // refresh();
+    // endwin();
     // }
     free_game(g_state);
-    return 0;
+    // return 0;
   }
+
+  refresh();
+  endwin();
+  return 0;
 }
