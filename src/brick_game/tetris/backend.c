@@ -71,8 +71,8 @@ int init_field(Game_field_t *field_t) {
     error = 1;
   }
 
-  field_t->x = 21;
-  field_t->y = 1;
+  field_t->x = 0;
+  field_t->y = 0;
   return error;
 }
 
@@ -90,15 +90,15 @@ void free_field(Game_field_t *field_t) {
   }
 }
 
-void free_field_gs(Game_state_t *game_state) {
-  // Game_field_t *field_t = &game_state->field;
-  if (game_state->field->field != NULL) {
-    for (int i = 0; i < ROWS_MAP; i++) {
-      free(game_state->field->field[i]);
-    }
-    free(game_state->field->field);
-  }
-}
+// void free_field_gs(Game_state_t *game_state) {
+//   // Game_field_t *field_t = &game_state->field;
+//   if (game_state->field->field != NULL) {
+//     for (int i = 0; i < ROWS_MAP; i++) {
+//       free(game_state->field->field[i]);
+//     }
+//     free(game_state->field->field);
+//   }
+// }
 
 void init_figure(Figure_t *figure_t) {
   figure_t->x = 0;
@@ -106,17 +106,19 @@ void init_figure(Figure_t *figure_t) {
 
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
-      figure_t->figure[i][j] = 1;
+      figure_t->figure[NUM_SHAPES][i][j] = 0;
     }
   }
 
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
-      figure_t->next_figure[i][j] = 0;
+      figure_t->next_figure[NUM_SHAPES][i][j] = 0;
     }
   }
 
-  figure_t->type = 0;
+  figure_t->x = COLS_MAP / 2 - 2;
+  figure_t->y = 0;
+  figure_t->type = -1;
   figure_t->figure_size = 4;
   figure_t->next_figure_size = 4;
 }
@@ -257,10 +259,12 @@ void update_field(Game_state_t *game_state) {
       int x = game_state->figure.x + i;
       int y = game_state->figure.y + j;
 
-      if (game_state->figure.figure[i][j] == 1 && game_state->figure.y > -1 &&
-          game_state->field->y < COLS_MAP && game_state->figure.x > -1 &&
-          game_state->field->x < ROWS_MAP) {
-        game_state->field->field[x][y] = game_state->figure.figure[i][j];
+      if (game_state->figure.figure[Z_SHAPE][i][j] == 1 &&
+          game_state->figure.y > -1 && game_state->field->y < COLS_MAP &&
+          game_state->figure.x > -1 && game_state->field->x < ROWS_MAP) {
+        game_state->field->field[i][j] =
+            game_state->figure.figure[Z_SHAPE][i + x][j + y];
+
         // game_state->field->field[x][y] = '#';
       }
     }
@@ -279,3 +283,29 @@ void fill_field(Game_state_t *game_state) {
 //   ;
 //   ;
 // }
+
+void draw_figure(Game_state_t *game_state, int figures[NUM_SHAPES][4][4]) {
+  Figure_t *figure_t = &game_state->figure;
+  Game_field_t field_t = *game_state->field;
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      if (figures[figure_t->type][i][j] == 1) {
+        // int field_x = figure_t->x + j;
+        // int field_y = figure_t->y + i;
+        // if (field_x > -1 && field_x < ROWS_MAP && field_y > -1 &&
+        //     field_y < COLS_MAP) {
+        //   field_t.field[field_y][field_x] = '1';
+        // printf("x = %d, y = %d\n", figure_t->x + i, figure_t->y + j);
+
+        field_t.field[figure_t->y + i][figure_t->x + j] = '1';
+      }
+    }
+  }
+}
+// }
+
+void init_figure_type(Figure_t *figure_t, int type, int x, int y) {
+  figure_t->type = type;
+  figure_t->x = x;
+  figure_t->y = y;
+}

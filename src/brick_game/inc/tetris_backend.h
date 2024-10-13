@@ -32,6 +32,10 @@ void fill_field(Game_state_t *game_state);
 void create_figure(ShapeType type, int figure[4][4],
                    int *figures[type][FIGURE_M][FIGURE_N]);
 void draw_figure_1(GameInfo_t *game);
+
+void draw_figure(Game_state_t *game_state, int figures[NUM_SHAPES][4][4]);
+void init_figure_type(Figure_t *figure_t, int type, int x, int y);
+
 void update_field(Game_state_t *game_state);
 
 UserAction_t get_user_action(int ch);

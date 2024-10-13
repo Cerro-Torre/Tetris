@@ -32,12 +32,23 @@ typedef struct {
   int **field;
 } Game_field_t;
 
+typedef enum {
+  I_SHAPE = 0,
+  J_SHAPE,
+  L_SHAPE,
+  O_SHAPE,
+  S_SHAPE,
+  T_SHAPE,
+  Z_SHAPE,
+  NUM_SHAPES
+} ShapeType;
+
 typedef struct {
   int x;
   int y;
-  int figure[FIGURE_M][FIGURE_N];
+  int figure[NUM_SHAPES][FIGURE_M][FIGURE_N];
   int figure_size;
-  int next_figure[FIGURE_M][FIGURE_N];
+  int next_figure[NUM_SHAPES][FIGURE_M][FIGURE_N];
   int next_figure_size;
   int type;
 } Figure_t;
@@ -72,33 +83,5 @@ typedef enum {
   ATTACHING,
   GAMEOVER
 } Game_enum_t;
-
-typedef enum {
-  I_SHAPE = 0,
-  J_SHAPE,
-  L_SHAPE,
-  O_SHAPE,
-  S_SHAPE,
-  T_SHAPE,
-  Z_SHAPE,
-  NUM_SHAPES
-} ShapeType;
-
-// Определение трехмерного массива для хранения фигур
-// static int figures[NUM_SHAPES][4][4] = {
-//     // I-образная фигура
-//     {{1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-//     // J-образная фигура
-//     {{1, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-//     // L-образная фигура
-//     {{0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-//     // O-образная фигура
-//     {{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-//     // S-образная фигура
-//     {{0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-//     // T-образная фигура
-//     {{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-//     // Z-образная фигура
-//     {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
 
 #endif
