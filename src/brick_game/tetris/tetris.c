@@ -37,7 +37,7 @@ int main() {
     WINDOW *tetris = print_tetris_overlay();
     wrefresh(tetris);
 
-    fill_field(g_state);
+    // fill_field(g_state);
 
     // _______________
     init_figure_type(&g_state->figure, Z_SHAPE, 6, 3);
@@ -61,25 +61,33 @@ int main() {
         // Z-образная фигура
         {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
 
+    // fill_field(g_state);
+
     draw_figure(g_state, figures);
 
-    // // update_field(g_state);
+    // update_field(g_state);
 
-    for (int i = 0; i < ROWS_MAP; i++) {
-      for (int j = 0; j < COLS_MAP; j++) {
-        wprintw(tetris, "%c", g_state->field->field[i][j]);
+    for (int i = 0; i < 20; i++) {
+      for (int j = 0; j < 10; j++) {
+        if (g_state->field->field[i][j] ==
+            '1') {  // '#' represents the figure's placement
+          mvwprintw(tetris, i + 2, j + 2, "#");
+        } else {
+          mvwprintw(tetris, i + 2, j + 2, ".");
+        }
       }
-      wrefresh(tetris);
     }
-
+    wrefresh(tetris);
     // __________________
 
     // fill_field(g_state);
-    // for (int i = 1; i < ROWS_MAP - 1; i++) {
-    //   for (int j = 1; j < COLS_MAP - 1; j++) {
-    //     wprintw(tetris, "%c", g_state->field->field[i][j]);
+
+    // for (int i = 0; i < ROWS_MAP; i++) {
+    //   for (int j = 0; j < COLS_MAP; j++) {
+    //     // wprintw(tetris, "%c", g_state->field->field[i][j]);
+    //     mvwprintw(tetris, i, j, "%c", g_state->field->field[i][j]);
     //   }
-    //   wprintw(tetris, "\n");
+    //   // wprintw(tetris, "\n");
     // }
     // wrefresh(tetris);
 

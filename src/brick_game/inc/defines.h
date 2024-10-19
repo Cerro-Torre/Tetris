@@ -1,8 +1,11 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#define ROWS_W_B = 15;
-#define COLS_W_B = 25;
+#define GAME_BORDER_WIDTH 14
+#define GAME_BORDER_HEIGHT 24
+
+#define ROWS_MAP 20
+#define COLS_MAP 10
 
 #define FIELD_N 20
 #define FIELD_M 10
@@ -45,9 +48,6 @@
 #define LEVELNAME_MAX 25
 
 #define MAX_WIN_COUNT 10
-
-#define ROWS_MAP 20
-#define COLS_MAP 10
 
 #define FIGURE_N 4
 #define FIGURE_M 4

@@ -105,11 +105,25 @@ WINDOW *print_tetris_overlay() {
 
   // yMax / 2 is the size of window (half of the screen), yMax / 4 is the
   // position of window
-  WINDOW *tetris = newwin(20, 10, yMax / 10, xMax / 4);
+  WINDOW *tetris =
+      newwin(GAME_BORDER_HEIGHT, GAME_BORDER_WIDTH, yMax / 10, xMax / 4);
 
   box(tetris, 0, 0);
 
   wrefresh(tetris);
+
+  // for (int i = 1; i < 20; i++) {
+  //   for (int j = 1; j < 10; j++) {
+  //     if (game_state->field->field[i][j] ==
+  //         '#') {  // '#' represents the figure's placement
+  //       mvwprintw(field, i, j, "#");
+  //     } else {
+  //       mvwprintw(field, i, j, ".");
+  //     }
+  //   }
+  // }
+
+  // wrefresh(tetris);
 
   return tetris;
 }
