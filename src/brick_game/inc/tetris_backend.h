@@ -28,15 +28,18 @@ void free_field_gs(Game_state_t *game_state);
 void free_game(Game_state_t *game, Game_field_t *field);
 
 // ________draws________
-void fill_field(Game_state_t *game_state);
-void create_figure(ShapeType type, int figure[4][4],
-                   int *figures[type][FIGURE_M][FIGURE_N]);
-void draw_figure_1(GameInfo_t *game);
 
-void draw_figure(Game_state_t *game_state, int figures[NUM_SHAPES][4][4]);
-void init_figure_type(Figure_t *figure_t, int type, int x, int y);
+// void fill_field(Game_state_t *game_state);
+// void create_figure(ShapeType type, int figure[4][4],
+//                    int *figures[type][FIGURE_M][FIGURE_N]);
+// void figure_to_field_1(GameInfo_t *game);
 
-void update_field(Game_state_t *game_state);
+void figure_to_field(Game_state_t *game_state, int figures[NUM_SHAPES][4][4]);
+void create_figure_2(Figure_t *figure_t, int type, int y, int x);
+void create_next_figure(Figure_t *figure_t, int type, int y, int x);
+void next_figure_to_current(Figure_t *figure_t);
+
+void update_field(Game_state_t *game_state, int figure_type);
 
 UserAction_t get_user_action(int ch);
 

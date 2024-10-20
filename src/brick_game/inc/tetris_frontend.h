@@ -18,6 +18,8 @@ void print_rectangle(int top_y, int bottom_y, int left_x, int right_x);
 WINDOW *print_tetris_overlay();
 void clear_menu();
 void print_figure();
+
+void render_game(WINDOW *tetris_window, Game_state_t *g_state);
 // void print_stats(game_stats_t *stats);
 // void print_board(board_t *game, player_pos *frog);
 // void print_cars(board_t *game);

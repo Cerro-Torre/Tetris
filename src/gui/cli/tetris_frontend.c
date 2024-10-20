@@ -18,7 +18,7 @@
 //   print_tetris_overlay();
 //   // print_figure();
 
-//   PRINT_FROG(ROWS_MAP, COLS_MAP);
+//   PRINT_FROG(ROWS_GAME, COLS_GAME);
 
 //   // print_rectangle(1, 3, GAME_SCREEN_WIDTH + 3,
 //   //                 GAME_SCREEN_WIDTH + HUD_WIDTH + 2);
@@ -70,9 +70,9 @@
 // }
 
 // void print_tetris_overlay() {
-//   print_rectangle((GAME_SCREEN_HEIGHT - ROWS_MAP) / 2, ROWS_MAP,
-//                   (GAME_SCREEN_WIDTH - COLS_MAP) / 2, COLS_MAP);
-//   mvprintw(ROWS_MAP / 2 - 1, COLS_MAP / 2 + 2, "TETRIS");
+//   print_rectangle((GAME_SCREEN_HEIGHT - ROWS_GAME) / 2, ROWS_GAME,
+//                   (GAME_SCREEN_WIDTH - COLS_GAME) / 2, COLS_GAME);
+//   mvprintw(ROWS_GAME / 2 - 1, COLS_GAME / 2 + 2, "TETRIS");
 // }
 
 // void clear_menu() {
@@ -91,11 +91,11 @@
 //       {'0', '0', '1', '0', '0'},
 //   };
 
-//   for (int i = ROWS_MAP; i < 5; i++) {
-//     for (int j = COLS_MAP; j < 5; j++) {
+//   for (int i = ROWS_GAME; i < 5; i++) {
+//     for (int j = COLS_GAME; j < 5; j++) {
 //       if (figure[i][j] == '1') {
-//         mvaddch((GAME_SCREEN_HEIGHT - ROWS_MAP) / 2 + i,
-//                 (GAME_SCREEN_WIDTH - COLS_MAP) / 2 + j, ACS_BLOCK);
+//         mvaddch((GAME_SCREEN_HEIGHT - ROWS_GAME) / 2 + i,
+//                 (GAME_SCREEN_WIDTH - COLS_GAME) / 2 + j, ACS_BLOCK);
 //       }
 //     }
 //   }

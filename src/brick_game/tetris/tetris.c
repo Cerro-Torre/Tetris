@@ -40,7 +40,9 @@ int main() {
     // fill_field(g_state);
 
     // _______________
-    init_figure_type(&g_state->figure, Z_SHAPE, 6, 3);
+    create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
+    create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
+    // create_figure_2(&g_state->figure, T_SHAPE, 12, 3);
 
     // wprintw(tetris, "fig_x = %d, fig_y = %d", g_state->figure.x,
     //         g_state->figure.y);
@@ -62,28 +64,22 @@ int main() {
         {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
 
     // fill_field(g_state);
-
-    draw_figure(g_state, figures);
-
-    // update_field(g_state);
-
-    for (int i = 0; i < 20; i++) {
-      for (int j = 0; j < 10; j++) {
-        if (g_state->field->field[i][j] ==
-            '1') {  // '#' represents the figure's placement
-          mvwprintw(tetris, i + 2, j + 2, "#");
-        } else {
-          mvwprintw(tetris, i + 2, j + 2, ".");
-        }
-      }
+    if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
+      figure_to_field(g_state, figures);
     }
-    wrefresh(tetris);
+
+    next_figure_to_current(&g_state->figure);
+
+    figure_to_field(g_state, figures);
+
+    render_game(tetris, g_state);
+
     // __________________
 
     // fill_field(g_state);
 
-    // for (int i = 0; i < ROWS_MAP; i++) {
-    //   for (int j = 0; j < COLS_MAP; j++) {
+    // for (int i = 0; i < ROWS_GAME; i++) {
+    //   for (int j = 0; j < COLS_GAME; j++) {
     //     // wprintw(tetris, "%c", g_state->field->field[i][j]);
     //     mvwprintw(tetris, i, j, "%c", g_state->field->field[i][j]);
     //   }
@@ -100,13 +96,6 @@ int main() {
     //   ;
     // }
     // Game_state_t *g_state = get_game_state();
-
-    // int figure[FIGURE_M][FIGURE_N] = {
-    //     {0, 1, 0, 0},
-    //     {0, 1, 0, 0},
-    //     {0, 1, 0, 0},
-    //     {0, 1, 0, 0},
-    // };
 
     // printf("field.x = %d\n\n\n", g_state->field->x);
     // printf("field.y = %d\n\n\n", g_state->field->y);

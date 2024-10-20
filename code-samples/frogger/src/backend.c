@@ -12,8 +12,8 @@ int lvlproc(board_t *map, game_stats_t *stats) {
   int rc = SUCCESS;
 
   if (level) {
-    for (int i = 0; i < ROWS_MAP && !rc; i++) {
-      if (fgets(map->ways[i], COLS_MAP + 2, level) == NULL)
+    for (int i = 0; i < ROWS_GAME && !rc; i++) {
+      if (fgets(map->ways[i], COLS_GAME + 2, level) == NULL)
         rc = ERROR;
       else
         map->ways[i][strcspn(map->ways[i], "\n")] = '\0';
@@ -54,7 +54,7 @@ bool check_level_compl(board_t *map) {
 bool check_collide(player_pos *frog, board_t *map) {
   bool rc = FALSE;
 
-  if (frog->y > MAP_PADDING && frog->y < ROWS_MAP + MAP_PADDING + 1 &&
+  if (frog->y > MAP_PADDING && frog->y < ROWS_GAME + MAP_PADDING + 1 &&
       map->ways[frog->y - MAP_PADDING - 1][frog->x - 1] == ']')
     rc = TRUE;
 
@@ -81,8 +81,8 @@ void stats_init(game_stats_t *stats) {
 }
 
 void shift_map(board_t *map) {
-  for (int i = 1; i < ROWS_MAP; i += 2) {
-    memmove(&map->ways[i][1], &map->ways[i][0], COLS_MAP * sizeof(char));
-    map->ways[i][0] = map->ways[i][COLS_MAP];
+  for (int i = 1; i < ROWS_GAME; i += 2) {
+    memmove(&map->ways[i][1], &map->ways[i][0], COLS_GAME * sizeof(char));
+    map->ways[i][0] = map->ways[i][COLS_GAME];
   }
 }

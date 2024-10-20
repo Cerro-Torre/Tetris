@@ -5,7 +5,7 @@ START_TEST(test_init_field_success) {
   int error = init_field(&field_t);
   ck_assert_int_eq(error, 0);
   ck_assert_ptr_ne(field_t.field, NULL);
-  for (int i = 0; i < ROWS_MAP; i++) {
+  for (int i = 0; i < ROWS_GAME; i++) {
     ck_assert_ptr_ne(field_t.field[i], NULL);
   }
 

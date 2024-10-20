@@ -127,3 +127,16 @@ WINDOW *print_tetris_overlay() {
 
   return tetris;
 }
+
+void render_game(WINDOW *tetris_window, Game_state_t *g_state) {
+  for (int i = 0; i < 20; i++) {
+    for (int j = 0; j < 10; j++) {
+      if (g_state->field->field[i][j] == '1') {
+        mvwprintw(tetris_window, i + 1, j + 2, "#");
+      } else {
+        mvwprintw(tetris_window, i + 1, j + 2, ".");
+      }
+    }
+  }
+  wrefresh(tetris_window);
+}

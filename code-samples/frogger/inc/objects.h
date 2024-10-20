@@ -12,7 +12,7 @@ typedef struct {
 
 typedef struct {
   char finish[GAME_SCREEN_WIDTH + 2];
-  char ways[ROWS_MAP + 2][COLS_MAP + 2];
+  char ways[ROWS_GAME + 2][COLS_GAME + 2];
 } board_t;
 
 typedef struct {
