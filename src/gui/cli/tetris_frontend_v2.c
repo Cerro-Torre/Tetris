@@ -112,26 +112,47 @@ WINDOW *print_tetris_overlay() {
 
   wrefresh(tetris);
 
-  // for (int i = 1; i < 20; i++) {
-  //   for (int j = 1; j < 10; j++) {
-  //     if (game_state->field->field[i][j] ==
-  //         '#') {  // '#' represents the figure's placement
-  //       mvwprintw(field, i, j, "#");
-  //     } else {
-  //       mvwprintw(field, i, j, ".");
-  //     }
-  //   }
+  return tetris;
+}
+
+WINDOW *print_status(Game_state_t *g_state) {
+  int yMax = 0;
+  int xMax = 0;
+  getmaxyx(stdscr, yMax, xMax);
+
+  WINDOW *status = newwin(yMax / 2, xMax / 4, yMax / 10, xMax / 2.5);
+
+  box(status, 0, 0);
+
+  wrefresh(status);
+
+  mvwprintw(status, 1, 1, "Score: %d", g_state->stats.score);
+  mvwprintw(status, 2, 1, "Level: %d", g_state->stats.level);
+  mvwprintw(status, 3, 1, "Speed: %d", g_state->stats.speed);
+  mvwprintw(status, 4, 1, "High Score: %d", g_state->stats.high_score);
+
+  mvwprintw(status, 6, 1, "Pause: %s", g_state->status.pause ? "ON" : "OFF");
+  mvwprintw(status, 7, 1, "Status: %s",
+            g_state->status.status == INIT ? "INIT" : "SPAWN");
+  mvwprintw(status, 8, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
+  mvwprintw(status, 9, 1, "Playing: %s",
+            g_state->status.is_playing ? "TRUE" : "FALSE");
+
+  // int key = wgetch(status);
+  // while (key != 'q') {
+  //   key = wgetch(status);
+  //   mvwprintw(status, 10, 1, "Key: %d", get_user_action(key));
   // }
 
-  // wrefresh(tetris);
+  // wrefresh(status);
 
-  return tetris;
+  return status;
 }
 
 void render_game(WINDOW *tetris_window, Game_state_t *g_state) {
   for (int i = 0; i < 20; i++) {
     for (int j = 0; j < 10; j++) {
-      if (g_state->field->field[i][j] == '1') {
+      if (g_state->field->field[i][j] == 1) {
         mvwprintw(tetris_window, i + 1, j + 2, "#");
       } else {
         mvwprintw(tetris_window, i + 1, j + 2, ".");

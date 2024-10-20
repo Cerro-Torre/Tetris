@@ -26,17 +26,12 @@ int main() {
     }
   }
 
-  // for (int i = 0; i < 4; i++) {
-  //   for (int j = 0; j < 4; j++) {
-  //     printf("x = %d, y = %d\n", g_state->figure.x + i, g_state->figure.y +
-  //     j);
-  //   }
-  // }
-
   if (g_state->status.is_playing == 1) {
     WINDOW *tetris = print_tetris_overlay();
     wrefresh(tetris);
 
+    WINDOW *status = print_status(g_state);
+    wrefresh(status);
     // fill_field(g_state);
 
     // _______________
@@ -68,64 +63,55 @@ int main() {
       figure_to_field(g_state, figures);
     }
 
-    next_figure_to_current(&g_state->figure);
+    // next_figure_to_current(&g_state->figure);
 
-    figure_to_field(g_state, figures);
+    // figure_to_field(g_state, figures);
 
     render_game(tetris, g_state);
 
     // __________________
 
-    // fill_field(g_state);
+    // key = wgetch(tetris);
+    int key2 = wgetch(status);
+    // mvwprintw(status, 10, 1, "Key: %c", get_user_action(key2));
 
-    // for (int i = 0; i < ROWS_GAME; i++) {
-    //   for (int j = 0; j < COLS_GAME; j++) {
-    //     // wprintw(tetris, "%c", g_state->field->field[i][j]);
-    //     mvwprintw(tetris, i, j, "%c", g_state->field->field[i][j]);
-    //   }
-    //   // wprintw(tetris, "\n");
-    // }
-    // wrefresh(tetris);
+    while (key2 != 'q') {
+      user_input(g_state, get_user_action(key2));
+      // render_game(tetris, g_state);
+      // wrefresh(tetris);
+      mvwprintw(status, 10, 1, "Key: %d", get_user_action(key2));
 
-    // wprintw(tetris, "\nstatus = %d\n", g_state->status.is_playing);
+      // key = wgetch(tetris);
 
-    key = wgetch(tetris);
+      key2 = wgetch(status);
+      wrefresh(status);
+    }
 
-    // while (key != 'q') {
-    //   game_loop_here;
-    //   ;
-    // }
-    // Game_state_t *g_state = get_game_state();
-
-    // printf("field.x = %d\n\n\n", g_state->field->x);
-    // printf("field.y = %d\n\n\n", g_state->field->y);
-
-    // g_state->figure.figure_size = 4;
-    // for (int i = 0; i < 4; i++) {
-    //   for (int j = 0; j < 4; j++) {
-    //     g_state->figure.figure[i][j] = figure[i][j];
-    //   }
-    // }
-    // wgetch(tetris);
-    // for (int i = 0; i < 4; i++) {
-    //   for (int j = 0; j < 4; j++) {
-    //     wprintw(tetris, "%c", g_state->figure.figure[i][j]);
-    //   }
-    // update_field(g_state);
-    //   wrefresh(tetris);
-    //   getch();
-    //   // free_field_gs(g_state);
-    // }
-
-    // refresh();
-    // endwin();
-    // }
-    // printf("\nfield.x = %d\n", g_state->field->x);
     free_game(g_state, g_state->field);
     // return 0;
+
+    delwin(status);
   }
 
   refresh();
   endwin();
   return 0;
+}
+
+void game_loop(WINDOW *tetris) {
+  // g_state->status.is_playing = 1;
+
+  while (1) {
+    Game_state_t *g_state = get_game_state();
+    GameInfo_t gi = update_current_state(g_state);
+
+    int ch = wgetch(tetris);
+    free_field_gi(&gi);
+
+    while (ch != 'q') {
+      init_game_state(g_state, g_state->field);
+    }
+
+    user_input(g_state, get_user_action(ch));
+  }
 }

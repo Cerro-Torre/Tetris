@@ -8,8 +8,8 @@
 #include "defines.h"
 #include "objects.h"
 
-void userInput(UserAction_t action, bool hold);
-GameInfo_t updateCurrentState();
+void user_input(Game_state_t *g_state, UserAction_t action);
+GameInfo_t update_current_state(Game_state_t *g_state);
 
 // ___________custom functions_________
 
@@ -17,6 +17,7 @@ Game_state_t *get_game_state();
 
 // ________inits________
 int init_field(Game_field_t *field_t);
+int init_field_gi(GameInfo_t *field_t);
 void init_figure(Figure_t *figure_t);
 void init_game_status(Game_status_t *game_status);
 void init_game_stats(Game_stats_t *game_stats);
@@ -24,6 +25,8 @@ void init_game_state(Game_state_t *game_state, Game_field_t *field);
 
 // ________frees________
 void free_field(Game_field_t *field_t);
+void free_field_gi(GameInfo_t *field_t);
+
 void free_field_gs(Game_state_t *game_state);
 void free_game(Game_state_t *game, Game_field_t *field);
 
@@ -39,7 +42,10 @@ void create_figure_2(Figure_t *figure_t, int type, int y, int x);
 void create_next_figure(Figure_t *figure_t, int type, int y, int x);
 void next_figure_to_current(Figure_t *figure_t);
 
+void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix);
+
 void update_field(Game_state_t *game_state, int figure_type);
+GameInfo_t update_current_state(Game_state_t *g_state);
 
 UserAction_t get_user_action(int ch);
 
