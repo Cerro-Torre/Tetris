@@ -31,6 +31,7 @@ int init_field_gi(GameInfo_t *field_t) {
     free(field_t->field);
     field_t->field = NULL;
     error = 1;
+    // printf("init_field_gi error\n");
   }
 
   return error;
@@ -285,21 +286,21 @@ void update_field(Game_state_t *game_state, int figure_type) {
   }
 }
 
-void fill_field(Game_state_t *game_state) {
-  for (int i = 0; i < ROWS_GAME; i++) {
-    for (int j = 0; j < COLS_GAME; j++) {
-      // if ((i == 0 && (j > 0 && j < COLS_GAME - 1)) ||
-      //     (i == ROWS_GAME - 1 && (j > 0 && j < COLS_GAME - 1)) ||
-      //     (j == 0 && (i >= 0 && i < ROWS_GAME)) ||
-      //     (j == COLS_GAME - 1 && (i >= 0 && i < ROWS_GAME))) {
-      // game_state->field->field[i][j] = '#';
-      // } else {
-      //   game_state->field->field[i][j] = ' ';
-      // }
-      game_state->field->field[i][j] = '.';
-    }
-  }
-}
+// void fill_field(Game_state_t *game_state) {
+//   for (int i = 0; i < ROWS_GAME; i++) {
+//     for (int j = 0; j < COLS_GAME; j++) {
+//       // if ((i == 0 && (j > 0 && j < COLS_GAME - 1)) ||
+//       //     (i == ROWS_GAME - 1 && (j > 0 && j < COLS_GAME - 1)) ||
+//       //     (j == 0 && (i >= 0 && i < ROWS_GAME)) ||
+//       //     (j == COLS_GAME - 1 && (i >= 0 && i < ROWS_GAME))) {
+//       // game_state->field->field[i][j] = '#';
+//       // } else {
+//       //   game_state->field->field[i][j] = ' ';
+//       // }
+//       game_state->field->field[i][j] = '.';
+//     }
+//   }
+// }
 
 // bool check_collision(Game_field_t * field_t, Figure_t * figure_t) {
 //   ;
@@ -353,28 +354,27 @@ void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix) {
 }
 
 GameInfo_t update_current_state(Game_state_t *g_state) {
-  GameInfo_t gi = {0};
+  GameInfo_t g_info = {0};
 
-  gi.score = g_state->stats.score;
-  gi.level = g_state->stats.level;
-  gi.speed = g_state->stats.speed;
+  g_info.score = g_state->stats.score;
+  g_info.high_score = g_state->stats.high_score;
+  g_info.level = g_state->stats.level;
+  g_info.speed = g_state->stats.speed;
+  g_info.pause = g_state->status.pause;
 
-  int error_on_field_init = init_field_gi(&gi);
+  int error_on_field_init = init_field_gi(&g_info);
   if (!error_on_field_init) {
-    copy_field(FIELD_N, FIELD_M, g_state->field->field, gi.field);
+    copy_field(FIELD_N, FIELD_M, g_state->field->field, g_info.field);
   }
 
-  if (gi.field != NULL) {
+  if (g_info.field != NULL) {
     update_field(g_state, Z_SHAPE);
   }
 
   // int size = g_state->next_figure_size;
-  // gi.next = create_matrix(size, size);
-  // copy_matrix(size, size, g_state->next_figure, gi.next);
-  // gi.next_size = size;
+  // g_info.next = create_matrix(size, size);
+  // copy_matrix(size, size, g_state->next_figure, g_info.next);
+  // g_info.next_size = size;
 
-  // gi.high_score = g_state->high_score;
-  // gi.pause = g_state->pause;
-
-  return gi;
+  return g_info;
 }

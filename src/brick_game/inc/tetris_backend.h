@@ -9,7 +9,7 @@
 #include "objects.h"
 
 void user_input(Game_state_t *g_state, UserAction_t action);
-GameInfo_t update_current_state(Game_state_t *g_state);
+// GameInfo_t update_current_state(Game_state_t *g_state);
 
 // ___________custom functions_________
 

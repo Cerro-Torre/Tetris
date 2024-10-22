@@ -21,7 +21,9 @@ WINDOW *print_status(Game_state_t *g_state);
 void clear_menu();
 void print_figure();
 
-void render_game(WINDOW *tetris_window, Game_state_t *g_state);
+void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info);
+void render_game_gs(WINDOW *tetris_window, Game_state_t *g_state);
+
 // void print_stats(game_stats_t *stats);
 // void print_board(board_t *game, player_pos *frog);
 // void print_cars(board_t *game);

@@ -120,7 +120,8 @@ WINDOW *print_status(Game_state_t *g_state) {
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
 
-  WINDOW *status = newwin(yMax / 2, xMax / 4, yMax / 10, xMax / 2.5);
+  WINDOW *status = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.2,
+                          yMax / 10, xMax / 2.5);
 
   box(status, 0, 0);
 
@@ -149,15 +150,28 @@ WINDOW *print_status(Game_state_t *g_state) {
   return status;
 }
 
-void render_game(WINDOW *tetris_window, Game_state_t *g_state) {
+void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
   for (int i = 0; i < 20; i++) {
     for (int j = 0; j < 10; j++) {
-      if (g_state->field->field[i][j] == 1) {
+      if (g_info.field[i][j] == 1) {
         mvwprintw(tetris_window, i + 1, j + 2, "#");
       } else {
-        mvwprintw(tetris_window, i + 1, j + 2, ".");
+        mvwprintw(tetris_window, i + 1, j + 2, "-");
       }
     }
   }
   wrefresh(tetris_window);
 }
+
+// void render_game_gs(WINDOW *tetris_window, Game_state_t *g_state) {
+//   for (int i = 0; i < 20; i++) {
+//     for (int j = 0; j < 10; j++) {
+//       if (g_state->field->field[i][j] == 1) {
+//         mvwprintw(tetris_window, i + 1, j + 2, "#");
+//       } else {
+//         mvwprintw(tetris_window, i + 1, j + 2, "-");
+//       }
+//     }
+//   }
+//   wrefresh(tetris_window);
+// }

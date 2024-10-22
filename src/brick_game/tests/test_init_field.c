@@ -22,6 +22,20 @@ START_TEST(test_init_field_success) {
 }
 END_TEST
 
+START_TEST(test_init_field_game_info_success) {
+  GameInfo_t g_info;
+  int error = init_field_gi(&g_info);
+  ck_assert_int_eq(error, 0);
+  ck_assert_ptr_ne(g_info.field, NULL);
+  for (int i = 0; i < ROWS_GAME; i++) {
+    ck_assert_ptr_ne(g_info.field[i], NULL);
+  }
+
+  free_field_gi(&g_info);
+  ck_assert_ptr_eq(g_info.field, NULL);
+}
+END_TEST
+
 START_TEST(test_init_game_state) {
   Game_state_t *game_state = get_game_state();
 
@@ -53,6 +67,7 @@ Suite *test_init_field_suite(void) {
   s = suite_create("test_init_field");
   tc_core = tcase_create("Core");
   tcase_add_test(tc_core, test_init_field_success);
+  tcase_add_test(tc_core, test_init_field_game_info_success);
   tcase_add_test(tc_core, test_init_game_state);
 
   suite_add_tcase(s, tc_core);

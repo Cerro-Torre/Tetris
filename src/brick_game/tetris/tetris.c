@@ -27,6 +27,8 @@ int main() {
   }
 
   if (g_state->status.is_playing == 1) {
+    GameInfo_t g_info = update_current_state(g_state);
+
     WINDOW *tetris = print_tetris_overlay();
     wrefresh(tetris);
 
@@ -67,18 +69,25 @@ int main() {
 
     // figure_to_field(g_state, figures);
 
-    render_game(tetris, g_state);
+    // g_info = update_current_state(g_state);
+    // render_game_gi(tetris, g_info);
+    // free_field_gi(&g_info);
 
     // __________________
+    // start the game after any button is pressed
 
     // key = wgetch(tetris);
     int key2 = wgetch(status);
     // mvwprintw(status, 10, 1, "Key: %c", get_user_action(key2));
 
     while (key2 != 'q') {
+      // g_state = get_game_state();
+      // g_info = update_current_state(g_state);
+
       user_input(g_state, get_user_action(key2));
-      // render_game(tetris, g_state);
-      // wrefresh(tetris);
+      g_info = update_current_state(g_state);
+      render_game_gi(tetris, g_info);
+      wrefresh(tetris);
       mvwprintw(status, 10, 1, "Key: %d", get_user_action(key2));
 
       // key = wgetch(tetris);
@@ -86,8 +95,11 @@ int main() {
       key2 = wgetch(status);
       wrefresh(status);
     }
+    // _______________
 
     free_game(g_state, g_state->field);
+    free_field_gi(&g_info);
+
     // return 0;
 
     delwin(status);
@@ -98,20 +110,20 @@ int main() {
   return 0;
 }
 
-void game_loop(WINDOW *tetris) {
-  // g_state->status.is_playing = 1;
+// void game_loop(WINDOW *tetris) {
+//   // g_state->status.is_playing = 1;
 
-  while (1) {
-    Game_state_t *g_state = get_game_state();
-    GameInfo_t gi = update_current_state(g_state);
+//   while (1) {
+//     Game_state_t *g_state = get_game_state();
+//     GameInfo_t gi = update_current_state(g_state);
 
-    int ch = wgetch(tetris);
-    free_field_gi(&gi);
+//     int ch = wgetch(tetris);
+//     free_field_gi(&gi);
 
-    while (ch != 'q') {
-      init_game_state(g_state, g_state->field);
-    }
+//     while (ch != 'q') {
+//       init_game_state(g_state, g_state->field);
+//     }
 
-    user_input(g_state, get_user_action(ch));
-  }
-}
+//     user_input(g_state, get_user_action(ch));
+//   }
+// }
