@@ -133,8 +133,7 @@ WINDOW *print_status(Game_state_t *g_state) {
   mvwprintw(status, 4, 1, "High Score: %d", g_state->stats.high_score);
 
   mvwprintw(status, 6, 1, "Pause: %s", g_state->status.pause ? "ON" : "OFF");
-  mvwprintw(status, 7, 1, "Status: %s",
-            g_state->status.status == INIT ? "INIT" : "SPAWN");
+  mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
   mvwprintw(status, 8, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
   mvwprintw(status, 9, 1, "Playing: %s",
             g_state->status.is_playing ? "TRUE" : "FALSE");

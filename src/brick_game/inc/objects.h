@@ -56,8 +56,18 @@ typedef struct {
   int next_type;
 } Figure_t;
 
+typedef enum {
+  INIT = 0,
+  START,
+  SPAWN,
+  MOVING,
+  SHIFTING,
+  ATTACHING,
+  GAMEOVER
+} Game_enum_t;
+
 typedef struct {
-  int status;
+  Game_enum_t status;
   int pause;
   int win;
   int is_playing;
@@ -76,15 +86,5 @@ typedef struct {
   Game_status_t status;
   Game_stats_t stats;
 } Game_state_t;
-
-typedef enum {
-  INIT = 0,
-  START,
-  SPAWN,
-  MOVING,
-  SHIFTING,
-  ATTACHING,
-  GAMEOVER
-} Game_enum_t;
 
 #endif

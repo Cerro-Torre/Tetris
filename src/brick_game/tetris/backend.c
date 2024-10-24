@@ -248,6 +248,7 @@ void move_figure(Game_state_t *g_state, UserAction_t action) {
   //   g_state->status = Shifting;
 }
 
+// адаптировать, удалить фри
 void finish_game(Game_state_t *g_state) {
   if (g_state->status.status != GAMEOVER && !g_state->status.win) {
     g_state->status.is_playing = false;
@@ -264,15 +265,22 @@ void user_input(Game_state_t *g_state, UserAction_t action) {
       g_state->status.is_playing = false;
       g_state->status.status = GAMEOVER;
     }
-    // } else if (action == Start) {
-    //   g_state->status.status = SPAWN;
-    // }
-    // } else if (g_state->status.status == SPAWN) {
-    //   if (action == Terminate || g_state->win)
-    //     finish_game(g_state);
-    //   else
-    //     spawn_figure(g_state);
+    if (action == Start) {
+      g_state->status.status = START;
+    }
+  }
+  if ((g_state->status.status == START) && (g_state->status.is_playing)) {
+    g_state->status.status = SPAWN;
+  } else if (g_state->status.status == SPAWN) {
+    if (action == Terminate || g_state->status.status == GAMEOVER) {
+      // finish_game(g_state);
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+    }
 
+    // else {
+    //   spawn_figure(g_state);
+    // }
   } else if (g_state->status.status == MOVING) {
     // printf("action = %d\n", action);
     move_figure(g_state, action);

@@ -8,8 +8,12 @@
 #include "defines.h"
 #include "objects.h"
 
+// названия из задания:
+// void userInput(UserAction_t action, bool hold);
+// GameInfo_t updateCurrentState();
+
 void user_input(Game_state_t *g_state, UserAction_t action);
-// GameInfo_t update_current_state(Game_state_t *g_state);
+GameInfo_t update_current_state(Game_state_t *g_state);
 
 // ___________custom functions_________
 
@@ -47,7 +51,6 @@ void finish_game(Game_state_t *g_state);
 void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix);
 
 void update_field(Game_state_t *game_state, int figure_type);
-GameInfo_t update_current_state(Game_state_t *g_state);
 
 // UserAction_t get_user_action(int ch);
 
