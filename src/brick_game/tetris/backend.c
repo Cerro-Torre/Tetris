@@ -264,8 +264,8 @@ void user_input(Game_state_t *g_state, UserAction_t action) {
       g_state->status.is_playing = false;
       g_state->status.status = GAMEOVER;
     }
-    // else if (action == Start) {
-    // g_state->status.status = SPAWN;
+    // } else if (action == Start) {
+    //   g_state->status.status = SPAWN;
     // }
     // } else if (g_state->status.status == SPAWN) {
     //   if (action == Terminate || g_state->win)
