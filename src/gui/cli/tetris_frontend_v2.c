@@ -121,7 +121,7 @@ WINDOW *print_status(Game_state_t *g_state) {
   getmaxyx(stdscr, yMax, xMax);
 
   WINDOW *status = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.2,
-                          yMax / 10, xMax / 2.5);
+                          yMax / 10, xMax / 2.5 + 5);
 
   box(status, 0, 0);
 
@@ -138,6 +138,7 @@ WINDOW *print_status(Game_state_t *g_state) {
   mvwprintw(status, 8, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
   mvwprintw(status, 9, 1, "Playing: %s",
             g_state->status.is_playing ? "TRUE" : "FALSE");
+  // mvwprintw(status, 10, 1, "Key: %d", g_state->status.status);
 
   // int key = wgetch(status);
   // while (key != 'q') {
@@ -146,6 +147,27 @@ WINDOW *print_status(Game_state_t *g_state) {
   // }
 
   // wrefresh(status);
+
+  return status;
+}
+
+WINDOW *print_states(Game_state_t *g_state, int key) {
+  int yMax = 0;
+  int xMax = 0;
+  getmaxyx(stdscr, yMax, xMax);
+
+  WINDOW *status = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.2,
+                          yMax / 10, xMax / 1.25);
+
+  box(status, 0, 0);
+
+  wrefresh(status);
+
+  mvwprintw(status, 1, 1, "Action: %d", key);
+  mvwprintw(status, 2, 1, "Status: %d", g_state->status.status);
+  mvwprintw(status, 3, 1, "Win: %d", g_state->status.win);
+  mvwprintw(status, 4, 1, "Playing: %d", g_state->status.is_playing);
+  mvwprintw(status, 5, 1, "Key: %d", g_state->status.status);
 
   return status;
 }

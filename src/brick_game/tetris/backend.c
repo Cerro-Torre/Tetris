@@ -1,3 +1,4 @@
+
 #include "../inc/tetris_backend.h"
 
 int init_field(Game_field_t *field_t) {
@@ -163,28 +164,29 @@ void free_game(Game_state_t *game, Game_field_t *field) {
   // game = NULL;
 }
 
-UserAction_t get_user_action(int ch) {
-  UserAction_t action = {0};
+// UserAction_t get_user_action(int ch) {
+//   UserAction_t action = {0};
 
-  if (ch == KEY_R) {
-    action = Start;
-  } else if (ch == KEY_P)
-    action = Pause;
-  else if (ch == KEY_Q)
-    action = Terminate;
-  else if (ch == KEY_LEFT)
-    action = Left;
-  else if (ch == KEY_RIGHT)
-    action = Right;
-  else if (ch == KEY_UP)
-    action = Up;
-  else if (ch == KEY_DOWN)
-    action = Down;
-  else if (ch == KEY_Z)
-    action = Action;
+//   if (ch == KEY_R) {
+//     action = Start;
+//   } else if (ch == KEY_P)
+//     action = Pause;
+//   else if (ch == KEY_Q)
+//     action = Terminate;
+//   else if (ch == KEY_LEFT) {
+//     action = Left;
+//     // printw("KEY_LEFT\n");
+//   } else if (ch == KEY_RIGHT)
+//     action = Right;
+//   else if (ch == KEY_UP)
+//     action = Up;
+//   else if (ch == KEY_DOWN)
+//     action = Down;
+//   else if (ch == KEY_Z)
+//     action = Action;
 
-  return action;
-}
+//   return action;
+// }
 
 void move_left(Game_state_t *g_state) {
   bool can_move = true;
@@ -207,33 +209,62 @@ void move_left(Game_state_t *g_state) {
   // g_state->status = figure_is_attaching(g_state) ? Attaching : Moving;
 }
 
+void move_right(Game_state_t *g_state) {
+  bool can_move = true;
+
+  for (int i = 0; i < g_state->figure.figure_size; i++) {
+    for (int j = 0; j < g_state->figure.figure_size; j++) {
+      int x = g_state->field->x + j - 1;
+      int y = g_state->field->y + i;
+
+      if (g_state->figure.figure[g_state->figure.type][i][j] == '1' &&
+          (x >= FIELD_M || x < 0 || g_state->field->field[y][x] == '1')) {
+        can_move = false;
+      }
+    }
+  }
+
+  if (can_move) {
+    g_state->field->x++;
+  }
+  // g_state->status = figure_is_attaching(g_state) ? Attaching : Moving;
+}
+
 void move_figure(Game_state_t *g_state, UserAction_t action) {
   if (action == Left && !g_state->status.pause) {
     move_left(g_state);
-  }
-  // else if (action == Right && !g_state->status.pause)
-  //   move_right(g_state);
+  } else if (action == Right && !g_state->status.pause)
+    move_right(g_state);
   // else if (action == Down && !g_state->status.pause)
   //   move_down(g_state);
   // else if ((action == Action || action == Up) && !g_state->status.pause)
   //   rotate(g_state);
-  // else if (action == Pause)
-  //   g_state->status.pause = !g_state->status.pause;
-  // else if (action == Terminate)
-  //   free_game(g_state, g_state->field);
+  else if (action == Pause)
+    g_state->status.pause = !g_state->status.pause;
+  else if (action == Terminate)
+    free_game(g_state, g_state->field);
 
   // if (timer(g_state, g_state->speed) && !g_state->status.pause)
   //   g_state->status = Shifting;
 }
 
+void finish_game(Game_state_t *g_state) {
+  if (g_state->status.status != GAMEOVER && !g_state->status.win) {
+    g_state->status.is_playing = false;
+    free_game(g_state, g_state->field);
+    // free_field_gi(g_info);
+  }
+}
+
 void user_input(Game_state_t *g_state, UserAction_t action) {
   if (g_state->status.status == INIT) {
     if (action == Terminate) {
-      // finish_game(g_state);
-      free_game(g_state, g_state->field);
-    } else if (action == Start) {
-      g_state->status.status = SPAWN;
+      finish_game(g_state);
+      // free_game(g_state, g_state->field);
     }
+    // else if (action == Start) {
+    // g_state->status.status = SPAWN;
+    // }
     // } else if (g_state->status.status == SPAWN) {
     //   if (action == Terminate || g_state->win)
     //     finish_game(g_state);
@@ -241,6 +272,7 @@ void user_input(Game_state_t *g_state, UserAction_t action) {
     //     spawn_figure(g_state);
 
   } else if (g_state->status.status == MOVING) {
+    // printf("action = %d\n", action);
     move_figure(g_state, action);
   }
   // } else if (g_state->status.status == SHIFTING) {
@@ -251,13 +283,6 @@ void user_input(Game_state_t *g_state, UserAction_t action) {
   //   finish_game(g_state);
   // }
 }
-
-//   // updateCurrentState();
-
-//   // if (hold) {
-//   //   userInput(action, hold);
-//   // }
-// }
 
 // void create_figure(ShapeType type, int figure[4][4], int
 // *figures[type][4][4]) {

@@ -42,12 +42,18 @@ void create_figure_2(Figure_t *figure_t, int type, int y, int x);
 void create_next_figure(Figure_t *figure_t, int type, int y, int x);
 void next_figure_to_current(Figure_t *figure_t);
 
+void finish_game(Game_state_t *g_state);
+
 void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix);
 
 void update_field(Game_state_t *game_state, int figure_type);
 GameInfo_t update_current_state(Game_state_t *g_state);
 
-UserAction_t get_user_action(int ch);
+// UserAction_t get_user_action(int ch);
+
+void move_figure(Game_state_t *g_state, UserAction_t action);
+void move_left(Game_state_t *g_state);
+void move_right(Game_state_t *g_state);
 
 // void free_field(GameInfo_t *game);
 // void free_next(GameInfo_t *game);

@@ -15,10 +15,10 @@
 #define KEY_Q 113
 #define KEY_Z 122
 
-#define KEY_LEFT 0404
-#define KEY_RIGHT 0405
-#define KEY_UP 0403
-#define KEY_DOWN 0402
+// #define KEY_LEFT 684
+// #define KEY_RIGHT 674
+// #define KEY_UP 654
+// #define KEY_DOWN 664
 
 // _______frogger's__________________________
 #define WIN_INIT(time)    \
