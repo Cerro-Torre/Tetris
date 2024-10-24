@@ -26,7 +26,7 @@ int main() {
     }
   }
 
-  if (g_state->status.is_playing == 1) {
+  if (g_state->status.is_playing == true) {
     GameInfo_t g_info = update_current_state(g_state);
 
     WINDOW *tetris = print_tetris_overlay();
@@ -34,7 +34,6 @@ int main() {
 
     WINDOW *status = print_status(g_state);
     wrefresh(status);
-    // fill_field(g_state);
 
     // _______________
     create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
@@ -86,7 +85,8 @@ int main() {
 
     keypad(tetris, TRUE);  // Enable keypad mode to recognize arrow keys
 
-    while (1) {
+    while (g_state->status.is_playing && g_state->status.status != GAMEOVER) {
+      // while (g_state->status.status != GAMEOVER && !g_state->status.win) {
       g_state = get_game_state();
 
       // g_state->status.status = MOVING;
@@ -105,56 +105,59 @@ int main() {
       //   move_right(g_state);
       // }
 
-      int action = get_user_action(key2);
-      states_info = print_states(g_state, action);
-      if (action != Terminate) {
-        user_input(g_state, action);
-        move_figure(g_state, Right);
+      // int action = get_user_action(key2);
+      states_info = print_states(g_state, get_user_action(key2));
 
-        // wprintw(states_info, "key = %d\n", get_user_action(key2));
-        wrefresh(states_info);
+      user_input(g_state, get_user_action(key2));
 
-        render_game_gi(tetris, g_info);
-        free_field_gi(&g_info);
-        // надо ли передавать g_state???
-        // init_game_state(g_state, g_state->field);
+      move_figure(g_state, Right);
 
-        // int ui = get_user_action(key2);
-        // user_input(g_state, ui);
+      // wprintw(states_info, "key = %d\n", get_user_action(key2));
+      wrefresh(states_info);
 
-        // int user_action = get_user_action(key2);
+      render_game_gi(tetris, g_info);
+      free_field_gi(&g_info);
 
-        wrefresh(tetris);
-        wrefresh(states_info);
-        wrefresh(status);
+      // if (g_state->status.status == GAMEOVER || g_state->status.win) {
+      //   while (key2 != 'q') {
+      //     key2 = wgetch(tetris);
+      //     init_game_state(g_state, g_state->field);
+      //   }
+      // }
+      // надо ли передавать g_state???
+      // init_game_state(g_state, g_state->field);
 
-        // ______custom loop______
-        // user_input(g_state, get_user_action(key2));
-        // g_info = update_current_state(g_state);
-        // render_game_gi(tetris, g_info);
-        // wrefresh(tetris);
-        // mvwprintw(status, 10, 1, "Key: %d", get_user_action(key2));
+      // int ui = get_user_action(key2);
+      // user_input(g_state, ui);
 
-        // // key = wgetch(tetris);
+      // int user_action = get_user_action(key2);
 
-        // key2 = wgetch(status);
-      } else {
-        break;
-        finish_game(g_state);
-      }
+      wrefresh(tetris);
+      wrefresh(states_info);
+      wrefresh(status);
+
+      // ______custom loop______
+      // user_input(g_state, get_user_action(key2));
+      // g_info = update_current_state(g_state);
+      // render_game_gi(tetris, g_info);
+      // wrefresh(tetris);
+      // mvwprintw(status, 10, 1, "Key: %d", get_user_action(key2));
+
+      // // key = wgetch(tetris);
+
+      // key2 = wgetch(status);
     }
     // _______________
     delwin(status);
     delwin(tetris);
     delwin(states_info);
 
+    // return 0;
     free_game(g_state, g_state->field);
     free_field_gi(&g_info);
-
-    // return 0;
   }
 
-  refresh();
+  // refresh();
   endwin();
   return 0;
 }

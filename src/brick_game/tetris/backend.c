@@ -259,8 +259,10 @@ void finish_game(Game_state_t *g_state) {
 void user_input(Game_state_t *g_state, UserAction_t action) {
   if (g_state->status.status == INIT) {
     if (action == Terminate) {
-      finish_game(g_state);
+      // finish_game(g_state);
       // free_game(g_state, g_state->field);
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
     }
     // else if (action == Start) {
     // g_state->status.status = SPAWN;
