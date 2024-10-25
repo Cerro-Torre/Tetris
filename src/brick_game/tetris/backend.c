@@ -111,7 +111,7 @@ void init_game_stats(Game_stats_t *game_stats) {
 }
 
 Game_state_t *get_game_state() {
-  static Game_state_t game_state;
+  static Game_state_t game_state = {0};
   return &game_state;
 }
 
@@ -318,6 +318,61 @@ void user_input(Game_state_t *g_state, UserAction_t action) {
   // }
 }
 
+void userInput(UserAction_t action, bool hold) {
+  Game_state_t *g_state = get_game_state();
+
+  if (hold == true) {
+    hold = false;
+  }
+
+  switch (action) {
+    case INIT:
+      if (action == Terminate) {
+        // finish_game(g_state);
+        // free_game(g_state, g_state->field);
+        g_state->status.is_playing = false;
+        g_state->status.status = GAMEOVER;
+      }
+      if (action == Start) {
+        g_state->status.status = START;
+        printf("start from fsm \n");
+      }
+      break;
+    case START:
+      if (g_state->status.is_playing) {
+        g_state->status.status = SPAWN;
+      }
+      break;
+    case SPAWN:
+      if (action == Terminate || g_state->status.status == GAMEOVER) {
+        // finish_game(g_state);
+        g_state->status.is_playing = false;
+        g_state->status.status = GAMEOVER;
+      }
+      create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
+      create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
+
+      if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
+        figure_to_field(g_state, figures);
+      }
+      break;
+    case MOVING:
+      move_figure(g_state, action);
+      break;
+    // case SHIFTING:
+    //   move_down(g_state);
+    //   break;
+    // case ATTACHING:
+    //   attach_figure(g_state);
+    //   break;
+    // case GAMEOVER:
+    //   finish_game(g_state);
+    //   break;
+    default:
+      break;
+  }
+}
+
 // void create_figure(ShapeType type, int figure[4][4], int
 // *figures[type][4][4]) {
 //   for (int i = 0; i < 4; i++) {
@@ -413,7 +468,7 @@ void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix) {
 }
 
 GameInfo_t update_current_state(Game_state_t *g_state) {
-  GameInfo_t g_info = {0};
+  static GameInfo_t g_info = {0};
 
   g_info.score = g_state->stats.score;
   g_info.high_score = g_state->stats.high_score;
@@ -436,4 +491,35 @@ GameInfo_t update_current_state(Game_state_t *g_state) {
   // g_info.next_size = size;
 
   return g_info;
+}
+
+GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
+  static GameInfo_t g_info = {0};
+
+  g_info.score = g_state->stats.score;
+  g_info.high_score = g_state->stats.high_score;
+  g_info.level = g_state->stats.level;
+  g_info.speed = g_state->stats.speed;
+  g_info.pause = g_state->status.pause;
+
+  int error_on_field_init = init_field_gi(&g_info);
+  if (!error_on_field_init) {
+    copy_field(FIELD_N, FIELD_M, g_state->field->field, g_info.field);
+  }
+
+  if (g_info.field != NULL) {
+    update_field(g_state, Z_SHAPE);
+  }
+
+  // int size = g_state->next_figure_size;
+  // g_info.next = create_matrix(size, size);
+  // copy_matrix(size, size, g_state->next_figure, g_info.next);
+  // g_info.next_size = size;
+
+  return g_info;
+}
+
+GameInfo_t updateCurrentState() {
+  Game_state_t *g_state = get_game_state();
+  return copy_game_to_gi(g_state);
 }

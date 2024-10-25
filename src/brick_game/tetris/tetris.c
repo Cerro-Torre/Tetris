@@ -88,7 +88,8 @@ int main() {
 
   printw("bw status = %d\n", g_state->status.status);
 
-  GameInfo_t g_info = update_current_state(g_state);
+  static GameInfo_t g_info = {0};
+  g_info = update_current_state(g_state);
 
   wrefresh(states_info);
   wrefresh(tetris);
@@ -131,7 +132,8 @@ int main() {
     states_info = print_states(g_state, action);
 
     render_game_gi(tetris, g_info);
-    user_input(g_state, action);
+    // user_input(g_state, action);
+    userInput(action, false);
 
     wrefresh(states_info);
     wrefresh(status);

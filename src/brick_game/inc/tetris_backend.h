@@ -9,15 +9,17 @@
 #include "objects.h"
 
 // названия из задания:
-// void userInput(UserAction_t action, bool hold);
+void userInput(UserAction_t action, bool hold);
 // GameInfo_t updateCurrentState();
 
 void user_input(Game_state_t *g_state, UserAction_t action);
 GameInfo_t update_current_state(Game_state_t *g_state);
+GameInfo_t updateCurrentState();
 
 // ___________custom functions_________
 
 Game_state_t *get_game_state();
+GameInfo_t copy_game_to_gi(Game_state_t *g_state);
 
 // ________inits________
 int init_field(Game_field_t *field_t);
