@@ -257,8 +257,25 @@ void finish_game(Game_state_t *g_state) {
   }
 }
 
+int figures[NUM_SHAPES][4][4] = {
+    // I-образная фигура
+    {{1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    // J-образная фигура
+    {{1, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    // L-образная фигура
+    {{0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    // O-образная фигура
+    {{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    // S-образная фигура
+    {{0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    // T-образная фигура
+    {{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    // Z-образная фигура
+    {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
+
 void user_input(Game_state_t *g_state, UserAction_t action) {
   if (g_state->status.status == INIT) {
+    printf("init from fsm\n");
     if (action == Terminate) {
       // finish_game(g_state);
       // free_game(g_state, g_state->field);
@@ -267,20 +284,27 @@ void user_input(Game_state_t *g_state, UserAction_t action) {
     }
     if (action == Start) {
       g_state->status.status = START;
+      printf("start from fsm \n");
     }
   }
   if ((g_state->status.status == START) && (g_state->status.is_playing)) {
     g_state->status.status = SPAWN;
+    // printf("spawn\n");
+    // create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
+
   } else if (g_state->status.status == SPAWN) {
     if (action == Terminate || g_state->status.status == GAMEOVER) {
       // finish_game(g_state);
       g_state->status.is_playing = false;
       g_state->status.status = GAMEOVER;
     }
+    create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
+    create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
 
-    // else {
-    //   spawn_figure(g_state);
-    // }
+    if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
+      figure_to_field(g_state, figures);
+    }
+
   } else if (g_state->status.status == MOVING) {
     // printf("action = %d\n", action);
     move_figure(g_state, action);

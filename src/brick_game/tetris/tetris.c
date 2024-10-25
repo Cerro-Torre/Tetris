@@ -34,7 +34,7 @@ int main() {
     // return 0;
   }
 
-  GameInfo_t g_info = update_current_state(g_state);
+  // GameInfo_t g_info = update_current_state(g_state);
 
   WINDOW *tetris = print_tetris_overlay();
   wrefresh(tetris);
@@ -43,33 +43,33 @@ int main() {
   wrefresh(status);
 
   // _______________
-  create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
-  create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
+  // create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
+  // create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
   // create_figure_2(&g_state->figure, T_SHAPE, 12, 3);
 
   // wprintw(tetris, "fig_x = %d, fig_y = %d", g_state->figure.x,
   //         g_state->figure.y);
 
-  int figures[NUM_SHAPES][4][4] = {
-      // I-образная фигура
-      {{1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-      // J-образная фигура
-      {{1, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-      // L-образная фигура
-      {{0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-      // O-образная фигура
-      {{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-      // S-образная фигура
-      {{0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-      // T-образная фигура
-      {{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
-      // Z-образная фигура
-      {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
+  // int figures[NUM_SHAPES][4][4] = {
+  //     // I-образная фигура
+  //     {{1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+  //     // J-образная фигура
+  //     {{1, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+  //     // L-образная фигура
+  //     {{0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+  //     // O-образная фигура
+  //     {{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+  //     // S-образная фигура
+  //     {{0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+  //     // T-образная фигура
+  //     {{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+  //     // Z-образная фигура
+  //     {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
 
   // fill_field(g_state);
-  if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
-    figure_to_field(g_state, figures);
-  }
+  // if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
+  //   figure_to_field(g_state, figures);
+  // }
 
   // next_figure_to_current(&g_state->figure);
 
@@ -80,10 +80,19 @@ int main() {
   // free_field_gi(&g_info);
 
   int key2 = 0;
+  // int action = -1;
   WINDOW *states_info = print_states(g_state, key2);
   wrefresh(states_info);
 
   keypad(tetris, TRUE);  // Enable keypad mode to recognize arrow keys
+
+  printw("bw status = %d\n", g_state->status.status);
+
+  GameInfo_t g_info = update_current_state(g_state);
+
+  wrefresh(states_info);
+  wrefresh(tetris);
+  wrefresh(status);
 
   // if (g_state->status.status == Start) {
   while (g_state->status.is_playing && g_state->status.status != GAMEOVER) {
@@ -123,6 +132,9 @@ int main() {
 
     render_game_gi(tetris, g_info);
     user_input(g_state, action);
+
+    wrefresh(states_info);
+    wrefresh(status);
 
     // move_figure(g_state, Right);
 
