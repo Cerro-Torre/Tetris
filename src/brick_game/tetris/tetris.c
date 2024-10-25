@@ -89,7 +89,9 @@ int main() {
   printw("bw status = %d\n", g_state->status.status);
 
   static GameInfo_t g_info = {0};
-  g_info = update_current_state(g_state);
+  // g_info = update_current_state(g_state);
+  g_info = updateCurrentState();
+  g_info = copy_game_to_gi(g_state);
 
   wrefresh(states_info);
   wrefresh(tetris);
@@ -103,7 +105,9 @@ int main() {
     // g_state->status.status = MOVING;
     // printf("status = %d\n", g_state->status.status);
 
-    g_info = update_current_state(g_state);
+    // g_info = update_current_state(g_state);
+    g_info = updateCurrentState();
+    g_info = copy_game_to_gi(g_state);
 
     key2 = wgetch(tetris);
     // wprintw(tetris, "key = %d\n", key2);
