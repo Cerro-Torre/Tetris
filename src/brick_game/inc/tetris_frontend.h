@@ -16,7 +16,7 @@ WINDOW *print_menu();
 void print_levelerror(void);
 void print_rectangle(int top_y, int bottom_y, int left_x, int right_x);
 WINDOW *print_tetris_overlay();
-WINDOW *print_status(Game_state_t *g_state);
+WINDOW *print_status_gi(GameInfo_t *g_info, UserAction_t action);
 WINDOW *print_states(Game_state_t *g_state, int key);
 
 void clear_menu();

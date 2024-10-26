@@ -1,4 +1,6 @@
 
+#include <ncurses.h>
+
 #include "../inc/tetris_backend.h"
 
 int init_field(Game_field_t *field_t) {
@@ -318,47 +320,70 @@ void user_input(Game_state_t *g_state, UserAction_t action) {
   // }
 }
 
+void on_init_state(Game_state_t *g_state, UserAction_t action) {
+  // GameInfo_t g_info = updateCurrentState();
+
+  switch (action) {
+    case Start:
+      g_state->status.is_playing = true;
+      g_state->status.status = START;
+      break;
+    case Terminate:
+      // printw("terminate from fsm\n");
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+      break;
+    default:
+      g_state->status.status = INIT;
+      break;
+  }
+}
+
 void userInput(UserAction_t action, bool hold) {
   Game_state_t *g_state = get_game_state();
+  int current_fsm_state = g_state->status.status;
+  // GameInfo_t g_info = update_current_state(g_state);
 
   if (hold == true) {
     hold = false;
   }
 
-  switch (action) {
+  switch (current_fsm_state) {
     case INIT:
-      if (action == Terminate) {
-        // finish_game(g_state);
-        // free_game(g_state, g_state->field);
-        g_state->status.is_playing = false;
-        g_state->status.status = GAMEOVER;
-      }
-      if (action == Start) {
-        g_state->status.status = START;
-        printf("start from fsm \n");
-      }
+      // printw("init from fsm\n");
+      // if (action == Terminate) {
+      //   // finish_game(g_state);
+      //   // free_game(g_state, g_state->field);
+      //   g_state->status.is_playing = false;
+      //   g_state->status.status = GAMEOVER;
+      // }
+      // if (action == Start) {
+      //   g_state->status.status = START;
+      //   // printf("start from fsm \n");
+      // }
+      on_init_state(g_state, action);
       break;
-    case START:
-      if (g_state->status.is_playing) {
-        g_state->status.status = SPAWN;
-      }
-      break;
-    case SPAWN:
-      if (action == Terminate || g_state->status.status == GAMEOVER) {
-        // finish_game(g_state);
-        g_state->status.is_playing = false;
-        g_state->status.status = GAMEOVER;
-      }
-      create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
-      create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
+    // case START:
+    //   if (g_state->status.is_playing) {
+    //     g_state->status.status = SPAWN;
+    //   }
+    //   break;
+    // case SPAWN:
+    //   if (action == Terminate || g_state->status.status == GAMEOVER) {
+    //     // finish_game(g_state);
+    //     g_state->status.is_playing = false;
+    //     g_state->status.status = GAMEOVER;
+    //   }
+    //   create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
+    //   create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
 
-      if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
-        figure_to_field(g_state, figures);
-      }
-      break;
-    case MOVING:
-      move_figure(g_state, action);
-      break;
+    //   if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
+    //     figure_to_field(g_state, figures);
+    //   }
+    //   break;
+    // case MOVING:
+    //   move_figure(g_state, action);
+    //   break;
     // case SHIFTING:
     //   move_down(g_state);
     //   break;
@@ -399,22 +424,6 @@ void update_field(Game_state_t *game_state, int figure_type) {
     }
   }
 }
-
-// void fill_field(Game_state_t *game_state) {
-//   for (int i = 0; i < ROWS_GAME; i++) {
-//     for (int j = 0; j < COLS_GAME; j++) {
-//       // if ((i == 0 && (j > 0 && j < COLS_GAME - 1)) ||
-//       //     (i == ROWS_GAME - 1 && (j > 0 && j < COLS_GAME - 1)) ||
-//       //     (j == 0 && (i >= 0 && i < ROWS_GAME)) ||
-//       //     (j == COLS_GAME - 1 && (i >= 0 && i < ROWS_GAME))) {
-//       // game_state->field->field[i][j] = '#';
-//       // } else {
-//       //   game_state->field->field[i][j] = ' ';
-//       // }
-//       game_state->field->field[i][j] = '.';
-//     }
-//   }
-// }
 
 // bool check_collision(Game_field_t * field_t, Figure_t * figure_t) {
 //   ;
@@ -494,10 +503,12 @@ GameInfo_t update_current_state(Game_state_t *g_state) {
 }
 
 GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
-  static GameInfo_t g_info = {0};
+  GameInfo_t g_info = updateCurrentState();
 
   g_info.score = g_state->stats.score;
-  g_info.high_score = g_state->stats.high_score;
+  // g_info.high_score = g_state->stats.high_score;
+  // for test
+  g_info.high_score = g_state->status.status;
   g_info.level = g_state->stats.level;
   g_info.speed = g_state->stats.speed;
   g_info.pause = g_state->status.pause;
@@ -520,6 +531,6 @@ GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
 }
 
 GameInfo_t updateCurrentState() {
-  Game_state_t *g_state = get_game_state();
-  return copy_game_to_gi(g_state);
+  static GameInfo_t g_info = {0};
+  return g_info;
 }

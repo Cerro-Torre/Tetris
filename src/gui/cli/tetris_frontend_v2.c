@@ -15,65 +15,65 @@
 //   return 0;
 // }
 
-void print_overlay() {
-  // int key = 0;
+// void print_overlay() {
+//   // int key = 0;
 
-  // WINDOW *menu = print_menu();
-  // wrefresh(menu);
-  // key = wgetch(menu);
+//   // WINDOW *menu = print_menu();
+//   // wrefresh(menu);
+//   // key = wgetch(menu);
 
-  // while (key != 't') {
-  //   print_menu();
-  //   wrefresh(menu);
-  //   key = wgetch(menu);
-  // }
+//   // while (key != 't') {
+//   //   print_menu();
+//   //   wrefresh(menu);
+//   //   key = wgetch(menu);
+//   // }
 
-  // delwin(menu);
-  // refresh();
+//   // delwin(menu);
+//   // refresh();
 
-  WINDOW *menu = print_menu();
-  int key = 0;
-  print_menu();
-  key = wgetch(menu);
+//   WINDOW *menu = print_menu();
+//   int key = 0;
+//   print_menu();
+//   key = wgetch(menu);
 
-  // wrefresh(menu);
-  // delwin(menu);
+//   // wrefresh(menu);
+//   // delwin(menu);
 
-  while (key != 't') {
-    print_menu();
-    wrefresh(menu);
-    key = wgetch(menu);
-  }
-  delwin(menu);
+//   while (key != 't') {
+//     print_menu();
+//     wrefresh(menu);
+//     key = wgetch(menu);
+//   }
+//   delwin(menu);
 
-  // int key = 0;
-  // WINDOW *tetris = print_tetris_overlay();
-  // wrefresh(tetris);
-  // key = wgetch(tetris);
+//   // int key = 0;
+//   // WINDOW *tetris = print_tetris_overlay();
+//   // wrefresh(tetris);
+//   // key = wgetch(tetris);
 
-  // while (key != 'q') {
-  //   print_tetris_overlay();
-  //   wrefresh(tetris);
-  //   key = wgetch(tetris);
-  // }
+//   // while (key != 'q') {
+//   //   print_tetris_overlay();
+//   //   wrefresh(tetris);
+//   //   key = wgetch(tetris);
+//   // }
 
-  // delwin(tetris);
+//   // delwin(tetris);
 
-  WINDOW *tetris = print_tetris_overlay();
-  print_tetris_overlay();
-  wrefresh(tetris);
-  delwin(tetris);
+//   WINDOW *tetris = print_tetris_overlay();
+//   print_tetris_overlay();
+//   wrefresh(tetris);
+//   delwin(tetris);
 
-  // key = wgetch(menu);
+//   // key = wgetch(menu);
 
-  // if (key == 't') {
-  // print_tetris_overlay();
-  // refresh();
-  // }
+//   // if (key == 't') {
+//   // print_tetris_overlay();
+//   // refresh();
+//   // }
 
-  // print_tetris_overlay();
-  // print_figure();
-}
+//   // print_tetris_overlay();
+//   // print_figure();
+// }
 
 // prin_menu_v2
 WINDOW *print_menu() {
@@ -115,7 +115,7 @@ WINDOW *print_tetris_overlay() {
   return tetris;
 }
 
-WINDOW *print_status(Game_state_t *g_state) {
+WINDOW *print_status_gi(GameInfo_t *g_info, UserAction_t action) {
   int yMax = 0;
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
@@ -127,17 +127,20 @@ WINDOW *print_status(Game_state_t *g_state) {
 
   wrefresh(status);
 
-  mvwprintw(status, 1, 1, "Score: %d", g_state->stats.score);
-  mvwprintw(status, 2, 1, "Level: %d", g_state->stats.level);
-  mvwprintw(status, 3, 1, "Speed: %d", g_state->stats.speed);
-  mvwprintw(status, 4, 1, "High Score: %d", g_state->stats.high_score);
+  mvwprintw(status, 1, 1, "Score: %d", g_info->score);
+  mvwprintw(status, 4, 1, "High Score: %d", g_info->high_score);
+  mvwprintw(status, 2, 1, "Level: %d", g_info->level);
+  mvwprintw(status, 3, 1, "Speed: %d", g_info->speed);
+  mvwprintw(status, 6, 1, "Pause: %s", g_info->pause ? "ON" : "OFF");
 
-  mvwprintw(status, 6, 1, "Pause: %s", g_state->status.pause ? "ON" : "OFF");
-  mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
-  mvwprintw(status, 8, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
-  mvwprintw(status, 9, 1, "Playing: %s",
-            g_state->status.is_playing ? "TRUE" : "FALSE");
-  // mvwprintw(status, 10, 1, "Key: %d", g_state->status.status);
+  mvwprintw(status, 7, 1, "Status: %d", get_user_action(action));
+  // printw("Key: %d", get_user_action(action));
+
+  // mvwprintw(status, 7, 1, "Status: %d", g_info->status.status);
+  // mvwprintw(status, 8, 1, "Win: %s", g_info->status.win ? "TRUE" : "FALSE");
+  // mvwprintw(status, 9, 1, "Playing: %s",
+  //           g_info->status.is_playing ? "TRUE" : "FALSE");
+  // mvwprintw(status, 10, 1, "Key: %d", g_info->status.status);
 
   // int key = wgetch(status);
   // while (key != 'q') {
@@ -167,6 +170,11 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
   mvwprintw(status, 3, 1, "Win: %d", g_state->status.win);
   mvwprintw(status, 4, 1, "Playing: %d", g_state->status.is_playing);
   mvwprintw(status, 5, 1, "Key: %d", g_state->status.status);
+
+  // mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
+  mvwprintw(status, 8, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
+  mvwprintw(status, 9, 1, "Playing: %s",
+            g_state->status.is_playing ? "TRUE" : "FALSE");
 
   return status;
 }

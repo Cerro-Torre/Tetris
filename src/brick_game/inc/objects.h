@@ -64,10 +64,10 @@ typedef enum {
   SHIFTING,
   ATTACHING,
   GAMEOVER
-} Game_enum_t;
+} Fsm_states;
 
 typedef struct {
-  Game_enum_t status;
+  Fsm_states status;
   int pause;
   int win;
   int is_playing;
