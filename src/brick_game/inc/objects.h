@@ -26,6 +26,16 @@ typedef struct {
 
 // _________custom objects_________
 
+typedef enum {
+  INIT = 8,
+  START,
+  SPAWN,
+  MOVING,
+  ATTACHING,
+  SHIFTING,
+  GAMEOVER
+} Fsm_states;
+
 typedef struct {
   int x;
   int y;
@@ -55,16 +65,6 @@ typedef struct {
   int next_figure_size;
   int next_type;
 } Figure_t;
-
-typedef enum {
-  INIT = 0,
-  START,
-  SPAWN,
-  MOVING,
-  SHIFTING,
-  ATTACHING,
-  GAMEOVER
-} Fsm_states;
 
 typedef struct {
   Fsm_states status;

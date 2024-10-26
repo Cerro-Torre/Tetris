@@ -31,7 +31,7 @@ int main() {
   WINDOW *tetris = print_tetris_overlay();
   wrefresh(tetris);
 
-  WINDOW *status = print_status_gi(&g_info, get_user_action(key));
+  WINDOW *status = print_status_gi(&g_info);
   wrefresh(status);
 
   int key2 = 0;
@@ -51,15 +51,22 @@ int main() {
     g_info = updateCurrentState();
     g_info = copy_game_to_gi(g_state);
 
-    key2 = wgetch(tetris);
+    render_game_gi(tetris, g_info);
+
+    if (g_state->status.status == MOVING || g_state->status.status == START) {
+      key2 = wgetch(tetris);
+      wrefresh(tetris);
+    }
 
     int action = get_user_action(key2);
     userInput(action, false);
 
-    states_info = print_states(g_state, action);
-    status = print_status_gi(&g_info, action);
+    // if (g_state->status.status == ATTACHING) {
+    //   printw("ATTACHING\n");
+    // }
 
-    render_game_gi(tetris, g_info);
+    states_info = print_states(g_state, action);
+    status = print_status_gi(&g_info);
 
     wrefresh(tetris);
     wrefresh(status);
@@ -80,7 +87,6 @@ int main() {
 
 UserAction_t get_user_action(int ch) {
   UserAction_t action = {0};
-
   switch (ch) {
     case KEY_T:
       action = Start;

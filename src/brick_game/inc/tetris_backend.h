@@ -33,8 +33,16 @@ void init_game_state(Game_state_t *game_state, Game_field_t *field);
 void free_field(Game_field_t *field_t);
 void free_field_gi(GameInfo_t *field_t);
 
-void free_field_gs(Game_state_t *game_state);
+// void free_field_gs(Game_state_t *game_state);
 void free_game(Game_state_t *game, Game_field_t *field);
+
+// _______fsm________
+
+void on_init_state(Game_state_t *g_state, UserAction_t action);
+void on_start_state(Game_state_t *g_state, UserAction_t action);
+void on_spawn_state(Game_state_t *g_state, UserAction_t action);
+void on_move_state(Game_state_t *g_state, UserAction_t action);
+void on_attach_state(Game_state_t *g_state, UserAction_t action);
 
 // ________draws________
 
@@ -44,7 +52,7 @@ void free_game(Game_state_t *game, Game_field_t *field);
 // void figure_to_field_1(GameInfo_t *game);
 
 void figure_to_field(Game_state_t *game_state, int figures[NUM_SHAPES][4][4]);
-void create_figure_2(Figure_t *figure_t, int type, int y, int x);
+void create_figure_2(Game_state_t *g_state, int type);
 void create_next_figure(Figure_t *figure_t, int type, int y, int x);
 void next_figure_to_current(Figure_t *figure_t);
 

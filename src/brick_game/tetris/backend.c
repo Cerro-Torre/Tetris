@@ -1,5 +1,5 @@
 
-#include <ncurses.h>
+// #include <ncurses.h>
 
 #include "../inc/tetris_backend.h"
 
@@ -191,12 +191,13 @@ void free_game(Game_state_t *game, Game_field_t *field) {
 // }
 
 void move_left(Game_state_t *g_state) {
+  g_state = get_game_state();
   bool can_move = true;
 
   for (int i = 0; i < g_state->figure.figure_size; i++) {
     for (int j = 0; j < g_state->figure.figure_size; j++) {
-      int x = g_state->field->x + j - 1;
-      int y = g_state->field->y + i;
+      int x = g_state->figure.x + j - 1;
+      int y = g_state->figure.y + i;
 
       if (g_state->figure.figure[g_state->figure.type][i][j] == '1' &&
           (x >= FIELD_M || x < 0 || g_state->field->field[y][x] == '1')) {
@@ -206,9 +207,12 @@ void move_left(Game_state_t *g_state) {
   }
 
   if (can_move) {
-    g_state->figure.x--;
+    g_state->figure.x -= 1;
+    printf("%d\n", g_state->figure.x);
   }
+  update_field(g_state, g_state->figure.type);
   // g_state->status = figure_is_attaching(g_state) ? Attaching : Moving;
+  g_state->status.status = ATTACHING;
 }
 
 void move_right(Game_state_t *g_state) {
@@ -275,129 +279,6 @@ int figures[NUM_SHAPES][4][4] = {
     // Z-образная фигура
     {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
 
-void user_input(Game_state_t *g_state, UserAction_t action) {
-  if (g_state->status.status == INIT) {
-    printf("init from fsm\n");
-    if (action == Terminate) {
-      // finish_game(g_state);
-      // free_game(g_state, g_state->field);
-      g_state->status.is_playing = false;
-      g_state->status.status = GAMEOVER;
-    }
-    if (action == Start) {
-      g_state->status.status = START;
-      printf("start from fsm \n");
-    }
-  }
-  if ((g_state->status.status == START) && (g_state->status.is_playing)) {
-    g_state->status.status = SPAWN;
-    // printf("spawn\n");
-    // create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
-
-  } else if (g_state->status.status == SPAWN) {
-    if (action == Terminate || g_state->status.status == GAMEOVER) {
-      // finish_game(g_state);
-      g_state->status.is_playing = false;
-      g_state->status.status = GAMEOVER;
-    }
-    create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
-    create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
-
-    if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
-      figure_to_field(g_state, figures);
-    }
-
-  } else if (g_state->status.status == MOVING) {
-    // printf("action = %d\n", action);
-    move_figure(g_state, action);
-  }
-  // } else if (g_state->status.status == SHIFTING) {
-  //   move_down(g_state);
-  // } else if (g_state->status.status == ATTACHING) {
-  //   attach_figure(g_state);
-  // } else if (g_state->status.status == GAMEOVER) {
-  //   finish_game(g_state);
-  // }
-}
-
-void on_init_state(Game_state_t *g_state, UserAction_t action) {
-  // GameInfo_t g_info = updateCurrentState();
-
-  switch (action) {
-    case Start:
-      g_state->status.is_playing = true;
-      g_state->status.status = START;
-      break;
-    case Terminate:
-      // printw("terminate from fsm\n");
-      g_state->status.is_playing = false;
-      g_state->status.status = GAMEOVER;
-      break;
-    default:
-      g_state->status.status = INIT;
-      break;
-  }
-}
-
-void userInput(UserAction_t action, bool hold) {
-  Game_state_t *g_state = get_game_state();
-  int current_fsm_state = g_state->status.status;
-  // GameInfo_t g_info = update_current_state(g_state);
-
-  if (hold == true) {
-    hold = false;
-  }
-
-  switch (current_fsm_state) {
-    case INIT:
-      // printw("init from fsm\n");
-      // if (action == Terminate) {
-      //   // finish_game(g_state);
-      //   // free_game(g_state, g_state->field);
-      //   g_state->status.is_playing = false;
-      //   g_state->status.status = GAMEOVER;
-      // }
-      // if (action == Start) {
-      //   g_state->status.status = START;
-      //   // printf("start from fsm \n");
-      // }
-      on_init_state(g_state, action);
-      break;
-    // case START:
-    //   if (g_state->status.is_playing) {
-    //     g_state->status.status = SPAWN;
-    //   }
-    //   break;
-    // case SPAWN:
-    //   if (action == Terminate || g_state->status.status == GAMEOVER) {
-    //     // finish_game(g_state);
-    //     g_state->status.is_playing = false;
-    //     g_state->status.status = GAMEOVER;
-    //   }
-    //   create_figure_2(&g_state->figure, Z_SHAPE, 6, 3);
-    //   create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
-
-    //   if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
-    //     figure_to_field(g_state, figures);
-    //   }
-    //   break;
-    // case MOVING:
-    //   move_figure(g_state, action);
-    //   break;
-    // case SHIFTING:
-    //   move_down(g_state);
-    //   break;
-    // case ATTACHING:
-    //   attach_figure(g_state);
-    //   break;
-    // case GAMEOVER:
-    //   finish_game(g_state);
-    //   break;
-    default:
-      break;
-  }
-}
-
 // void create_figure(ShapeType type, int figure[4][4], int
 // *figures[type][4][4]) {
 //   for (int i = 0; i < 4; i++) {
@@ -408,6 +289,8 @@ void userInput(UserAction_t action, bool hold) {
 // }
 
 void update_field(Game_state_t *game_state, int figure_type) {
+  game_state = get_game_state();
+
   for (int i = 0; i < FIGURE_M; i++) {
     for (int j = 0; j < FIGURE_N; j++) {
       int x = game_state->figure.x + i;
@@ -419,7 +302,7 @@ void update_field(Game_state_t *game_state, int figure_type) {
         game_state->field->field[i][j] =
             game_state->figure.figure[figure_type][i + x][j + y];
 
-        // game_state->field->field[x][y] = '#';
+        game_state->field->field[x][y] = '1';
       }
     }
   }
@@ -450,10 +333,12 @@ void figure_to_field(Game_state_t *game_state, int figures[NUM_SHAPES][4][4]) {
 }
 // }
 
-void create_figure_2(Figure_t *figure_t, int type, int y, int x) {
-  figure_t->type = type;
-  figure_t->x = x;
-  figure_t->y = y;
+void create_figure_2(Game_state_t *g_state, int type) {
+  g_state = get_game_state();
+
+  g_state->figure.type = type;
+  g_state->figure.x = 3;
+  g_state->figure.y = 0;
 }
 
 void create_next_figure(Figure_t *figure_t, int type, int y, int x) {
@@ -503,12 +388,13 @@ GameInfo_t update_current_state(Game_state_t *g_state) {
 }
 
 GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
+  g_state = get_game_state();
   GameInfo_t g_info = updateCurrentState();
 
   g_info.score = g_state->stats.score;
-  // g_info.high_score = g_state->stats.high_score;
+  g_info.high_score = g_state->stats.high_score;
   // for test
-  g_info.high_score = g_state->status.status;
+  // g_info.high_score = g_state->status.status;
   g_info.level = g_state->stats.level;
   g_info.speed = g_state->stats.speed;
   g_info.pause = g_state->status.pause;
@@ -533,4 +419,145 @@ GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
 GameInfo_t updateCurrentState() {
   static GameInfo_t g_info = {0};
   return g_info;
+}
+
+void on_init_state(Game_state_t *g_state, UserAction_t action) {
+  // GameInfo_t g_info = updateCurrentState();
+
+  switch (action) {
+    case Start:
+      g_state->status.is_playing = true;
+      g_state->status.status = START;
+      break;
+    case Terminate:
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+      break;
+    default:
+      g_state->status.status = INIT;
+      break;
+  }
+}
+
+void on_start_state(Game_state_t *g_state, UserAction_t action) {
+  switch (action) {
+    case Terminate:
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+      break;
+    default:
+      if (g_state->status.is_playing) {
+        g_state->status.status = SPAWN;
+      }
+      break;
+  }
+}
+
+void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
+  g_state = get_game_state();
+  create_figure_2(g_state, Z_SHAPE);
+  // create_next_figure(&g_state->figure, T_SHAPE, 12, 3);
+
+  // if ((g_state->figure.type > 0) && (g_state->figure.type < 7)) {
+  figure_to_field(g_state, figures);
+  // }
+
+  switch (action) {
+    case Terminate:
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+      break;
+    default:
+      if (g_state->status.is_playing) {
+        g_state->status.status = MOVING;
+      }
+      break;
+  }
+}
+
+void on_move_state(Game_state_t *g_state, UserAction_t action) {
+  // if (check_collision(g_state)) {
+  //   g_state->status.status = ATTACHING;
+  // }
+
+  switch (action) {
+    case Terminate:
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+      break;
+    case Left:
+      move_left(g_state);
+      break;
+    case Right:
+      move_right(g_state);
+      break;
+    // case Down:
+    //   move_down(g_state);
+    //   break;
+    // case Action:
+    //   rotate(g_state);
+    //   break;
+    // case Up:
+    //   rotate(g_state);
+    //   break;
+    // case Pause:
+    //   g_state->status.pause = !g_state->status.pause;
+    //   break;
+    default:
+      if (g_state->status.is_playing) {
+        g_state->status.status = MOVING;
+      }
+      break;
+  }
+}
+
+void on_attach_state(Game_state_t *g_state, UserAction_t action) {
+  switch (action) {
+    case Terminate:
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+      break;
+    default:
+      // if (g_state->status.is_playing) {
+      //   g_state->status.status = SPAWN;
+      // }
+      if (g_state->status.is_playing) {
+        g_state->status.status = MOVING;
+      }
+      break;
+  }
+}
+
+void userInput(UserAction_t action, bool hold) {
+  Game_state_t *g_state = get_game_state();
+  int current_fsm_state = g_state->status.status;
+  // GameInfo_t g_info = update_current_state(g_state);
+
+  (hold) ? printf("hold") : false;
+
+  switch (current_fsm_state) {
+    case INIT:
+      on_init_state(g_state, action);
+      break;
+    case START:
+      on_start_state(g_state, action);
+      break;
+    case SPAWN:
+      on_spawn_state(g_state, action);
+      break;
+    case MOVING:
+      on_move_state(g_state, action);
+      break;
+    // case SHIFTING:
+    //   move_down(g_state);
+    //   break;
+    case ATTACHING:
+      on_attach_state(g_state, action);
+      break;
+    // case GAMEOVER:
+    //   finish_game(g_state);
+    //   break;
+    default:
+      break;
+  }
 }

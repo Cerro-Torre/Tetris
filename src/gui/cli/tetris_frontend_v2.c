@@ -115,7 +115,7 @@ WINDOW *print_tetris_overlay() {
   return tetris;
 }
 
-WINDOW *print_status_gi(GameInfo_t *g_info, UserAction_t action) {
+WINDOW *print_status_gi(GameInfo_t *g_info) {
   int yMax = 0;
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
@@ -133,7 +133,9 @@ WINDOW *print_status_gi(GameInfo_t *g_info, UserAction_t action) {
   mvwprintw(status, 3, 1, "Speed: %d", g_info->speed);
   mvwprintw(status, 6, 1, "Pause: %s", g_info->pause ? "ON" : "OFF");
 
-  mvwprintw(status, 7, 1, "Status: %d", get_user_action(action));
+  Game_state_t *g_state = get_game_state();
+
+  mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
   // printw("Key: %d", get_user_action(action));
 
   // mvwprintw(status, 7, 1, "Status: %d", g_info->status.status);
