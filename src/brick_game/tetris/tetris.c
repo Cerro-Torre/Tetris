@@ -52,17 +52,22 @@ int main() {
     g_info = copy_game_to_gi(g_state);
 
     render_game_gi(tetris, g_info);
+    wrefresh(tetris);
 
     if (g_state->status.status == MOVING || g_state->status.status == START) {
-      g_info = copy_game_to_gi(g_state);
+      // g_state = get_game_state();
+      // g_info = updateCurrentState();
+      // printw("inside\n");
+      wrefresh(states_info);
       key2 = wgetch(tetris);
       // int action2 = get_user_action(key2);
-      userInput(get_user_action(key2), false);
+      // userInput(get_user_action(key2), false);
       // update_field(g_state, Z_SHAPE);
-      render_game_gi(tetris, g_info);
-      wrefresh(tetris);
-      wrefresh(status);
-      wrefresh(states_info);
+      // g_info = copy_game_to_gi(g_state);
+      // wrefresh(tetris);
+      // render_game_gi(tetris, g_info);
+      // wrefresh(status);
+      // wrefresh(states_info);
     }
 
     int action = get_user_action(key2);

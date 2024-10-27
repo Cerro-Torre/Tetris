@@ -186,6 +186,8 @@ void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
     for (int j = 0; j < 10; j++) {
       if (g_info.field[i][j] == 1) {
         mvwprintw(tetris_window, i + 1, j + 2, "#");
+      } else if (g_info.field[i][j] == 3) {
+        mvwprintw(tetris_window, i + 1, j + 2, "*");
       } else {
         mvwprintw(tetris_window, i + 1, j + 2, "-");
       }

@@ -61,10 +61,12 @@ void finish_game(Game_state_t *g_state);
 void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix);
 
 void update_field(Game_state_t *game_state, int figure_type);
+void clear_figure(Game_state_t *g_state);
 
 // UserAction_t get_user_action(int ch);
 
-void move_figure(Game_state_t *g_state, UserAction_t action);
+// void move_figure(Game_state_t *g_state, UserAction_t action);
+void move_figure2(Game_state_t *g_state, int dx);
 void move_left(Game_state_t *g_state);
 void move_left2(Game_state_t *g_state);
 void move_right(Game_state_t *g_state);
