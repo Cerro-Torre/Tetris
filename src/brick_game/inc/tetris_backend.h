@@ -51,7 +51,7 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action);
 //                    int *figures[type][FIGURE_M][FIGURE_N]);
 // void figure_to_field_1(GameInfo_t *game);
 
-void figure_to_field(Game_state_t *game_state, int figures[NUM_SHAPES][4][4]);
+void figure_to_field(Game_state_t *g_state, int figures[NUM_SHAPES][4][4]);
 void create_figure_2(Game_state_t *g_state, int type);
 void create_next_figure(Figure_t *figure_t, int type, int y, int x);
 void next_figure_to_current(Figure_t *figure_t);
@@ -66,6 +66,7 @@ void update_field(Game_state_t *game_state, int figure_type);
 
 void move_figure(Game_state_t *g_state, UserAction_t action);
 void move_left(Game_state_t *g_state);
+void move_left2(Game_state_t *g_state);
 void move_right(Game_state_t *g_state);
 
 // void free_field(GameInfo_t *game);
