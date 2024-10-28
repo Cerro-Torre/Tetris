@@ -68,8 +68,9 @@ void clear_figure(Game_state_t *g_state);
 // void move_figure(Game_state_t *g_state, UserAction_t action);
 void move_figure2(Game_state_t *g_state, int dx);
 void move_left(Game_state_t *g_state);
-void move_left2(Game_state_t *g_state);
+// void move_left2(Game_state_t *g_state);
 void move_right(Game_state_t *g_state);
+void move_down(Game_state_t *g_state);
 
 // void free_field(GameInfo_t *game);
 // void free_next(GameInfo_t *game);

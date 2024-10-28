@@ -60,6 +60,14 @@ int main() {
       // printw("inside\n");
       wrefresh(states_info);
       key2 = wgetch(tetris);
+
+      if (key2 == 'l') {
+        move_left(g_state);
+      }
+
+      if (key2 == 'o') {
+        move_right(g_state);
+      }
       // int action2 = get_user_action(key2);
       // userInput(get_user_action(key2), false);
       // update_field(g_state, Z_SHAPE);
@@ -80,6 +88,7 @@ int main() {
     states_info = print_states(g_state, action);
     status = print_status_gi(&g_info);
 
+    // clear_figure(g_state);
     wrefresh(tetris);
     wrefresh(status);
     wrefresh(states_info);
