@@ -316,7 +316,7 @@ GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
 
   // del?
   // if (g_info.field) {
-  //   update_field(g_state, I_SHAPE);
+  //   update_field(g_state, Z_SHAPE);
   // }
 
   // int size = g_state->next_figure_size;
@@ -368,8 +368,8 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
   g_state = get_game_state();
 
   // if (g_state->status.status == SPAWN) {
-  create_figure_2(g_state, I_SHAPE);
-  // create_next_figure(&g_state->figure, I_SHAPE, 12, 3);
+  create_figure_2(g_state, Z_SHAPE);
+  // create_next_figure(&g_state->figure, Z_SHAPE, 12, 3);
 
   if ((g_state->figure.type > -1) && (g_state->figure.type < 7)) {
     figure_to_field(g_state, figures);
@@ -421,7 +421,7 @@ void move_left(Game_state_t *g_state) {
   }
   // g_info = copy_game_to_gi(g_state);
 
-  // update_field(g_state, I_SHAPE);
+  // update_field(g_state, Z_SHAPE);
   // g_info = copy_game_to_gi(g_state);
   // g_state->status = figure_is_attaching(g_state) ? Attaching : Moving;
   g_state->status.status = ATTACHING;
@@ -452,7 +452,7 @@ void move_right(Game_state_t *g_state) {
   }
   // g_info = copy_game_to_gi(g_state);
 
-  // update_field(g_state, I_SHAPE);
+  // update_field(g_state, Z_SHAPE);
   // g_info = copy_game_to_gi(g_state);
   // g_state->status = figure_is_attaching(g_state) ? Attaching : Moving;
   g_state->status.status = ATTACHING;
@@ -473,10 +473,22 @@ void move_down(Game_state_t *g_state) {
       //   can_move = false;
       // }
 
-      if (((y > FIELD_N - 2 && i != 4) || g_state->field->field[y][x] == 1)) {
+      if (((y > FIELD_N - 2) || g_state->field->field[y][x] == 1)) {
+        // if (g_state->field->field[y][x] == 1 && g_state->figure.y + 1 != 1 &&
+        //     i < 3) {
+        //   g_state->field->field[y - 2][x] = 1;
+        //   g_state->field->field[y][x] = 0;
+        // }
+
         can_move = false;
       }
     }
+  }
+
+  if (!can_move && g_state->figure.y + 1 != 1) {
+    printf("!\n");
+    g_state->field->field[g_state->figure.y][g_state->figure.x] =
+        g_state->field->field[g_state->figure.y + 1][g_state->figure.x];
   }
 
   if (can_move) {
@@ -488,10 +500,27 @@ void move_down(Game_state_t *g_state) {
   }
   // g_info = copy_game_to_gi(g_state);
 
-  // update_field(g_state, I_SHAPE);
+  // update_field(g_state, Z_SHAPE);
   // g_info = copy_game_to_gi(g_state);
-  // g_state->status = figure_is_attaching(g_state) ? Attaching : Moving;
-  g_state->status.status = ATTACHING;
+  g_state->status.status = figure_is_attaching(g_state) ? ATTACHING : MOVING;
+  // g_state->status.status = ATTACHING;
+}
+
+bool figure_is_attaching(Game_state_t *g_state) {
+  bool is_attaching = false;
+
+  for (int i = 0; i < g_state->figure.figure_size && !is_attaching; i++) {
+    for (int j = 0; j < g_state->figure.figure_size && !is_attaching; j++) {
+      int x = g_state->figure.x + j;
+      int y = g_state->figure.y + i + 1;
+
+      if ((g_state->figure.figure[g_state->figure.type][i][j] == 1) &&
+          (y > FIELD_N - 1 || (y > -1 && (g_state->field->field[y][x] == 1))))
+        is_attaching = true;
+    }
+  }
+
+  return is_attaching;
 }
 
 // _________возможно пригодится чтобы сократить код

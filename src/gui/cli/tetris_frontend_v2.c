@@ -167,11 +167,11 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 
   wrefresh(status);
 
-  mvwprintw(status, 1, 1, "Action: %d", key);
+  mvwprintw(status, 1, 1, "Key: %d", key);
   mvwprintw(status, 2, 1, "Status: %d", g_state->status.status);
   mvwprintw(status, 3, 1, "Win: %d", g_state->status.win);
   mvwprintw(status, 4, 1, "Playing: %d", g_state->status.is_playing);
-  mvwprintw(status, 5, 1, "Key: %d", g_state->status.status);
+  mvwprintw(status, 5, 1, "Attaching: %d", figure_is_attaching(g_state));
 
   // mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
   mvwprintw(status, 8, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
