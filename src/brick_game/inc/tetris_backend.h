@@ -55,6 +55,7 @@ void figure_to_field(Game_state_t *g_state, int figures[NUM_SHAPES][4][4]);
 void create_figure_2(Game_state_t *g_state, int type);
 void create_next_figure(Figure_t *figure_t, int type, int y, int x);
 void next_figure_to_current(Figure_t *figure_t);
+bool check_collision(Game_state_t *g_state);
 
 void finish_game(Game_state_t *g_state);
 
@@ -71,7 +72,12 @@ void move_left(Game_state_t *g_state);
 // void move_left2(Game_state_t *g_state);
 void move_right(Game_state_t *g_state);
 void move_down(Game_state_t *g_state);
+
+void move_up(Game_state_t *g_state);
+
 bool figure_is_attaching(Game_state_t *g_state);
+
+void move_in_array(Game_state_t *g_state);
 
 // void free_field(GameInfo_t *game);
 // void free_next(GameInfo_t *game);

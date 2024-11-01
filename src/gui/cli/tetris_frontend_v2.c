@@ -167,11 +167,16 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 
   wrefresh(status);
 
+  bool attaching = figure_is_attaching(g_state);
+
   mvwprintw(status, 1, 1, "Key: %d", key);
   mvwprintw(status, 2, 1, "Status: %d", g_state->status.status);
   mvwprintw(status, 3, 1, "Win: %d", g_state->status.win);
   mvwprintw(status, 4, 1, "Playing: %d", g_state->status.is_playing);
-  mvwprintw(status, 5, 1, "Attaching: %d", figure_is_attaching(g_state));
+  mvwprintw(status, 5, 1, "Attaching: %d", attaching);
+
+  mvwprintw(status, 6, 1, "Coord: %d, %d", g_state->figure.x,
+            g_state->figure.y);
 
   // mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
   mvwprintw(status, 8, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
@@ -182,18 +187,34 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 }
 
 void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
+  // unsigned int block = ACS_BLOCK;
+  // attron(A_ALTCHARSET);
+
   for (int i = 0; i < 20; i++) {
     for (int j = 0; j < 10; j++) {
       if (g_info.field[i][j] == 1) {
+        //   // attron(A_ALTCHARSET);
         mvwprintw(tetris_window, i + 1, j + 2, "#");
+        // }
+        // attroff(A_ALTCHARSET);
       } else if (g_info.field[i][j] == 3) {
         mvwprintw(tetris_window, i + 1, j + 2, "*");
       } else {
         mvwprintw(tetris_window, i + 1, j + 2, "-");
       }
+
+      // mvwprintw(tetris_window, i + 1, j + 2, "%d", (i));
+
+      // if (j == 9) {
+      //   mvwprintw(tetris_window, i + 1, j + 2, "r");
+      // }
+      // if (i == 19) {
+      //   mvwprintw(tetris_window, i + 1, j + 2, "b");
+      // }
     }
   }
   wrefresh(tetris_window);
+  // attroff(A_ALTCHARSET);
 }
 
 // void render_game_gs(WINDOW *tetris_window, Game_state_t *g_state) {
