@@ -47,6 +47,7 @@ $(LIB_BACKEND): $(OBJS_FSMTABLE)
 
 tests: $(LIBNAME) $(TESTS_O)
 	$(CC) $(CFLAGS) $(TESTS_O) -L: ./libs/$(LIBNAME) -lcheck -lsubunit -o test_res -lm
+	./test_res
 
 vg: tests
 	$(VALGRIND) ./test_res
