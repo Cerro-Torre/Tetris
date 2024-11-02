@@ -77,7 +77,7 @@ void move_up(Game_state_t *g_state);
 
 bool figure_is_attaching(Game_state_t *g_state);
 
-void move_in_array(Game_state_t *g_state);
+int move_in_array(Game_state_t *g_state);
 
 // void free_field(GameInfo_t *game);
 // void free_next(GameInfo_t *game);

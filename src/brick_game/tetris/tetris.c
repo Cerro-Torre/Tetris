@@ -69,13 +69,12 @@ int main() {
         move_right(g_state);
       }
       // int action2 = get_user_action(key2);
-      // userInput(get_user_action(key2), false);
-      // update_field(g_state, Z_SHAPE);
-      // g_info = copy_game_to_gi(g_state);
-      // wrefresh(tetris);
-      // render_game_gi(tetris, g_info);
-      // wrefresh(status);
-      // wrefresh(states_info);
+      userInput(get_user_action(key2), false);
+      g_info = copy_game_to_gi(g_state);
+      render_game_gi(tetris, g_info);
+      wrefresh(tetris);
+      wrefresh(status);
+      wrefresh(states_info);
     }
 
     int action = get_user_action(key2);

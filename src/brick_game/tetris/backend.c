@@ -68,26 +68,27 @@ void free_field_gi(GameInfo_t *field_t) {
 }
 
 void init_figure(Figure_t *figure_t) {
-  figure_t->x = 0;
-  figure_t->y = 0;
-
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      figure_t->figure[NUM_SHAPES][i][j] = 0;
-    }
-  }
-
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      figure_t->next_figure[NUM_SHAPES][i][j] = 0;
-    }
-  }
-
   figure_t->x = COLS_GAME / 2 - 2;
   figure_t->y = 0;
-  figure_t->type = -1;
+
+  srand(time(NULL));
+  int rnd_figure = rand() % 7;
+
+  figure_t->type = rnd_figure;
   figure_t->figure_size = 4;
   figure_t->next_figure_size = 4;
+
+  for (int i = 0; i < figure_t->figure_size; i++) {
+    for (int j = 0; j < figure_t->figure_size; j++) {
+      figure_t->figure[0][i][j] = 0;
+    }
+  }
+
+  for (int i = 0; i < figure_t->figure_size; i++) {
+    for (int j = 0; j < figure_t->figure_size; j++) {
+      figure_t->next_figure[0][i][j] = 0;
+    }
+  }
 }
 
 void init_game_status(Game_status_t *game_status) {
@@ -155,13 +156,13 @@ void finish_game(Game_state_t *g_state) {
   }
 }
 
-int figures[NUM_SHAPES][4][4] = {
+static int figures[NUM_SHAPES][4][4] = {
     // I-образная фигура
     {{1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}},
-    // J (L)-образная фигура
-    {{0, 0, 1, 0}, {0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}},
+    // J -образная фигура
+    {{0, 1, 0, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}},
     // L-образная фигура
-    {{0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    {{1, 0, 0, 0}, {1, 0, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}},
     // O-образная фигура
     {{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
     // S-образная фигура
@@ -178,13 +179,14 @@ bool check_collision(Game_state_t *g_state) {
   int border_collision = 1;
   // int figure_collision = 2;
 
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
+  for (int i = 0; i < g_state->figure.figure_size; i++) {
+    for (int j = 0; j < g_state->figure.figure_size; j++) {
       // if (g_state->figure.figure[g_state->figure.type][i][j] == 1) {
-      // int x = g_state->figure.x + j;
+      int x = g_state->figure.x + j + 1;
       int y = g_state->figure.y + i;
 
-      if (y >= 19 && g_state->figure.figure[g_state->figure.type][i][j] != 1) {
+      if ((y >= 19 || y < 0 || x >= 10 || x < 0) &&
+          g_state->figure.figure[g_state->figure.type][i][j] != 1) {
         collision = border_collision;
         // }
       }
@@ -197,8 +199,22 @@ bool check_collision(Game_state_t *g_state) {
 void figure_to_field(Game_state_t *g_state, int figures[NUM_SHAPES][4][4]) {
   g_state = get_game_state();
 
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
+  int figure_width = g_state->figure.figure_size;
+  int figure_height = g_state->figure.figure_size;
+  if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
+      g_state->figure.type == Z_SHAPE) {
+    figure_height = figure_width - 1;
+  } else if (g_state->figure.type == J_SHAPE ||
+             g_state->figure.type == L_SHAPE) {
+    figure_width = figure_height - 1;
+  } else if (g_state->figure.type == I_SHAPE) {
+    figure_width = 1;
+  }
+
+  // g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE ||
+
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
@@ -207,32 +223,47 @@ void figure_to_field(Game_state_t *g_state, int figures[NUM_SHAPES][4][4]) {
       }
 
       // показать поля вокруг фигуры
-      if (figures[g_state->figure.type][i][j] == 0 && g_state->field) {
+      if (figures[g_state->figure.type][i][j] == 0 && g_state->field &&
+          field_y > 1) {
         g_state->field->field[field_y][field_x] = 3;
       }
+
+      // if (figures[g_state->figure.type][i][j] != 1 && g_state->field) {
+      //   g_state->field->field[field_y][field_x] =
+      //       g_state->field->field[field_y][field_x];
+      // }
     }
   }
 }
 
 void clear_figure(Game_state_t *g_state) {
   g_state = get_game_state();
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
+
+  int figure_width = g_state->figure.figure_size;
+  int figure_height = g_state->figure.figure_size;
+  if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
+      g_state->figure.type == Z_SHAPE) {
+    figure_height = figure_width - 1;
+  } else if (g_state->figure.type == J_SHAPE ||
+             g_state->figure.type == L_SHAPE) {
+    figure_width = figure_height - 1;
+  } else if (g_state->figure.type == I_SHAPE) {
+    figure_width = 1;
+  };
+
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      // показать поля вокруг фигуры
-      // if (figures[g_state->figure.type][i][j] == 1 && g_state->field) {
+      // // показать поля вокруг фигуры
+      // if (figures[g_state->figure.type][i][j] == 0 && g_state->field) {
       //   g_state->field->field[field_y][field_x] = 3;
       // }
 
       // очистить текущую фигуру
-      if (figures[g_state->figure.type][i][j] == 1 && g_state->field) {
-        g_state->field->field[field_y][field_x] = 0;
-      }
-
-      // очистить поля вокруг фигуры
-      if (g_state->field->field[field_y][field_x] == 3 && g_state->field) {
+      if (g_state->field && (figures[g_state->figure.type][i][j] == 1 ||
+                             g_state->field->field[field_y][field_x] == 3)) {
         g_state->field->field[field_y][field_x] = 0;
       }
     }
@@ -246,6 +277,35 @@ void create_figure_2(Game_state_t *g_state, int type) {
   // центрируем фигуру по Х: g_state->figure.x - figure_t->figure_size / 2;
   g_state->figure.x = COLS_GAME / 2 - 2;
   g_state->figure.y = 0;
+
+  switch (type) {
+    case 0:
+      g_state->figure.figure_size = 4;
+      break;
+    case 1:
+      g_state->figure.figure_size = 3;
+      break;
+    case 2:
+      g_state->figure.figure_size = 3;
+      break;
+    case 3:
+      g_state->figure.figure_size = 2;
+      break;
+    case 4:
+      g_state->figure.figure_size = 3;
+      break;
+    case 5:
+      g_state->figure.figure_size = 3;
+      break;
+    case 6:
+      g_state->figure.figure_size = 3;
+      break;
+    default:
+      break;
+  }
+
+  // явное задание типа фигуры
+  //  g_state->figure.type = J_SHAPE;
 }
 
 void create_next_figure(Figure_t *figure_t, int type, int y, int x) {
@@ -292,8 +352,6 @@ GameInfo_t updateCurrentState() {
 }
 
 void on_init_state(Game_state_t *g_state, UserAction_t action) {
-  // GameInfo_t g_info = updateCurrentState();
-
   switch (action) {
     case Start:
       g_state->status.is_playing = true;
@@ -375,19 +433,29 @@ void move_up(Game_state_t *g_state) {
   g_state->figure.y--;
 }
 
-// , int x, int y
-void move_in_array(Game_state_t *g_state) {
+// experiment for rotation
+int move_in_array(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  for (int i = g_state->figure.figure_size - 1; i >= 0; i--) {
-    for (int j = 0; j < g_state->figure.figure_size; j++) {
-      if (g_state->figure.figure[g_state->figure.type][i + 1][j] == 1 &&
-          (g_state->figure.figure[g_state->figure.type][i][j] != 1)) {
-        g_state->figure.figure[g_state->figure.type][i][j] = 1;
-      }
-      g_state->field->field[g_state->figure.y + i][9] = 1;
+  int x = g_state->figure.x;
+  int y = g_state->figure.y;
+  int size_x = g_state->figure.figure_size;
+  int size_y = g_state->figure.figure_size;
+  int type = g_state->figure.type;
+
+  // g_state->field->field[y][x] = 3;
+
+  int temp_figure[NUM_SHAPES][4][4] = {0};
+
+  for (int i = 0; i < size_y; i++) {
+    for (int j = 0; j < size_x; j++) {
+      temp_figure[type][i][j] = 0;
+
+      g_state->field->field[y + i][x + j] = temp_figure[type][i][j];
     }
   }
+
+  return temp_figure[NUM_SHAPES][4][4];
 }
 
 bool figure_is_attaching(Game_state_t *g_state) {
@@ -415,7 +483,8 @@ bool figure_is_attaching(Game_state_t *g_state) {
 //     move_right(g_state);
 //   // else if (action == Down && !g_state->status.pause)
 //   //   move_down(g_state);
-//   // else if ((action == Action || action == Up) && !g_state->status.pause)
+//   // else if ((action == Action || action == Up) &&
+//   !g_state->status.pause)
 //   //   rotate(g_state);
 //   else if (action == Pause)
 //     g_state->status.pause = !g_state->status.pause;
@@ -447,21 +516,18 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
     case Right:
       figure_to_field(g_state, figures);
       clear_figure(g_state);
+      // if (!check_collision(g_state)) {
       move_right(g_state);
+      // }
       figure_to_field(g_state, figures);
       break;
     case Down:
       figure_to_field(g_state, figures);
       clear_figure(g_state);
-      if (!check_collision(g_state)) {
-        move_down(g_state);
-      }
+      // if (!check_collision(g_state)) {
+      move_down(g_state);
+      // }
       figure_to_field(g_state, figures);
-      break;
-    case Action:
-      // move_in_array(g_state);
-      move_in_array(g_state);
-      // figure_to_field(g_state, figures);
       break;
     case Up:
       figure_to_field(g_state, figures);
@@ -469,6 +535,13 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
       // if (!check_collision(g_state)) {
       move_up(g_state);
       // }
+      figure_to_field(g_state, figures);
+      break;
+    case Action:
+      // move_in_array(g_state);
+      clear_figure(g_state);
+      // figure_to_field(g_state, figures);
+      move_in_array(g_state);
       figure_to_field(g_state, figures);
       break;
     case Pause:
@@ -519,6 +592,7 @@ void userInput(UserAction_t action, bool hold) {
     case MOVING:
       // printf("moving\n");
       on_move_state(g_state, action);
+      figure_to_field(g_state, figures);
       break;
     // case SHIFTING:
     //   move_down(g_state);
