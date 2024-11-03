@@ -36,12 +36,6 @@ typedef enum {
   GAMEOVER
 } Fsm_states;
 
-typedef struct {
-  int x;
-  int y;
-  int **field;
-} Game_field_t;
-
 typedef enum {
   I_SHAPE = 0,
   J_SHAPE,
@@ -52,6 +46,19 @@ typedef enum {
   Z_SHAPE,
   NUM_SHAPES
 } ShapeType;
+
+typedef enum {
+  COLLISION_LEFT = 1,
+  COLLISION_RIGHT,
+  COLLISION_DOWN,
+  COLLISION_FIGURE
+} CollisionType;
+
+typedef struct {
+  int x;
+  int y;
+  int **field;
+} Game_field_t;
 
 typedef struct {
   int x;

@@ -160,7 +160,7 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
 
-  WINDOW *status = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.2,
+  WINDOW *status = newwin(GAME_BORDER_HEIGHT / 1.5, GAME_BORDER_WIDTH * 1.2,
                           yMax / 10, xMax / 1.25);
 
   box(status, 0, 0);
@@ -180,33 +180,49 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 
   switch (g_state->figure.type) {
     case 0:
-      mvwprintw(status, 7, 1, "fig_type: I");
+      mvwprintw(status, 8, 1, "fig_type: I");
       break;
     case 1:
-      mvwprintw(status, 7, 1, "fig_type: J");
+      mvwprintw(status, 8, 1, "fig_type: J");
       break;
     case 2:
-      mvwprintw(status, 7, 1, "fig_type: L");
+      mvwprintw(status, 8, 1, "fig_type: L");
       break;
     case 3:
-      mvwprintw(status, 7, 1, "fig_type: O");
+      mvwprintw(status, 8, 1, "fig_type: O");
       break;
     case 4:
-      mvwprintw(status, 7, 1, "fig_type: S");
+      mvwprintw(status, 8, 1, "fig_type: S");
       break;
     case 5:
-      mvwprintw(status, 7, 1, "fig_type: T");
+      mvwprintw(status, 8, 1, "fig_type: T");
       break;
     case 6:
-      mvwprintw(status, 7, 1, "fig_type: Z");
+      mvwprintw(status, 8, 1, "fig_type: Z");
       break;
     default:
-      mvwprintw(status, 7, 1, "fig_type: ?");
+      mvwprintw(status, 8, 1, "fig_type: ?");
   }
 
-  // mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
-  mvwprintw(status, 8, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
-  mvwprintw(status, 9, 1, "Playing: %s",
+  int collision = check_collision(g_state);
+  switch (collision) {
+    case 1:
+      mvwprintw(status, 9, 1, "Collision: LEFT");
+      break;
+    case 2:
+      mvwprintw(status, 9, 1, "Collision: RIGHT");
+      break;
+    case 3:
+      mvwprintw(status, 9, 1, "Collision: DOWN");
+      break;
+    default:
+      mvwprintw(status, 9, 1, "Collision: NONE");
+      break;
+  }
+
+  // mvwprintw(status, 9, 1, "Status: %d", g_state->status.status);
+  mvwprintw(status, 11, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
+  mvwprintw(status, 12, 1, "Playing: %s",
             g_state->status.is_playing ? "TRUE" : "FALSE");
 
   return status;

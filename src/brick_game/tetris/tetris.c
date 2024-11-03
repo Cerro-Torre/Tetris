@@ -58,23 +58,23 @@ int main() {
       // g_state = get_game_state();
       // g_info = updateCurrentState();
       // printw("inside\n");
-      wrefresh(states_info);
+      // wrefresh(states_info);
       key2 = wgetch(tetris);
 
-      if (key2 == 'l') {
-        move_left(g_state);
-      }
+      // if (key2 == 'l') {
+      //   move_left(g_state);
+      // }
 
-      if (key2 == 'o') {
-        move_right(g_state);
-      }
+      // if (key2 == 'o') {
+      //   move_right(g_state);
+      // }
       // int action2 = get_user_action(key2);
-      userInput(get_user_action(key2), false);
-      g_info = copy_game_to_gi(g_state);
-      render_game_gi(tetris, g_info);
-      wrefresh(tetris);
-      wrefresh(status);
-      wrefresh(states_info);
+      // userInput(get_user_action(key2), false);
+      // g_info = copy_game_to_gi(g_state);
+      // render_game_gi(tetris, g_info);
+      // wrefresh(tetris);
+      // wrefresh(status);
+      // wrefresh(states_info);
     }
 
     int action = get_user_action(key2);
