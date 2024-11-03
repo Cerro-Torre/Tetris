@@ -41,7 +41,7 @@ void free_game(Game_state_t *game, Game_field_t *field);
 void on_init_state(Game_state_t *g_state, UserAction_t action);
 void on_start_state(Game_state_t *g_state, UserAction_t action);
 void on_spawn_state(Game_state_t *g_state, UserAction_t action);
-void on_move_state(Game_state_t *g_state, UserAction_t action);
+void on_move_state(Game_state_t *g_state, UserAction_t action, int collision);
 void on_attach_state(Game_state_t *g_state, UserAction_t action);
 
 // ________draws________
