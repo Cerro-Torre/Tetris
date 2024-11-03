@@ -160,7 +160,7 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
 
-  WINDOW *status = newwin(GAME_BORDER_HEIGHT / 1.5, GAME_BORDER_WIDTH * 1.2,
+  WINDOW *status = newwin(GAME_BORDER_HEIGHT / 1, GAME_BORDER_WIDTH * 1.2,
                           yMax / 10, xMax / 1.25);
 
   box(status, 0, 0);
@@ -220,9 +220,11 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
       break;
   }
 
+  mvwprintw(status, 10, 1, "Fig_height: %d", count_figure_height(g_state));
+  mvwprintw(status, 11, 1, "Fig_width: %d", count_figure_width(g_state));
   // mvwprintw(status, 9, 1, "Status: %d", g_state->status.status);
-  mvwprintw(status, 11, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
-  mvwprintw(status, 12, 1, "Playing: %s",
+  mvwprintw(status, 13, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
+  mvwprintw(status, 14, 1, "Playing: %s",
             g_state->status.is_playing ? "TRUE" : "FALSE");
 
   return status;
