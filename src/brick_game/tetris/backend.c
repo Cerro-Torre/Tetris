@@ -222,54 +222,58 @@ int check_collision(Game_state_t *g_state) {
       int x = g_state->figure.x + j;
       int y = g_state->figure.y + i;
 
-      if (g_state->field && g_state->field->field[y][x] == 1) {
-        if ((type == L_SHAPE || type == J_SHAPE)) {
-          if (y >= 19) {
-            collision = COLLISION_DOWN;
-          } else if (x < 1) {
-            collision = COLLISION_LEFT;
-          } else if ((x > 10 - figure_width + 1) || (x >= 9)) {
-            collision = COLLISION_RIGHT;
-          }
-
-        } else if (type == I_SHAPE) {
-          if ((x < 1)) {
-            collision = COLLISION_LEFT;
-          }
-          if (x >= 9) {
-            collision = COLLISION_RIGHT;
-          }
-          if (y >= 19) {
-            collision = COLLISION_DOWN;
-          }
-          if ((y >= 19) && (x < 1)) {
-            collision = COLLISION_DL;
-          }
-          if ((y >= 19) && (x >= 9)) {
-            collision = COLLISION_DR;
-          }
-
-        } else if (type == Z_SHAPE) {
-          if (x < 2) {
-            collision = COLLISION_LEFT;
-          } else if ((y + figure_height > 20)) {
-            collision = COLLISION_DOWN;
-          } else if (g_state->field->field[y + 1][x] == 1) {
-            collision = COLLISION_FIGURE;
-          } else if ((x > 10 - figure_width + 1) || (x >= 9)) {
-            collision = COLLISION_RIGHT;
-          }
-
-        } else if ((y + figure_height > 20)) {
-          collision = COLLISION_DOWN;
-        } else if (g_state->field->field[y + 1][x] == 1) {
-          collision = COLLISION_FIGURE;
-        } else if ((x > 10 - figure_width + 1) || (x >= 9)) {
-          collision = COLLISION_RIGHT;
-        } else if (x < 1) {
+      if ((type == L_SHAPE || type == J_SHAPE) || type == O_SHAPE) {
+        if ((x < 1)) {
           collision = COLLISION_LEFT;
         }
-        // }
+        if (x >= 9) {
+          collision = COLLISION_RIGHT;
+        }
+        if (y >= 19) {
+          collision = COLLISION_DOWN;
+        }
+        // (x < 2) diff from I condition
+        if ((y >= 19) && (x < 2)) {
+          collision = COLLISION_DL;
+        }
+        if ((y >= 19) && (x >= 9)) {
+          collision = COLLISION_DR;
+        }
+
+      } else if (type == I_SHAPE) {
+        if ((x < 1)) {
+          collision = COLLISION_LEFT;
+        }
+        if (x >= 9) {
+          collision = COLLISION_RIGHT;
+        }
+        if (y >= 19) {
+          collision = COLLISION_DOWN;
+        }
+        if ((y >= 19) && (x < 1)) {
+          collision = COLLISION_DL;
+        }
+        if ((y >= 19) && (x >= 9)) {
+          collision = COLLISION_DR;
+        }
+
+      } else if (type == S_SHAPE || type == Z_SHAPE || type == T_SHAPE) {
+        if ((x < 1)) {
+          collision = COLLISION_LEFT;
+        }
+        if (x >= 9) {
+          collision = COLLISION_RIGHT;
+        }
+        if (y >= 19) {
+          collision = COLLISION_DOWN;
+        }
+        // (x < 3) diff from I condition
+        if ((y >= 19) && (x < 3)) {
+          collision = COLLISION_DL;
+        }
+        if ((y >= 19) && (x >= 9)) {
+          collision = COLLISION_DR;
+        }
       }
     }
   }
@@ -290,9 +294,12 @@ void figure_to_field(Game_state_t *g_state, int figures[NUM_SHAPES][4][4]) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      if ((figures[g_state->figure.type][i][j] == 1) && g_state->field) {
+      if (g_state->field && (figures[g_state->figure.type][i][j] == 1)) {
         g_state->field->field[field_y][field_x] = 1;
       }
+      // else {
+      //   g_state->field->field[field_y][field_x] = 0;
+      // }
 
       // показать поля вокруг фигуры
       if (figures[g_state->figure.type][i][j] == 0 && g_state->field) {
@@ -367,7 +374,7 @@ void create_figure_2(Game_state_t *g_state, int type) {
   }
 
   // явное задание типа фигуры
-  g_state->figure.type = J_SHAPE;
+  // g_state->figure.type = J_SHAPE;
 }
 
 void create_next_figure(Figure_t *figure_t, int type, int y, int x) {
@@ -451,9 +458,9 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
 
   create_figure_2(g_state, rnd_figure);
 
-  if ((g_state->figure.type > -1) && (g_state->figure.type < 7)) {
-    figure_to_field(g_state, figures);
-  }
+  // if ((g_state->figure.type > -1) && (g_state->figure.type < 7)) {
+  figure_to_field(g_state, figures);
+  // }
 
   switch (action) {
     case Terminate:
