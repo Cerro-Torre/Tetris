@@ -249,6 +249,24 @@ int check_collision(Game_state_t *g_state) {
 
   collision = border_collision(g_state);
 
+  // if (collision != COLLISION_DOWN && collision != COLLISION_DR &&
+  //     collision != COLLISION_DL) {
+  //   for (int i = 0; i < figure_height; i++) {
+  //     for (int j = 0; j < figure_width; j++) {
+  //       if (g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
+  //           j == figure_height) {
+  //         int x = g_state->figure.x + j;
+  //         int y = g_state->figure.y + i;
+
+  //         if (g_state->field->field[y + 1][x] == 1) {
+  //           // g_state->field->field[y + 1][x] = 1;
+  //           collision = COLLISION_FIGURE;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+
   // for (int i = 0; i < figure_height; i++) {
   //   for (int j = 0; j < figure_width; j++) {
   //     // if (figures[g_state->figure.type][i][j] == 1) {
@@ -588,13 +606,13 @@ void on_move_state(Game_state_t *g_state, UserAction_t action, int collision) {
       // figure_to_field(g_state, figures);
       break;
     case Up:
-      collision = check_collision(g_state);
+      // collision = check_collision(g_state);
       // collision = border_collision(g_state);
 
       clear_figure(g_state);
-      if (collision != COLLISION_FIGURE) {
-        move_up(g_state);
-      }
+      // if (collision != COLLISION_FIGURE) {
+      move_up(g_state);
+      // }
       // figure_to_field(g_state, figures);
       break;
     case Action:
