@@ -206,77 +206,57 @@ int count_figure_width(Game_state_t *g_state) {
   return figure_width;
 }
 
+int border_collision(Game_state_t *g_state) {
+  g_state = get_game_state();
+
+  int x = g_state->figure.x;
+  int y = g_state->figure.y;
+  int collision = 0;
+
+  if ((x < 1)) {
+    collision = COLLISION_LEFT;
+  }
+
+  if (x + count_figure_width(g_state) - 1 >= 9) {
+    collision = COLLISION_RIGHT;
+  }
+
+  if (y + count_figure_height(g_state) > 19) {
+    collision = COLLISION_DOWN;
+  }
+
+  if ((y + count_figure_height(g_state) > 19) && (x < 1)) {
+    collision = COLLISION_DL;
+  }
+
+  if ((y + count_figure_height(g_state) > 19) &&
+      (x + count_figure_width(g_state) - 1 >= 9)) {
+    collision = COLLISION_DR;
+  }
+
+  return collision;
+}
+
 int check_collision(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  int figure_width = count_figure_width(g_state);
-  int figure_height = count_figure_height(g_state);
-  int type = g_state->figure.type;
+  // int figure_width = count_figure_width(g_state);
+  // int figure_height = count_figure_height(g_state);
+  // int type = g_state->figure.type;
 
   int collision = 0;
   // int border_collision = 1;
 
-  for (int i = 0; i < figure_height; i++) {
-    for (int j = 0; j < figure_width; j++) {
-      // if (figures[g_state->figure.type][i][j] == 1) {
-      int x = g_state->figure.x + j;
-      int y = g_state->figure.y + i;
+  collision = border_collision(g_state);
 
-      if ((type == L_SHAPE || type == J_SHAPE) || type == O_SHAPE) {
-        if ((x < 1)) {
-          collision = COLLISION_LEFT;
-        }
-        if (x >= 9) {
-          collision = COLLISION_RIGHT;
-        }
-        if (y >= 19) {
-          collision = COLLISION_DOWN;
-        }
-        // (x < 2) diff from I condition
-        if ((y >= 19) && (x < 2)) {
-          collision = COLLISION_DL;
-        }
-        if ((y >= 19) && (x >= 9)) {
-          collision = COLLISION_DR;
-        }
-
-      } else if (type == I_SHAPE) {
-        if ((x < 1)) {
-          collision = COLLISION_LEFT;
-        }
-        if (x >= 9) {
-          collision = COLLISION_RIGHT;
-        }
-        if (y >= 19) {
-          collision = COLLISION_DOWN;
-        }
-        if ((y >= 19) && (x < 1)) {
-          collision = COLLISION_DL;
-        }
-        if ((y >= 19) && (x >= 9)) {
-          collision = COLLISION_DR;
-        }
-
-      } else if (type == S_SHAPE || type == Z_SHAPE || type == T_SHAPE) {
-        if ((x < 1)) {
-          collision = COLLISION_LEFT;
-        }
-        if (x >= 9) {
-          collision = COLLISION_RIGHT;
-        }
-        if (y >= 19) {
-          collision = COLLISION_DOWN;
-        }
-        // (x < 3) diff from I condition
-        if ((y >= 19) && (x < 3)) {
-          collision = COLLISION_DL;
-        }
-        if ((y >= 19) && (x >= 9)) {
-          collision = COLLISION_DR;
-        }
-      }
-    }
-  }
+  // for (int i = 0; i < figure_height; i++) {
+  //   for (int j = 0; j < figure_width; j++) {
+  //     // if (figures[g_state->figure.type][i][j] == 1) {
+  //     int x = g_state->figure.x + j;
+  //     int y = g_state->figure.y + i;
+  //     // }
+  //   }
+  // }
   // printf("c %d\n", collision);
   return collision;
 }
@@ -374,7 +354,7 @@ void create_figure_2(Game_state_t *g_state, int type) {
   }
 
   // явное задание типа фигуры
-  // g_state->figure.type = J_SHAPE;
+  // g_state->figure.type = I_SHAPE;
 }
 
 void create_next_figure(Figure_t *figure_t, int type, int y, int x) {
@@ -576,6 +556,8 @@ void on_move_state(Game_state_t *g_state, UserAction_t action, int collision) {
       break;
     case Left:
       collision = check_collision(g_state);
+      // collision = border_collision(g_state);
+
       clear_figure(g_state);
       if (collision != COLLISION_LEFT && collision != COLLISION_DL) {
         move_left(g_state);
@@ -584,6 +566,8 @@ void on_move_state(Game_state_t *g_state, UserAction_t action, int collision) {
       break;
     case Right:
       collision = check_collision(g_state);
+      // collision = border_collision(g_state);
+
       clear_figure(g_state);
       if (collision != COLLISION_RIGHT && collision != COLLISION_DR) {
         move_right(g_state);
@@ -592,6 +576,8 @@ void on_move_state(Game_state_t *g_state, UserAction_t action, int collision) {
       break;
     case Down:
       collision = check_collision(g_state);
+      // collision = border_collision(g_state);
+
       clear_figure(g_state);
       if (collision != COLLISION_DOWN && collision != COLLISION_DL &&
           collision != COLLISION_DR) {
@@ -603,6 +589,8 @@ void on_move_state(Game_state_t *g_state, UserAction_t action, int collision) {
       break;
     case Up:
       collision = check_collision(g_state);
+      // collision = border_collision(g_state);
+
       clear_figure(g_state);
       if (collision != COLLISION_FIGURE) {
         move_up(g_state);

@@ -227,10 +227,33 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
       break;
   }
 
-  mvwprintw(status, 10, 1, "Fig_height: %d", count_figure_height(g_state));
-  mvwprintw(status, 11, 1, "Fig_width: %d", count_figure_width(g_state));
+  int collision2 = border_collision(g_state);
+  switch (collision2) {
+    case 1:
+      mvwprintw(status, 10, 1, "Coll_b: LEFT");
+      break;
+    case 2:
+      mvwprintw(status, 10, 1, "Coll_b: RIGHT");
+      break;
+    case 3:
+      mvwprintw(status, 10, 1, "Coll_b: DOWN");
+      break;
+    case 5:
+      mvwprintw(status, 10, 1, "Coll_b: DL");
+      break;
+    case 6:
+      mvwprintw(status, 10, 1, "Coll_b: DR");
+      break;
 
-  mvwprintw(status, 12, 1, "y+height: %d",
+    default:
+      mvwprintw(status, 10, 1, "Coll_b: NONE");
+      break;
+  }
+
+  mvwprintw(status, 11, 1, "Fig_height: %d", count_figure_height(g_state));
+  mvwprintw(status, 12, 1, "Fig_width: %d", count_figure_width(g_state));
+
+  mvwprintw(status, 13, 1, "y+height: %d",
             g_state->figure.y + count_figure_height(g_state));
 
   int figure_width = count_figure_width(g_state);
@@ -241,8 +264,8 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
       int y = g_state->figure.y + i;
       // mvwprintw(status, 13, 1, "cond y: %d",
       //           (y + figure_height - 1 > 20) ? 1 : 0);
-      mvwprintw(status, 13, 1, "curr x: %d", x);
-      mvwprintw(status, 14, 1, "curr y: %d", y);
+      mvwprintw(status, 14, 1, "curr x: %d", x);
+      mvwprintw(status, 15, 1, "curr y: %d", y);
     }
   }
 
