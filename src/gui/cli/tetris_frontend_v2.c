@@ -215,6 +215,13 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
     case 3:
       mvwprintw(status, 9, 1, "Collision: DOWN");
       break;
+    case 5:
+      mvwprintw(status, 9, 1, "Collision: DL");
+      break;
+    case 6:
+      mvwprintw(status, 9, 1, "Collision: DR");
+      break;
+
     default:
       mvwprintw(status, 9, 1, "Collision: NONE");
       break;
@@ -222,10 +229,26 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 
   mvwprintw(status, 10, 1, "Fig_height: %d", count_figure_height(g_state));
   mvwprintw(status, 11, 1, "Fig_width: %d", count_figure_width(g_state));
-  // mvwprintw(status, 9, 1, "Status: %d", g_state->status.status);
-  mvwprintw(status, 13, 1, "Win: %s", g_state->status.win ? "TRUE" : "FALSE");
-  mvwprintw(status, 14, 1, "Playing: %s",
-            g_state->status.is_playing ? "TRUE" : "FALSE");
+
+  mvwprintw(status, 12, 1, "y+height: %d",
+            g_state->figure.y + count_figure_height(g_state));
+
+  int figure_width = count_figure_width(g_state);
+  int figure_height = count_figure_height(g_state);
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      int x = g_state->figure.x + j;
+      int y = g_state->figure.y + i;
+      // mvwprintw(status, 13, 1, "cond y: %d",
+      //           (y + figure_height - 1 > 20) ? 1 : 0);
+      mvwprintw(status, 13, 1, "curr x: %d", x);
+      mvwprintw(status, 14, 1, "curr y: %d", y);
+    }
+  }
+
+  // mvwprintw(status, 13, 1, "Win: %s", g_state->status.win ? "TRUE" :
+  // "FALSE"); mvwprintw(status, 14, 1, "Playing: %s",
+  //           g_state->status.is_playing ? "TRUE" : "FALSE");
 
   return status;
 }

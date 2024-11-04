@@ -51,7 +51,9 @@ typedef enum {
   COLLISION_LEFT = 1,
   COLLISION_RIGHT,
   COLLISION_DOWN,
-  COLLISION_FIGURE
+  COLLISION_FIGURE,
+  COLLISION_DL,
+  COLLISION_DR
 } CollisionType;
 
 typedef struct {
