@@ -167,13 +167,13 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 
   wrefresh(status);
 
-  bool attaching = figure_is_attaching(g_state);
+  // bool attaching = figure_is_attaching(g_state);
 
   mvwprintw(status, 1, 1, "Key: %d", key);
   mvwprintw(status, 2, 1, "Status: %d", g_state->status.status);
   mvwprintw(status, 3, 1, "Win: %d", g_state->status.win);
   mvwprintw(status, 4, 1, "Playing: %d", g_state->status.is_playing);
-  mvwprintw(status, 5, 1, "Attaching: %d", attaching);
+  // mvwprintw(status, 5, 1, "Attaching: %d", attaching);
 
   mvwprintw(status, 6, 1, "Coord: %d, %d", g_state->figure.x,
             g_state->figure.y);
@@ -229,29 +229,6 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
       break;
   }
 
-  // int collision2 = border_collision(g_state);
-  // switch (collision2) {
-  //   case 1:
-  //     mvwprintw(status, 10, 1, "Coll_b: LEFT");
-  //     break;
-  //   case 2:
-  //     mvwprintw(status, 10, 1, "Coll_b: RIGHT");
-  //     break;
-  //   case 3:
-  //     mvwprintw(status, 10, 1, "Coll_b: DOWN");
-  //     break;
-  //   case 5:
-  //     mvwprintw(status, 10, 1, "Coll_b: DL");
-  //     break;
-  //   case 6:
-  //     mvwprintw(status, 10, 1, "Coll_b: DR");
-  //     break;
-
-  //   default:
-  //     mvwprintw(status, 10, 1, "Coll_b: NONE");
-  //     break;
-  // }
-
   mvwprintw(status, 11, 1, "Fig_height: %d", count_figure_height(g_state));
   mvwprintw(status, 12, 1, "Fig_width: %d", count_figure_width(g_state));
 
@@ -264,29 +241,14 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
     for (int j = 0; j < figure_width; j++) {
       int x = g_state->figure.x + j;
       int y = g_state->figure.y + i;
-      // mvwprintw(status, 13, 1, "cond y: %d",
-      //           (y + figure_height - 1 > 20) ? 1 : 0);
+
       mvwprintw(status, 14, 1, "curr x: %d", x);
       mvwprintw(status, 15, 1, "curr y: %d", y);
     }
   }
 
-  int cond = 0;
-  if (collision != COLLISION_DOWN && collision != COLLISION_DR &&
-      collision != COLLISION_DL) {
-    for (int i = 0; i < figure_height; i++) {
-      for (int j = 0; j < figure_width; j++) {
-        cond = 0;
-        int x = g_state->figure.x + j;
-        int y = g_state->figure.y + i;
-
-        if (g_state->field->field[y + 1][x] == 1) {
-          cond = 1;
-        }
-        mvwprintw(status, 16, 1, "cond: %d", cond);
-      }
-    }
-  }
+  // int fig_coll = 0;
+  mvwprintw(status, 16, 1, "fiig_coll: %d", check_figure_collision(g_state));
 
   // mvwprintw(status, 13, 1, "Win: %s", g_state->status.win ? "TRUE" :
   // "FALSE"); mvwprintw(status, 14, 1, "Playing: %s",
