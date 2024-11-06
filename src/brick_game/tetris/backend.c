@@ -244,7 +244,7 @@ int check_figure_collision(Game_state_t *g_state) {
   int figure_height = count_figure_height(g_state);
   int type = g_state->figure.type;
 
-  int collision = 0;
+  int f_collision = 0;
 
   int b_collision = border_collision(g_state);
 
@@ -253,26 +253,34 @@ int check_figure_collision(Game_state_t *g_state) {
       int y = i + g_state->figure.y;
       int x = j + g_state->figure.x;
 
-      if (g_state->field && (y + 1 <= 19) && figures[type][i][j] == 1) {
-        if (g_state->field->field[y + 1][x] != 1) {
-          // g_state->field->field[y + 1][x] = 3;
-          collision = 0;
-        } else if (b_collision != COLLISION_DOWN &&
-                   b_collision != COLLISION_DR && b_collision != COLLISION_DL) {
-          collision = COLLISION_FIGURE;
-        }
+      f_collision = 0;
+
+      if (g_state->field && (y + 1 <= 19) &&
+          (g_state->field->field[y + 1][x] != 1 || figures[type][i][j] == 0)) {
+        // g_state->field->field[y + 1][x] = 3;
+        f_collision = 0;
       }
-      // if (g_state->field && (y + figure_height + 1 < 19) &&
-      //     (figures[type][i][j] == 1) &&
-      //     (g_state->field->field[i + 1][j] == 1)) {
-      //   collision = COLLISION_FIGURE;
-      // break;
+      // else if (g_state->figure.figure[type][y + 1][j] == 0) {
+      // f_collision = 0;
+      // }
+      else if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DR &&
+               b_collision != COLLISION_DL) {
+        f_collision = COLLISION_FIGURE;
+        break;
+      }
+      // условие для Z-образной фигуры, которая упала на себя
+      // else if (type == Z_SHAPE && i == 0 && j == 0 &&
+      //            g_state->field->field[y + 2][x] == 1) {
+      //   f_collision = COLLISION_FIGURE;
+
       // }
     }
     // collision = 0;
   }
 
-  return collision;
+  // &&(type != Z_SHAPE || j != 0) && (type == S_SHAPE || j != 0 || j != 1)
+
+  return f_collision;
 }
 
 int check_collision(Game_state_t *g_state) {
@@ -373,7 +381,7 @@ void create_figure_2(Game_state_t *g_state, int type) {
   }
 
   // явное задание типа фигуры
-  // g_state->figure.type = I_SHAPE;
+  g_state->figure.type = S_SHAPE;
 }
 
 void create_next_figure(Figure_t *figure_t, int type, int y, int x) {
