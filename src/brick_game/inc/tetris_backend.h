@@ -51,7 +51,7 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action);
 //                    int *figures[type][FIGURE_M][FIGURE_N]);
 // void figure_to_field_1(GameInfo_t *game);
 
-void figure_to_field(Game_state_t *g_state, int figures[NUM_SHAPES][4][4]);
+void figure_to_field(Game_state_t *g_state);
 void create_figure_2(Game_state_t *g_state, int type);
 int count_figure_width(Game_state_t *g_state);
 int count_figure_height(Game_state_t *g_state);
