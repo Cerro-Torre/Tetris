@@ -60,7 +60,8 @@ void next_figure_to_current(Figure_t *figure_t);
 
 // ________collisions________
 int border_collision(Game_state_t *g_state);
-int check_figure_collision(Game_state_t *g_state);
+bool bottom_figure_collision(Game_state_t *g_state);
+bool right_figure_collision(Game_state_t *g_state);
 int check_collision(Game_state_t *g_state);
 
 void finish_game(Game_state_t *g_state);

@@ -237,14 +237,14 @@ int border_collision(Game_state_t *g_state) {
   return collision;
 }
 
-int check_figure_collision(Game_state_t *g_state) {
+bool bottom_figure_collision(Game_state_t *g_state) {
   g_state = get_game_state();
 
   int figure_width = count_figure_width(g_state);
   int figure_height = count_figure_height(g_state);
   int type = g_state->figure.type;
 
-  int f_collision = 0;
+  bool f_collision = 0;
 
   int b_collision = border_collision(g_state);
 
@@ -257,31 +257,42 @@ int check_figure_collision(Game_state_t *g_state) {
 
       if (g_state->field && (y + 1 <= 19) &&
           (g_state->field->field[y + 1][x] != 1 || figures[type][i][j] == 0)) {
-        // g_state->field->field[y + 1][x] = 3;
         f_collision = 0;
-      }
-      // else if (g_state->figure.figure[type][y + 1][j] == 0) {
-      // f_collision = 0;
-      // }
-      else if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DR &&
-               b_collision != COLLISION_DL) {
+      } else if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DR &&
+                 b_collision != COLLISION_DL) {
         f_collision = COLLISION_FIGURE;
         break;
       }
-      // условие для Z-образной фигуры, которая упала на себя
-      // else if (type == Z_SHAPE && i == 0 && j == 0 &&
-      //            g_state->field->field[y + 2][x] == 1) {
-      //   f_collision = COLLISION_FIGURE;
-
-      // }
     }
-    // collision = 0;
   }
-
-  // &&(type != Z_SHAPE || j != 0) && (type == S_SHAPE || j != 0 || j != 1)
 
   return f_collision;
 }
+
+// bool right_figure_collision(Game_state_t *g_state) {
+//   g_state = get_game_state();
+
+//   int figure_width = count_figure_width(g_state);
+//   int figure_height = count_figure_height(g_state);
+
+//   bool f_collision = false;
+
+//   // int b_collision = border_collision(g_state);
+
+//   for (int i = 0; i < figure_height; i++) {
+//     for (int j = 0; j < figure_width; j++) {
+//       int field_y = g_state->figure.y + i;
+//       int field_x = g_state->figure.x + j;
+
+//       if (g_state->field && g_state->field->field[field_y][field_x + 1] == 1)
+//       {
+//         f_collision = true;
+//         break;
+//       }
+//     }
+//   }
+//   return f_collision;
+// }
 
 int check_collision(Game_state_t *g_state) {
   g_state = get_game_state();
@@ -381,7 +392,7 @@ void create_figure_2(Game_state_t *g_state, int type) {
   }
 
   // явное задание типа фигуры
-  g_state->figure.type = S_SHAPE;
+  // g_state->figure.type = S_SHAPE;
 }
 
 void create_next_figure(Figure_t *figure_t, int type, int y, int x) {
@@ -485,22 +496,70 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
 void move_left(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  g_state->figure.x--;
+  int figure_width = count_figure_width(g_state);
+  int figure_height = count_figure_height(g_state);
+
+  bool figure_collision = false;
+
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      int field_y = g_state->figure.y + i;
+      int field_x = g_state->figure.x + j;
+
+      if (g_state->field && g_state->field->field[field_y][field_x - 1] == 1 &&
+          figures[g_state->figure.type][i][j] == 1) {
+        figure_collision = true;
+      }
+    }
+  }
+
+  // bool bottom_fig_coll = bottom_figure_collision(g_state);
+
+  if (!figure_collision) {
+    g_state->figure.x--;
+  }
+
   // g_state->status.status = figure_is_attaching(g_state) ? ATTACHING : MOVING;
 }
 
 void move_right(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  g_state->figure.x++;
-  // g_state->status.status = figure_is_attaching(g_state) ? ATTACHING : MOVING;
+  // bool fig_on_the_right = right_figure_collision(g_state);
+
+  int figure_width = count_figure_width(g_state);
+  int figure_height = count_figure_height(g_state);
+
+  bool figure_collision = false;
+
+  // int b_collision = border_collision(g_state);
+
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      int field_y = g_state->figure.y + i;
+      int field_x = g_state->figure.x + j;
+
+      if (g_state->field && g_state->field->field[field_y][field_x + 1] == 1 &&
+          figures[g_state->figure.type][i][j] == 1) {
+        figure_collision = true;
+      }
+    }
+  }
+
+  if (!figure_collision) {
+    g_state->figure.x++;
+  }
+
+  // g_state->status.status = figure_is_attaching(g_state) ? ATTACHING :
+  // MOVING;
 }
 
 void move_down(Game_state_t *g_state) {
   g_state = get_game_state();
 
   g_state->figure.y++;
-  // g_state->status.status = figure_is_attaching(g_state) ? ATTACHING : MOVING;
+  // g_state->status.status = figure_is_attaching(g_state) ? ATTACHING :
+  // MOVING;
 }
 
 void move_up(Game_state_t *g_state) {
@@ -607,8 +666,7 @@ void on_move_state(Game_state_t *g_state, UserAction_t action, int collision) {
 
       clear_figure(g_state);
       if (collision != COLLISION_DOWN && collision != COLLISION_DL &&
-          collision != COLLISION_DR &&
-          check_figure_collision(g_state) != COLLISION_FIGURE) {
+          collision != COLLISION_DR && !bottom_figure_collision(g_state)) {
         move_down(g_state);
       } else {
         g_state->status.status = SPAWN;

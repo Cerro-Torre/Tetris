@@ -248,7 +248,11 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
   }
 
   // int fig_coll = 0;
-  mvwprintw(status, 16, 1, "fiig_coll: %d", check_figure_collision(g_state));
+  mvwprintw(status, 16, 1, "bot_fig_coll: %d",
+            bottom_figure_collision(g_state));
+
+  // int right_coll = right_figure_collision(g_state);
+  // mvwprintw(status, 17, 1, "fiig_R_coll: %d", right_coll);
 
   // mvwprintw(status, 13, 1, "Win: %s", g_state->status.win ? "TRUE" :
   // "FALSE"); mvwprintw(status, 14, 1, "Playing: %s",
