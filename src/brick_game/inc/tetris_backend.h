@@ -32,9 +32,10 @@ void init_game_state(Game_state_t *game_state, Game_field_t *field);
 // ________frees________
 void free_field(Game_field_t *field_t);
 void free_field_gi(GameInfo_t *field_t);
+void free_next_figure_gi(GameInfo_t *g_info);
 
 // void free_field_gs(Game_state_t *game_state);
-void free_game(Game_state_t *game, Game_field_t *field);
+void free_game(Game_state_t *g_state, Game_field_t *field);
 
 // _______fsm________
 
@@ -52,11 +53,12 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action);
 // void figure_to_field_1(GameInfo_t *game);
 
 void figure_to_field(Game_state_t *g_state);
-void create_figure_2(Game_state_t *g_state, int type);
+void create_figure_2(Game_state_t *g_state);
 int count_figure_width(Game_state_t *g_state);
 int count_figure_height(Game_state_t *g_state);
-void create_next_figure(Figure_t *figure_t, int type, int y, int x);
-void next_figure_to_current(Figure_t *figure_t);
+// void create_next_figure(Figure_t *figure_t, int type, int y, int x);
+int init_next_figure(Game_state_t *g_state);
+void next_figure_to_current(Game_state_t *g_state);
 
 // ________collisions________
 int border_collision(Game_state_t *g_state);

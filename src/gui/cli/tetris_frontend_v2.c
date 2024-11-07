@@ -178,32 +178,6 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
   mvwprintw(status, 6, 1, "Coord: %d, %d", g_state->figure.x,
             g_state->figure.y);
 
-  switch (g_state->figure.type) {
-    case 0:
-      mvwprintw(status, 8, 1, "fig_type: I");
-      break;
-    case 1:
-      mvwprintw(status, 8, 1, "fig_type: J");
-      break;
-    case 2:
-      mvwprintw(status, 8, 1, "fig_type: L");
-      break;
-    case 3:
-      mvwprintw(status, 8, 1, "fig_type: O");
-      break;
-    case 4:
-      mvwprintw(status, 8, 1, "fig_type: S");
-      break;
-    case 5:
-      mvwprintw(status, 8, 1, "fig_type: T");
-      break;
-    case 6:
-      mvwprintw(status, 8, 1, "fig_type: Z");
-      break;
-    default:
-      mvwprintw(status, 8, 1, "fig_type: ?");
-  }
-
   int collision = check_collision(g_state);
   switch (collision) {
     case 1:
@@ -294,15 +268,68 @@ void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
   // attroff(A_ALTCHARSET);
 }
 
-// void render_game_gs(WINDOW *tetris_window, Game_state_t *g_state) {
-//   for (int i = 0; i < 20; i++) {
-//     for (int j = 0; j < 10; j++) {
-//       if (g_state->field->field[i][j] == 1) {
-//         mvwprintw(tetris_window, i + 1, j + 2, "#");
-//       } else {
-//         mvwprintw(tetris_window, i + 1, j + 2, "-");
-//       }
-//     }
-//   }
-//   wrefresh(tetris_window);
-// }
+WINDOW *next_display(Game_state_t *g_state) {
+  int yMax = 0;
+  int xMax = 0;
+  getmaxyx(stdscr, yMax, xMax);
+
+  WINDOW *next = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.2,
+                        yMax / 10 + (GAME_BORDER_HEIGHT / 2), xMax / 2.5 + 5);
+
+  box(next, 0, 0);
+  switch (g_state->figure.type) {
+    case 0:
+      mvwprintw(next, 1, 1, "fig_type: I");
+      break;
+    case 1:
+      mvwprintw(next, 1, 1, "fig_type: J");
+      break;
+    case 2:
+      mvwprintw(next, 1, 1, "fig_type: L");
+      break;
+    case 3:
+      mvwprintw(next, 1, 1, "fig_type: O");
+      break;
+    case 4:
+      mvwprintw(next, 1, 1, "fig_type: S");
+      break;
+    case 5:
+      mvwprintw(next, 1, 1, "fig_type: T");
+      break;
+    case 6:
+      mvwprintw(next, 1, 1, "fig_type: Z");
+      break;
+    default:
+      mvwprintw(next, 1, 1, "fig_type: ?");
+  }
+
+  switch (g_state->figure.next_type) {
+    case 0:
+      mvwprintw(next, 2, 1, "next_type: I");
+      break;
+    case 1:
+      mvwprintw(next, 2, 1, "next_type: J");
+      break;
+    case 2:
+      mvwprintw(next, 2, 1, "next_type: L");
+      break;
+    case 3:
+      mvwprintw(next, 2, 1, "next_type: O");
+      break;
+    case 4:
+      mvwprintw(next, 2, 1, "next_type: S");
+      break;
+    case 5:
+      mvwprintw(next, 2, 1, "next_type: T");
+      break;
+    case 6:
+      mvwprintw(next, 2, 1, "next_type: Z");
+      break;
+    default:
+      mvwprintw(next, 2, 1, "next_type: ?");
+  }
+
+  wrefresh(next);
+
+  return next;
+}

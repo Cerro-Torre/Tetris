@@ -34,11 +34,16 @@ int main() {
   WINDOW *status = print_status_gi(&g_info);
   wrefresh(status);
 
+  WINDOW *next = next_display(g_state);
+  wrefresh(next);
+
   int key2 = 0;
   WINDOW *states_info = print_states(g_state, key2);
   wrefresh(states_info);
 
   // printw("bw status = %d\n", g_state->status.status);
+
+  create_figure_2(g_state);
 
   wrefresh(states_info);
   wrefresh(tetris);
@@ -101,6 +106,7 @@ int main() {
 
   free_game(g_state, g_state->field);
   free_field_gi(&g_info);
+  free_next_figure_gi(&g_info);
 
   return 0;
 }

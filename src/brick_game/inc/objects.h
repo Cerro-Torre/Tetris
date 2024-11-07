@@ -66,12 +66,14 @@ typedef struct {
   int x;
   int y;
   int figure[NUM_SHAPES][FIGURE_M][FIGURE_N];
-  int figure_size;
+  int figure_height;
+  int figure_width;
   int type;
   int next_x;
   int next_y;
-  int next_figure[NUM_SHAPES][FIGURE_M][FIGURE_N];
-  int next_figure_size;
+  int **next_figure;
+  int next_figure_height;
+  int next_figure_width;
   int next_type;
 } Figure_t;
 

@@ -10,6 +10,9 @@
 #define FIELD_N 20
 #define FIELD_M 10
 
+#define NEXT_FIELD_X 10
+#define NEXT_FIELD_Y 10
+
 #define KEY_T 't'
 #define KEY_P 'p'
 #define KEY_Q 'q'
