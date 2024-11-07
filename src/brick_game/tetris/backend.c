@@ -104,11 +104,11 @@ int figures[NUM_SHAPES][4][4] = {
     // O-образная фигура
     {{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
     // S-образная фигура
-    {{0, 1, 1, 0}, {1, 1, 9, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    {{0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
     // T-образная фигура
     {{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
     // Z-образная фигура
-    {{1, 1, 0, 0}, {9, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
+    {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
 
 // int init_next_figure(Game_state_t *g_state) {
 //   g_state = get_game_state();
@@ -321,43 +321,72 @@ int border_collision(Game_state_t *g_state) {
 
 bool bottom_figure_collision(Game_state_t *g_state) {
   g_state = get_game_state();
+  // GameInfo_t g_info = updateCurrentState(g_state);
 
-  int figure_width = trim_figure_width(g_state);
   int figure_height = trim_figure_height(g_state);
+  int figure_width = trim_figure_width(g_state);
   int type = g_state->figure.type;
 
   bool f_collision = 0;
 
   // int b_collision = border_collision(g_state);
 
-  for (int i = 0; i < figure_height; i++) {
+  // for (int i = 0; i < figure_height; i++) {
+  //   for (int j = 0; j < figure_width; j++) {
+  //     f_collision = false;
+  //     int y = i + g_state->figure.y;
+  //     int x = j + g_state->figure.x;
+
+  //     // if (g_state->field && (y < 19) &&
+  //     //     (g_state->figure.figure[type][i][j] == 9) &&
+  //     //     (g_state->field->field[y][x + 1] == 1)) {
+  //     //   f_collision = false;
+  //     // } else
+  //     if (type == Z_SHAPE && j == 0 && g_state->field->field[y + 1][x] == 1)
+  //     {
+  //       f_collision = true;
+  //       g_state->field->field[y + 1][x] = 3;
+  //     }
+
+  //     if ((g_state->field) && (g_state->figure.figure[type][i][j] == 1) &&
+  //         (y < 19) && (g_state->field->field[y + 1][x] == 1)) {
+  //       // g_state->field->field[y + 1][x] = 3;
+  //       // if (g_state->field->field[y + 1][x] == 1) {
+  //       f_collision = true;
+  //       // break;
+  //       // }
+  //       // f_collision = true;
+  //       // break;
+  //       // }
+  //     }
+
+  //     //  else if (g_state->field && (y + 2 <= 19) && figures[type][i][j] ==
+  //     // 0
+  //     //  &&
+  //     //            g_state->field->field[y + 2][x] == 1) {
+  //     //   f_collision = false;
+  //     // }
+  //   }
+  // }
+  // }
+
+  // ____________________
+
+  for (int i = figure_height - 1; i < figure_height; i++) {
     for (int j = 0; j < figure_width; j++) {
-      f_collision = 0;
+      // f_collision = false;
       int y = i + g_state->figure.y;
       int x = j + g_state->figure.x;
 
-      if (g_state->field && (figures[type][i][j] == 9) && (y < 19) &&
-          (g_state->field->field[y + 1][x] == 1)) {
-        f_collision = false;
-      } else if ((g_state->field) && (figures[type][i][j] == 1) && (y < 19) &&
-                 (g_state->field->field[y + 1][x] == 1)) {
+      if ((g_state->field) && (g_state->figure.figure[type][i][j] == 1) &&
+          (y < 19) && (g_state->field->field[y + 1][x] != 1)) {
         // g_state->field->field[y + 1][x] = 3;
-        // if (g_state->field->field[y + 1][x] == 1) {
+        f_collision = false;
+      } else {
         f_collision = true;
-        break;
-        // }
-        // f_collision = true;
-        // break;
-        // }
       }
-      //  else if (g_state->field && (y + 2 <= 19) && figures[type][i][j] == 0
-      //  &&
-      //            g_state->field->field[y + 2][x] == 1) {
-      //   f_collision = false;
-      // }
     }
   }
-  // }
 
   return f_collision;
 }
