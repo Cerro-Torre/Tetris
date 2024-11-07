@@ -302,15 +302,14 @@ int border_collision(Game_state_t *g_state) {
   if (x + trim_figure_width(g_state) - 1 >= 9) {
     collision = COLLISION_RIGHT;
   }
-  // if (y + trim_figure_height(g_state) > 10) {
+
   if (y + trim_figure_height(g_state) > 19) {
     collision = COLLISION_DOWN;
   }
-  // if ((y + trim_figure_height(g_state) > 10) && (x < 1)) {
+
   if ((y + trim_figure_height(g_state) > 19) && (x < 1)) {
     collision = COLLISION_DL;
   }
-  // if ((y + trim_figure_height(g_state) > 10) &&
 
   if ((y + trim_figure_height(g_state) > 19) &&
       (x + trim_figure_width(g_state) - 1 >= 9)) {
@@ -333,55 +332,35 @@ bool bottom_figure_collision(Game_state_t *g_state) {
 
   for (int i = 0; i < figure_height; i++) {
     for (int j = 0; j < figure_width; j++) {
-      // f_collision = 0;
+      f_collision = 0;
       int y = i + g_state->figure.y;
       int x = j + g_state->figure.x;
-      if ((g_state->field) && (figures[type][i][j] == 1) && (y + 1 <= 19) &&
+
+      if (g_state->field && (figures[type][i][j] == 9) && (y < 19) &&
           (g_state->field->field[y + 1][x] == 1)) {
+        f_collision = false;
+      } else if ((g_state->field) && (figures[type][i][j] == 1) && (y < 19) &&
+                 (g_state->field->field[y + 1][x] == 1)) {
         // g_state->field->field[y + 1][x] = 3;
         // if (g_state->field->field[y + 1][x] == 1) {
         f_collision = true;
-        // break;
+        break;
         // }
         // f_collision = true;
         // break;
         // }
-      } else if (g_state->field && (y + 2 <= 19) && figures[type][i][j] == 0 &&
-                 g_state->field->field[y + 2][x] == 1) {
-        f_collision = false;
       }
+      //  else if (g_state->field && (y + 2 <= 19) && figures[type][i][j] == 0
+      //  &&
+      //            g_state->field->field[y + 2][x] == 1) {
+      //   f_collision = false;
+      // }
     }
   }
   // }
 
   return f_collision;
 }
-
-// bool right_figure_collision(Game_state_t *g_state) {
-//   g_state = get_game_state();
-
-//   int figure_width = trim_figure_width(g_state);
-//   int figure_height = trim_figure_height(g_state);
-
-//   bool f_collision = false;
-
-//   // int b_collision = border_collision(g_state);
-
-//   for (int i = 0; i < figure_height; i++) {
-//     for (int j = 0; j < figure_width; j++) {
-//       int field_y = g_state->figure.y + i;
-//       int field_x = g_state->figure.x + j;
-
-//       if (g_state->field && g_state->field->field[field_y][field_x + 1]
-//       == 1)
-//       {
-//         f_collision = true;
-//         break;
-//       }
-//     }
-//   }
-//   return f_collision;
-// }
 
 int check_collision(Game_state_t *g_state) {
   g_state = get_game_state();
@@ -434,10 +413,10 @@ void figure_to_field(Game_state_t *g_state) {
       //   g_state->field->field[field_y][field_x] = 0;
       // }
 
-      // // показать поля вокруг фигуры
-      if (figures[g_state->figure.type][i][j] == 0 && g_state->field) {
-        g_state->field->field[field_y][field_x] = 3;
-      }
+      // // // показать ауру вокруг фигуры
+      // if (figures[g_state->figure.type][i][j] == 0 && g_state->field) {
+      //   g_state->field->field[field_y][field_x] = 3;
+      // }
     }
   }
 }
@@ -799,58 +778,61 @@ bool figure_is_attaching(Game_state_t *g_state) {
 //   //   g_state->status = Shifting;
 // }
 
-void on_move_state(Game_state_t *g_state, UserAction_t action, int collision) {
+void on_move_state(Game_state_t *g_state, UserAction_t action) {
   // if (check_collision(g_state)) {
   //   g_state->status.status = ATTACHING;
   // }
-
+  // collision = check_collision(g_state);
   switch (action) {
     case Terminate:
       g_state->status.is_playing = false;
       g_state->status.status = GAMEOVER;
       break;
     case Left:
-      collision = check_collision(g_state);
+      // collision = check_collision(g_state);
       // collision = border_collision(g_state);
 
-      clear_figure(g_state);
-      if (collision != COLLISION_LEFT && collision != COLLISION_DL) {
-        move_left(g_state);
-      }
+      // clear_figure(g_state);
+      // if (collision != COLLISION_LEFT && collision != COLLISION_DL) {
+      move_left(g_state);
+      // figure_to_field(g_state);
+      // }
       // figure_to_field(g_state, figures);
       break;
     case Right:
-      collision = check_collision(g_state);
+      // collision = check_collision(g_state);
       // collision = border_collision(g_state);
 
-      clear_figure(g_state);
-      if (collision != COLLISION_RIGHT && collision != COLLISION_DR) {
-        move_right(g_state);
-      }
+      // clear_figure(g_state);
+      // if (collision != COLLISION_RIGHT && collision != COLLISION_DR) {
+      move_right(g_state);
+      // figure_to_field(g_state);
+      // }
       // figure_to_field(g_state, figures);
       break;
     case Down:
-      collision = check_collision(g_state);
+      // collision = check_collision(g_state);
       // collision = border_collision(g_state);
 
-      clear_figure(g_state);
-      if ((collision != COLLISION_DOWN && collision != COLLISION_DL &&
-           collision != COLLISION_DR)) {
-        move_down(g_state);
-      } else {
-        g_state->status.status = SPAWN;
-      }
-      // figure_to_field(g_state, figures);
+      // clear_figure(g_state);
+      // if ((collision != COLLISION_DOWN && collision != COLLISION_DL &&
+      //      collision != COLLISION_DR) ||
+      //     !bottom_figure_collision(g_state)) {
+      move_down(g_state);
+      // figure_to_field(g_state);
+      // } else {
+      //   g_state->status.status = SPAWN;
+      // }
       break;
     case Up:
       // collision = check_collision(g_state);
       // collision = border_collision(g_state);
 
-      clear_figure(g_state);
+      // clear_figure(g_state);
       // if (collision != COLLISION_FIGURE) {
       move_up(g_state);
+      // figure_to_field(g_state);
       // }
-      // figure_to_field(g_state, figures);
       break;
     case Action:
       // move_in_array(g_state);
@@ -895,6 +877,7 @@ void userInput(UserAction_t action, bool hold) {
   // GameInfo_t g_info = update_current_state(g_state);
 
   (hold) ? printf("hold") : false;
+  int collision = 0;
 
   switch (current_fsm_state) {
     case INIT:
@@ -908,8 +891,16 @@ void userInput(UserAction_t action, bool hold) {
       break;
     case MOVING:
       // printf("moving\n");
-      on_move_state(g_state, action, 0);
-      figure_to_field(g_state);
+      collision = check_collision(g_state);
+
+      if (collision != COLLISION_DOWN && collision != COLLISION_DL &&
+          collision != COLLISION_DR && !bottom_figure_collision(g_state)) {
+        clear_figure(g_state);
+        on_move_state(g_state, action);
+        figure_to_field(g_state);
+      } else {
+        g_state->status.status = SPAWN;
+      }
       break;
     // case SHIFTING:
     //   move_down(g_state);
