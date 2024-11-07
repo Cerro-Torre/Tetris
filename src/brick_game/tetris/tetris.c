@@ -43,11 +43,12 @@ int main() {
 
   // printw("bw status = %d\n", g_state->status.status);
 
-  create_figure_2(g_state);
+  // create_next_fig_size(g_state);
 
   wrefresh(states_info);
   wrefresh(tetris);
   wrefresh(status);
+  wrefresh(next);
 
   keypad(tetris, TRUE);
 
@@ -80,6 +81,7 @@ int main() {
       wrefresh(tetris);
       wrefresh(status);
       wrefresh(states_info);
+      wrefresh(next);
     }
 
     int action = get_user_action(key2);
@@ -91,11 +93,13 @@ int main() {
 
     states_info = print_states(g_state, action);
     status = print_status_gi(&g_info);
+    next = next_display(g_state);
 
     // clear_figure(g_state);
     wrefresh(tetris);
     wrefresh(status);
     wrefresh(states_info);
+    wrefresh(next);
   }
   delwin(status);
   delwin(tetris);
@@ -106,7 +110,7 @@ int main() {
 
   free_game(g_state, g_state->field);
   free_field_gi(&g_info);
-  free_next_figure_gi(&g_info);
+  // free_next_figure_gi(&g_info);
 
   return 0;
 }
