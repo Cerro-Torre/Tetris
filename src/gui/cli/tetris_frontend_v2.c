@@ -178,8 +178,8 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
   mvwprintw(status, 6, 1, "Coord: %d, %d", g_state->figure.x,
             g_state->figure.y);
 
-  int collision = check_collision(g_state);
-  switch (collision) {
+  int b_collision = border_collision(g_state);
+  switch (b_collision) {
     case 1:
       mvwprintw(status, 9, 1, "Collision: LEFT");
       break;
