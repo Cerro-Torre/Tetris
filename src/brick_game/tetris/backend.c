@@ -400,7 +400,8 @@ void figure_to_field(Game_state_t *g_state) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      if (g_state->field && (g_state->figure.figure[type][i][j] == 1)) {
+      if (g_state->field && (field_y < 20) &&
+          (g_state->figure.figure[type][i][j] == 1)) {
         g_state->field->field[field_y][field_x] = 1;
       }
       // отображение 9 (?)
@@ -782,7 +783,7 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
   // if (check_collision(g_state)) {
   //   g_state->status.status = ATTACHING;
   // }
-  // collision = check_collision(g_state);
+  int collision = check_collision(g_state);
   switch (action) {
     case Terminate:
       g_state->status.is_playing = false;
@@ -793,21 +794,21 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
       // collision = border_collision(g_state);
 
       // clear_figure(g_state);
-      // if (collision != COLLISION_LEFT && collision != COLLISION_DL) {
-      move_left(g_state);
-      // figure_to_field(g_state);
-      // }
+      if (collision != COLLISION_LEFT && collision != COLLISION_DL) {
+        move_left(g_state);
+        // figure_to_field(g_state);
+      }
       // figure_to_field(g_state, figures);
       break;
     case Right:
-      // collision = check_collision(g_state);
+      collision = check_collision(g_state);
       // collision = border_collision(g_state);
 
       // clear_figure(g_state);
-      // if (collision != COLLISION_RIGHT && collision != COLLISION_DR) {
-      move_right(g_state);
-      // figure_to_field(g_state);
-      // }
+      if (collision != COLLISION_RIGHT && collision != COLLISION_DR) {
+        move_right(g_state);
+        // figure_to_field(g_state);
+      }
       // figure_to_field(g_state, figures);
       break;
     case Down:
