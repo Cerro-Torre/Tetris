@@ -60,11 +60,18 @@ int main() {
     render_game_gi(tetris, g_info);
     wrefresh(tetris);
 
-    if (g_state->status.status == MOVING || g_state->status.status == START) {
+    int b_collision = border_collision(g_state);
+    int f_collision = bottom_figure_collision(g_state);
+
+    if ((g_state->status.status == MOVING && b_collision != COLLISION_DOWN &&
+         b_collision != COLLISION_DL && b_collision != COLLISION_DR &&
+         !f_collision) ||
+        g_state->status.status == START) {
       // g_state = get_game_state();
       // g_info = updateCurrentState();
       // printw("inside\n");
       // wrefresh(states_info);
+
       key2 = wgetch(tetris);
 
       // if (key2 == 'l') {
