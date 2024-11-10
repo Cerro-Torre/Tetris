@@ -67,7 +67,7 @@ int main() {
          b_collision != COLLISION_DL && b_collision != COLLISION_DR &&
          !f_collision) ||
         g_state->status.status == START) {
-      // g_state = get_game_state();
+      g_state = get_game_state();
       // g_info = updateCurrentState();
       // printw("inside\n");
       // wrefresh(states_info);
@@ -108,16 +108,19 @@ int main() {
     wrefresh(states_info);
     wrefresh(next);
   }
+
+  free_game(g_state);
+  free_field_gi(&g_info);
+
+  mvwprintw(tetris, 0, 3, "Game Over");
+  wgetch(tetris);
+
   delwin(status);
   delwin(tetris);
   delwin(states_info);
-
+  // free_next_figure_gi(&g_info);
   refresh();
   endwin();
-
-  free_game(g_state, g_state->field);
-  free_field_gi(&g_info);
-  // free_next_figure_gi(&g_info);
 
   return 0;
 }

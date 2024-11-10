@@ -35,7 +35,7 @@ void free_field_gi(GameInfo_t *field_t);
 void free_next_figure_gi(GameInfo_t *g_info);
 
 // void free_field_gs(Game_state_t *game_state);
-void free_game(Game_state_t *g_state, Game_field_t *field);
+void free_game(Game_state_t *g_state);
 
 // _______fsm________
 

@@ -215,8 +215,8 @@ void init_game_state(Game_state_t *game_state, Game_field_t *field) {
 
 // ______________
 
-void free_game(Game_state_t *g_state, Game_field_t *field) {
-  free_field(field);
+void free_game(Game_state_t *g_state) {
+  // free_field(field);
   free_field(g_state->field);
 
   // free_next_figure(&g_state->figure);
@@ -246,7 +246,7 @@ void free_game(Game_state_t *g_state, Game_field_t *field) {
 void finish_game(Game_state_t *g_state) {
   if (g_state->status.status != GAMEOVER && !g_state->status.win) {
     g_state->status.is_playing = false;
-    free_game(g_state, g_state->field);
+    free_game(g_state);
     // free_field_gi(g_info);
   }
 }
@@ -378,10 +378,16 @@ bool bottom_figure_collision(Game_state_t *g_state) {
       int y = i + g_state->figure.y;
       int x = j + g_state->figure.x;
 
-      if ((g_state->field) && (y < ROWS_GAME - 1) &&
-          g_state->field->field[y + 1][x] == 1 && i == figure_height - 1 &&
-          g_state->figure.figure[type][i][j] == 1) {
+      if ((g_state->field) && (y < ROWS_GAME - 1) && i == figure_height - 1 &&
+          g_state->field->field[y + 1][x] == 1 &&
+          g_state->figure.figure[type][i][j] == 1)
+
+      {
         f_collision = true;
+
+        if (g_state->figure.figure[type][i][j] == 0) {
+          f_collision = false;
+        }
         // g_state->field->field[y + 1][x] = 3;
       }
     }
@@ -645,7 +651,7 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
   // next_figure_to_current(g_state);
 
   // create_next_fig_size(g_state, S_SHAPE);
-  for (int i = 0; i < g_state->figure.figure_height; i++) {
+  for (int i = g_state->figure.figure_height; i >= 0; i--) {
     for (int j = 0; j < g_state->figure.figure_width; j++) {
       g_state->figure.figure[g_state->figure.type][i][j] =
           figures[g_state->figure.type][i][j];
@@ -894,6 +900,11 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
   bool f_collision = bottom_figure_collision(g_state);
   int b_collision = border_collision(g_state);
 
+  if (g_state->figure.y <= 0 && f_collision) {
+    g_state->status.is_playing = false;
+    g_state->status.status = GAMEOVER;
+  }
+
   switch (action) {
     case Terminate:
       g_state->status.is_playing = false;
@@ -908,7 +919,8 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
       // }
 
       if (!f_collision && b_collision != COLLISION_DOWN && b_collision &&
-          b_collision != COLLISION_DL && b_collision != COLLISION_DR) {
+          b_collision != COLLISION_DL && b_collision != COLLISION_DR &&
+          !f_collision) {
         // figure_to_field(g_state);
         g_state->status.status = MOVING;
       } else {
@@ -945,7 +957,9 @@ void userInput(UserAction_t action, bool hold) {
         clear_figure(g_state);
         on_move_state(g_state, action);
         // f_collision = bottom_figure_collision(g_state);
+        // if (!bottom_figure_collision(g_state)) {
         figure_to_field(g_state);
+        // }
         // }
       } else {
         g_state->status.status = ATTACHING;
