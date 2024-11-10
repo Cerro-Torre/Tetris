@@ -136,6 +136,33 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
   Game_state_t *g_state = get_game_state();
 
   mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
+
+  switch (g_state->status.status) {
+    case INIT:
+      mvwprintw(status, 8, 1, "Status: INIT");
+      break;
+    case START:
+      mvwprintw(status, 8, 1, "Status: START");
+      break;
+    case SPAWN:
+      mvwprintw(status, 8, 1, "Status: SPAWN");
+      break;
+    case MOVING:
+      mvwprintw(status, 8, 1, "Status: MOVING");
+      break;
+    case ATTACHING:
+      mvwprintw(status, 8, 1, "Status: ATTACHING");
+      break;
+    case SHIFTING:
+      mvwprintw(status, 8, 1, "Status: SHIFTING");
+      break;
+    case GAMEOVER:
+      mvwprintw(status, 8, 1, "Status: GAMEOVER");
+      break;
+    default:
+      mvwprintw(status, 8, 1, "Status: UNKNOWN");
+      break;
+  }
   // printw("Key: %d", get_user_action(action));
 
   // mvwprintw(status, 7, 1, "Status: %d", g_info->status.status);
@@ -332,15 +359,25 @@ WINDOW *next_display(Game_state_t *g_state) {
       mvwprintw(next, 2, 1, "next_type: ?");
   }
 
-  mvwprintw(next, 3, 1, "x: %d", g_state->figure.x);
-  mvwprintw(next, 4, 1, "y: %d", g_state->figure.y);
-  mvwprintw(next, 5, 1, "height: %d", g_state->figure.figure_height);
-  mvwprintw(next, 6, 1, "width: %d", g_state->figure.figure_width);
+  // mvwprintw(next, 3, 1, "x: %d", g_state->figure.x);
+  // mvwprintw(next, 4, 1, "y: %d", g_state->figure.y);
+  // mvwprintw(next, 5, 1, "height: %d", g_state->figure.figure_height);
+  // mvwprintw(next, 6, 1, "width: %d", g_state->figure.figure_width);
 
-  mvwprintw(next, 7, 1, "nxt_x: %d", g_state->figure.next_x);
-  mvwprintw(next, 8, 1, "nxt_y: %d", g_state->figure.next_y);
-  mvwprintw(next, 9, 1, "nxt_height: %d", g_state->figure.next_figure_height);
-  mvwprintw(next, 10, 1, "nxt_width: %d", g_state->figure.next_figure_width);
+  // mvwprintw(next, 7, 1, "nxt_x: %d", g_state->figure.next_x);
+  //   mvwprintw(next, 8, 1, "nxt_y: %d", g_state->figure.next_y);
+  // mvwprintw(next, 8, 1, "nxt_height: %d",
+  // g_state->figure.next_figure_height); mvwprintw(next, 9, 1, "nxt_width: %d",
+  // g_state->figure.next_figure_width);
+
+  for (int i = 0; i < g_state->figure.next_figure_height; i++) {
+    for (int j = 0; j < g_state->figure.next_figure_width; j++) {
+      if (g_state->figure.next_figure[i][j] == 1) {
+        mvwprintw(next, i + 2 + g_state->figure.next_figure_height, j + 2 + 5,
+                  "#");
+      }
+    }
+  }
 
   wrefresh(next);
   return next;

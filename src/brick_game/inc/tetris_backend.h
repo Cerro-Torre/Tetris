@@ -27,7 +27,7 @@ int init_field_gi(GameInfo_t *field_t);
 void init_figure(Game_state_t *g_state);
 void init_game_status(Game_status_t *game_status);
 void init_game_stats(Game_stats_t *game_stats);
-void init_game_state(Game_state_t *game_state, Game_field_t *field);
+void init_game_state(Game_state_t *g_state, Game_field_t *field);
 
 // ________frees________
 void free_field(Game_field_t *field_t);
@@ -53,7 +53,7 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action);
 // void figure_to_field_1(GameInfo_t *game);
 
 void figure_to_field(Game_state_t *g_state);
-void create_next_fig_size(Game_state_t *g_state, int type);
+void create_next_figure(Game_state_t *g_state, int type);
 int trim_figure_width(Game_state_t *g_state);
 int trim_figure_height(Game_state_t *g_state);
 // void create_next_figure(Figure_t *figure_t, int type, int y, int x);

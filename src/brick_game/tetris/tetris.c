@@ -44,7 +44,7 @@ int main() {
 
   // printw("bw status = %d\n", g_state->status.status);
 
-  // create_next_fig_size(g_state);
+  // create_next_figure(g_state);
 
   wrefresh(states_info);
   wrefresh(tetris);
@@ -114,10 +114,14 @@ int main() {
   free_field_gi(&g_info);
   g_info.field = NULL;
 
+  // wattron(tetris, COLOR_RED);
   mvwprintw(tetris, 0, 3, "Game Over");
+  // wattroff(tetris, COLOR_RED);
   wgetch(tetris);
 
   delwin(status);
+  // attroff(A_ALTCHARSET);
+
   delwin(tetris);
   delwin(states_info);
   // free_next_figure_gi(&g_info);
