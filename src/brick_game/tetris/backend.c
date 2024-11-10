@@ -325,70 +325,22 @@ bool bottom_figure_collision(Game_state_t *g_state) {
 
   int figure_height = trim_figure_height(g_state);
   int figure_width = trim_figure_width(g_state);
-  int type = g_state->figure.type;
+  // int type = g_state->figure.type;
 
   bool f_collision = false;
 
-  // int b_collision = border_collision(g_state);
-
-  // for (int i = 0; i < figure_height; i++) {
-  //   for (int j = 0; j < figure_width; j++) {
-  //     f_collision = false;
-  //     int y = i + g_state->figure.y;
-  //     int x = j + g_state->figure.x;
-
-  //     // if (g_state->field && (y < 19) &&
-  //     //     (g_state->figure.figure[type][i][j] == 9) &&
-  //     //     (g_state->field->field[y][x + 1] == 1)) {
-  //     //   f_collision = false;
-  //     // } else
-  //     if (type == Z_SHAPE && j == 0 && g_state->field->field[y + 1][x] == 1)
-  //     {
-  //       f_collision = true;
-  //       g_state->field->field[y + 1][x] = 3;
-  //     }
-
-  //     if ((g_state->field) && (g_state->figure.figure[type][i][j] == 1) &&
-  //         (y < 19) && (g_state->field->field[y + 1][x] == 1)) {
-  //       // g_state->field->field[y + 1][x] = 3;
-  //       // if (g_state->field->field[y + 1][x] == 1) {
-  //       f_collision = true;
-  //       // break;
-  //       // }
-  //       // f_collision = true;
-  //       // break;
-  //       // }
-  //     }
-
-  //     //  else if (g_state->field && (y + 2 <= 19) && figures[type][i][j] ==
-  //     // 0
-  //     //  &&
-  //     //            g_state->field->field[y + 2][x] == 1) {
-  //     //   f_collision = false;
-  //     // }
-  //   }
-  // }
-  // }
-
-  // ____________________
-
   for (int i = 0; i < figure_height && !f_collision; i++) {
     for (int j = 0; j < figure_width && !f_collision; j++) {
-      // f_collision = false;
       int y = i + g_state->figure.y;
       int x = j + g_state->figure.x;
 
-      if ((g_state->field) && (y < ROWS_GAME - 1) && i == figure_height - 1 &&
-          g_state->field->field[y + 1][x] == 1 &&
-          g_state->figure.figure[type][i][j] == 1)
+      if ((g_state->field) && (y < ROWS_GAME - 1) &&
+          g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
+          (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
+          (g_state->field->field[y + 1][x] == 1))
 
       {
         f_collision = true;
-
-        if (g_state->figure.figure[type][i][j] == 0) {
-          f_collision = false;
-        }
-        // g_state->field->field[y + 1][x] = 3;
       }
     }
   }
@@ -651,7 +603,10 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
   // next_figure_to_current(g_state);
 
   // create_next_fig_size(g_state, S_SHAPE);
-  for (int i = g_state->figure.figure_height; i >= 0; i--) {
+  for (int i = g_state->figure.figure_height;
+       i >= 0 && g_state->field &&
+       (g_state->field->field[i + g_state->figure.y][g_state->figure.x] != 1);
+       i--) {
     for (int j = 0; j < g_state->figure.figure_width; j++) {
       g_state->figure.figure[g_state->figure.type][i][j] =
           figures[g_state->figure.type][i][j];
@@ -950,20 +905,25 @@ void userInput(UserAction_t action, bool hold) {
       on_spawn_state(g_state, action);
       break;
     case MOVING:
+      f_collision = bottom_figure_collision(g_state);
 
       if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
           b_collision != COLLISION_DR && !f_collision) {
         // if (!f_collision) {
+        // f_collision = bottom_figure_collision(g_state);
+        // clear_figure(g_state);
+
         clear_figure(g_state);
         on_move_state(g_state, action);
-        // f_collision = bottom_figure_collision(g_state);
         // if (!bottom_figure_collision(g_state)) {
         figure_to_field(g_state);
         // }
         // }
+        // f_collision = bottom_figure_collision(g_state);
       } else {
         g_state->status.status = ATTACHING;
       }
+
       break;
     // case SHIFTING:
     //   move_down(g_state);
