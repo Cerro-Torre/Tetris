@@ -4,6 +4,7 @@ int main() {
   initscr();
   noecho();
   curs_set(0);
+  // attron(A_ALTCHARSET);
 
   WINDOW *menu = print_menu();
   wrefresh(menu);
@@ -111,6 +112,7 @@ int main() {
 
   free_game(g_state);
   free_field_gi(&g_info);
+  g_info.field = NULL;
 
   mvwprintw(tetris, 0, 3, "Game Over");
   wgetch(tetris);
