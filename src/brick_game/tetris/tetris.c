@@ -57,9 +57,11 @@ int main() {
     g_state = get_game_state();
     g_info = updateCurrentState();
     g_info = copy_game_to_gi(g_state);
+    next = next_display(g_state);
 
     render_game_gi(tetris, g_info);
     wrefresh(tetris);
+    wrefresh(next);
 
     int b_collision = border_collision(g_state);
     int f_collision = bottom_figure_collision(g_state);
@@ -72,6 +74,10 @@ int main() {
       // g_info = updateCurrentState();
       // printw("inside\n");
       // wrefresh(states_info);
+
+      next = next_display(g_state);
+
+      wrefresh(next);
 
       key2 = wgetch(tetris);
 
@@ -101,13 +107,13 @@ int main() {
 
     states_info = print_states(g_state, action);
     status = print_status_gi(&g_info);
-    next = next_display(g_state);
+    // next = next_display(g_state);
 
     // clear_figure(g_state);
     wrefresh(tetris);
     wrefresh(status);
     wrefresh(states_info);
-    wrefresh(next);
+    // wrefresh(next);
   }
 
   free_game(g_state);
