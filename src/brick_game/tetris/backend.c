@@ -42,6 +42,49 @@ int init_field_gi(GameInfo_t *field_t) {
   return error;
 }
 
+int init_array(int rows, int cols, int **array) {
+  int error = 0;
+  array = (int **)calloc(rows, sizeof(int *));
+
+  if (array != NULL) {
+    for (int i = 0; i < rows; i++) {
+      array[i] = (int *)calloc(cols, sizeof(int));
+    }
+  } else {
+    free(array);
+    array = NULL;
+    error = 1;
+    // printf("init_field_gi error\n");
+  }
+
+  return error;
+}
+
+void free_array(int **array) {
+  if (array != NULL) {
+    for (int i = 0; i < 4; i++) {
+      free(array[i]);
+    }
+    free(array);
+
+    array = NULL;
+  }
+}
+
+void init_game_info(GameInfo_t *g_info) {
+  g_info->field = NULL;
+  init_field_gi(g_info);
+
+  g_info->next = NULL;
+  init_array(4, 4, g_info->next);
+
+  g_info->score = 0;
+  g_info->high_score = 0;
+  g_info->level = 0;
+  g_info->speed = 0;
+  g_info->pause = 0;
+}
+
 void free_field(Game_field_t *field_t) {
   if (field_t && field_t->field != NULL) {
     for (int i = 0; i < ROWS_GAME; i++) {
