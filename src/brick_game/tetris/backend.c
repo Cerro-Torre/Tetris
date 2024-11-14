@@ -452,90 +452,6 @@ void clear_figure(Game_state_t *g_state) {
   }
 }
 
-// void create_next_figure(Game_state_t *g_state, int type) {
-//   g_state = get_game_state();
-
-//   // srand(time(NULL));
-//   // int type = rand() % 7;
-
-//   // g_state->figure.type = type;
-//   // центрируем фигуру по Х: g_state->figure.x - figure_t->figure_size /
-//   // 2;
-
-//   // int type = Z_SHAPE;
-
-//   switch (type) {
-//     case I_SHAPE:
-//       g_state->figure.next_figure_height = 4;
-//       g_state->figure.next_figure_width = 4;
-
-//       break;
-//     case J_SHAPE:
-//       g_state->figure.next_figure_height = 3;
-//       g_state->figure.next_figure_width = 3;
-//       break;
-//     case L_SHAPE:
-//       g_state->figure.next_figure_height = 3;
-//       g_state->figure.next_figure_width = 3;
-//       break;
-//     case O_SHAPE:
-//       g_state->figure.next_figure_height = 2;
-//       g_state->figure.next_figure_width = 2;
-//       break;
-//     case S_SHAPE:
-//       g_state->figure.next_figure_height = 3;
-//       g_state->figure.next_figure_width = 3;
-//       break;
-//     case T_SHAPE:
-//       g_state->figure.next_figure_height = 3;
-//       g_state->figure.next_figure_width = 3;
-//       break;
-//     case Z_SHAPE:
-//       g_state->figure.next_figure_height = 3;
-//       g_state->figure.next_figure_width = 3;
-//       break;
-//     default:
-//       break;
-//   }
-
-//   g_state->figure.next_x =
-//       COLS_GAME / 2 - g_state->figure.next_figure_width / 2;
-//   g_state->figure.next_y = 0;
-
-//   for (int i = 0; i < g_state->figure.next_figure_height; i++) {
-//     for (int j = 0; j < g_state->figure.next_figure_width; j++) {
-//       if (g_state->figure.next_figure) {
-//         g_state->figure.next_figure[i][j] = figures[type][i][j];
-//       }
-//     }
-//   }
-
-//   // явное задание типа фигуры
-//   // g_state->figure.type = S_SHAPE;
-// }
-
-// void create_next_figure(Figure_t *figure_t, int type, int y, int x) {
-//   figure_t->next_type = type;
-//   figure_t->next_y = y;
-//   figure_t->next_x = x;
-// }
-
-// void next_figure_to_current(Game_state_t *g_state) {
-//   g_state = get_game_state();
-//   g_state->figure.type = g_state->figure.next_type;
-//   g_state->figure.x = trim_figure_width(g_state) / 2;
-//   g_state->figure.y = 0;
-
-//   if (g_state->figure.next_figure && g_state->figure.figure) {
-//     for (int i = 0; i < g_state->figure.figure_height; i++) {
-//       for (int j = 0; j < g_state->figure.figure_width; j++) {
-//         g_state->figure.figure[g_state->figure.type][i][j] =
-//             g_state->figure.next_figure[i][j];
-//       }
-//     }
-//   }
-// }
-
 void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix) {
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
@@ -543,15 +459,6 @@ void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix) {
     }
   }
 }
-
-// void copy_next(int rows, int cols, int **src_matrix, int **dest_matrix)
-// {
-//   for (int i = 0; i < rows; i++) {
-//     for (int j = 0; j < cols; j++) {
-//       dest_matrix[i][j] = src_matrix[i][j];
-//     }
-//   }
-// }
 
 GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
   g_state = get_game_state();
@@ -619,12 +526,6 @@ void on_start_state(Game_state_t *g_state, UserAction_t action) {
       break;
     default:
       if (g_state->status.is_playing) {
-        //   srand(time(NULL));
-        //   int rnd_figure = rand() % 7;
-        // figure_to_field(g_state);
-        //   g_state->figure.next_type = rnd_figure;
-        //   create_next_figure(g_state, g_state->figure.next_type);
-
         fill_next_figure(g_state);
 
         g_state->status.status = SPAWN;
@@ -656,8 +557,6 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
   // установка начальной позиции figure
   g_state->figure.x = COLS_GAME / 2 - g_state->figure.figure_width / 2 + 1;
   g_state->figure.y = 0;
-
-  // figure_to_field(g_state);
 
   switch (action) {
     case Terminate:
@@ -904,6 +803,18 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
     g_state->status.status = GAMEOVER;
   }
 
+  // // for (int i = ROWS_GAME; i > line_to_check; i--) {
+  // for (int j = 0; j < COLS_GAME; j++) {
+  //   int line_to_check =
+  //       g_state->figure.y - 1 + g_state->figure.figure_height - 1;
+  //   // if (g_state->field->field[i][j] == 1) {
+  //   //   g_state->field->field[i][j] = 0;
+  //   //   g_state->field->field[i + 1][j] = 1;
+  //   // }
+  //   g_state->field->field[line_to_check][j] = 0;
+  // }
+  // // }
+
   switch (action) {
     case Terminate:
       g_state->status.is_playing = false;
@@ -924,10 +835,57 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
         g_state->status.status = MOVING;
       } else {
         // figure_to_field(g_state);
+        collapse_full_lines(g_state);
         g_state->status.status = SPAWN;
       }
       break;
   }
+}
+
+// bool line_is_full(Game_state_t *g_state) {
+//   for (int i = 0; i < ROWS_GAME; i++) {
+//     for (int j = 0; j < COLS_GAME; j++) {
+//     }
+//   }
+//   return true;
+// }
+
+void shift_lines(Game_state_t *g_state, int i) {
+  for (int j = i; j > 0; j--) {
+    for (int k = 0; k < FIELD_M; k++) {
+      g_state->field->field[j][k] = g_state->field->field[j - 1][k];
+    }
+  }
+}
+
+// void fill_top_line(Game_state_t *gs) {
+//   for (int j = 0; j < FIELD_M; j++) {
+//     gs->field->field[0][j] = 0;
+//   }
+// }
+
+void collapse_full_lines(Game_state_t *g_state) {
+  int num_full_lines = 0;
+
+  for (int i = ROWS_GAME - 1; i >= 0; i--) {
+    // bool is_full = true;
+    // int current_line = i;
+
+    int line_is_full = 0;
+    for (int j = 0; j < COLS_GAME; j++) {
+      line_is_full += g_state->field->field[i][j];
+    }
+
+    if (line_is_full == COLS_GAME) {
+      // is_full = false;
+      shift_lines(g_state, i);
+      // fill_top_line(g_state);
+      num_full_lines++;
+      i++;
+    }
+  }
+
+  // update_score_and_level(gs, num_full_lines);
 }
 
 void userInput(UserAction_t action, bool hold) {
