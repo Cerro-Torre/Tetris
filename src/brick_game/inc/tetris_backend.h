@@ -90,11 +90,13 @@ void move_up(Game_state_t *g_state);
 
 bool figure_is_attaching(Game_state_t *g_state);
 
-void collapse_full_lines(Game_state_t *gs);
+void collapse_full_lines(Game_state_t *g_state);
 
-void shift_lines(Game_state_t *gs, int i);
+void shift_lines(Game_state_t *g_state, int i);
 
-void fill_top_line(Game_state_t *gs);
+void rotate_figure(Game_state_t *g_state);
+
+void fill_top_line(Game_state_t *g_state);
 
 // int move_in_array(Game_state_t *g_state);
 

@@ -394,8 +394,11 @@ void figure_to_field(Game_state_t *g_state) {
   // int figure_width = g_state->figure.figure_height;
 
   int type = g_state->figure.type;
-  int figure_height = trim_figure_height(g_state);
-  int figure_width = trim_figure_width(g_state);
+  // int figure_height = trim_figure_height(g_state);
+  // int figure_width = trim_figure_width(g_state);
+
+  int figure_height = 4;
+  int figure_width = 4;
 
   // if (type != 6) {
   //   type = g_state->figure.type + 1;
@@ -435,8 +438,11 @@ void figure_to_field(Game_state_t *g_state) {
 void clear_figure(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  int figure_width = trim_figure_width(g_state);
-  int figure_height = trim_figure_height(g_state);
+  // int figure_width = trim_figure_width(g_state);
+  // int figure_height = trim_figure_height(g_state);
+
+  int figure_width = 4;
+  int figure_height = 4;
 
   for (int i = 0; i < figure_height; i++) {
     for (int j = 0; j < figure_width; j++) {
@@ -444,8 +450,9 @@ void clear_figure(Game_state_t *g_state) {
       int field_x = g_state->figure.x + j;
 
       // очистить текущую фигуру
-      if (g_state->field && (figures[g_state->figure.type][i][j] == 1 ||
-                             g_state->field->field[field_y][field_x] == 3)) {
+      if (g_state->field &&
+          (g_state->figure.figure[g_state->figure.type][i][j] == 1 ||
+           g_state->field->field[field_y][field_x] == 3)) {
         g_state->field->field[field_y][field_x] = 0;
       }
     }
@@ -779,7 +786,10 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
       // figure_to_field(g_state, figures);
       // move_in_array(g_state);
       // figure_to_field(g_state);
-      g_state->status.status = SPAWN;
+      // g_state->status.status = SPAWN;
+      clear_figure(g_state);
+      rotate_figure(g_state);
+      // clear_figure(g_state);
       break;
     case Pause:
       g_state->status.pause = !g_state->status.pause;
@@ -886,6 +896,84 @@ void collapse_full_lines(Game_state_t *g_state) {
   }
 
   // update_score_and_level(gs, num_full_lines);
+}
+
+void rotate_figure(Game_state_t *g_state) {
+  g_state = get_game_state();
+
+  // switch (g_state->figure.type) {
+  //   case I_SHAPE:
+  //     g_state->figure.figure_height = 4;
+  //     g_state->figure.figure_width = 4;
+  //     break;
+  //   case J_SHAPE:
+  //     g_state->figure.figure_height = 3;
+  //     g_state->figure.figure_width = 3;
+  //     break;
+  //   case L_SHAPE:
+  //     g_state->figure.figure_height = 3;
+  //     g_state->figure.figure_width = 3;
+  //     break;
+  //   case T_SHAPE:
+  //     g_state->figure.figure_height = 3;
+  //     g_state->figure.figure_width = 3;
+  //     break;
+  //   case S_SHAPE:
+  //     g_state->figure.figure_height = 3;
+  //     g_state->figure.figure_width = 3;
+  //     break;
+  //   case Z_SHAPE:
+  //     g_state->figure.figure_height = 3;
+  //     g_state->figure.figure_width = 3;
+  //     break;
+  //   case O_SHAPE:
+  //     g_state->figure.figure_height = 2;
+  //     g_state->figure.figure_width = 2;
+  //     break;
+  //   default:
+  //     break;
+  // }
+
+  // int figure_height = 4;
+  // int figure_width = 4;
+
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
+
+  int temp[figure_width][figure_height];
+
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      temp[j][i] = g_state->figure
+                       .figure[g_state->figure.type][figure_height - i - 1][j];
+    }
+  }
+
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      g_state->figure.figure[g_state->figure.type][i][j] = temp[i][j];
+    }
+  }
+  // figure_to_field(g_state);
+
+  // int type = g_state->figure.type;
+
+  // for (int i = 0; i < figure_height; i++) {
+  //   for (int j = 0; j < figure_width; j++) {
+  //     int field_y = g_state->figure.y + i;
+  //     int field_x = g_state->figure.x + j;
+
+  //     if (g_state->field && (g_state->figure.figure[type][i][j] == 1)) {
+  //       g_state->field->field[field_y][field_x] = 1;
+  //     }
+
+  //     // // // показать ауру вокруг фигуры
+  //     // if (figures[g_state->figure.type][i][j] == 0 && g_state->field) {
+  //     //   g_state->field->field[field_y][field_x] = 3;
+  //     // }
+  //   }
+  // }
+  // clear_figure(g_state);
 }
 
 void userInput(UserAction_t action, bool hold) {
