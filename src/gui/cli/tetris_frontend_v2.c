@@ -230,14 +230,14 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
       break;
   }
 
-  mvwprintw(status, 11, 1, "Fig_height: %d", trim_figure_height(g_state));
-  mvwprintw(status, 12, 1, "Fig_width: %d", trim_figure_width(g_state));
+  mvwprintw(status, 11, 1, "Fig_height: %d", figure_max_height(g_state));
+  mvwprintw(status, 12, 1, "Fig_width: %d", figure_max_width(g_state));
 
   mvwprintw(status, 13, 1, "y+height: %d",
-            g_state->figure.y + trim_figure_height(g_state));
+            g_state->figure.y + figure_max_height(g_state));
 
-  int figure_width = trim_figure_width(g_state);
-  int figure_height = trim_figure_height(g_state);
+  int figure_width = figure_max_width(g_state);
+  int figure_height = figure_max_height(g_state);
   for (int i = 0; i < figure_height; i++) {
     for (int j = 0; j < figure_width; j++) {
       int x = g_state->figure.x + j;
