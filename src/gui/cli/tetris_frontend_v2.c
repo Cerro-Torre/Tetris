@@ -307,79 +307,52 @@ WINDOW *next_display(Game_state_t *g_state) {
 
   wrefresh(next);
 
-  // switch (g_state->figure.type) {
+  // switch (g_state->figure.next_type) {
   //   case 0:
-  //     mvwprintw(next, 1, 1, "fig_type: I");
+  //     mvwprintw(next, 1, 1, "next_type: I");
   //     break;
   //   case 1:
-  //     mvwprintw(next, 1, 1, "fig_type: J");
+  //     mvwprintw(next, 1, 1, "next_type: J");
   //     break;
   //   case 2:
-  //     mvwprintw(next, 1, 1, "fig_type: L");
+  //     mvwprintw(next, 1, 1, "next_type: L");
   //     break;
   //   case 3:
-  //     mvwprintw(next, 1, 1, "fig_type: O");
+  //     mvwprintw(next, 1, 1, "next_type: O");
   //     break;
   //   case 4:
-  //     mvwprintw(next, 1, 1, "fig_type: S");
+  //     mvwprintw(next, 1, 1, "next_type: S");
   //     break;
   //   case 5:
-  //     mvwprintw(next, 1, 1, "fig_type: T");
+  //     mvwprintw(next, 1, 1, "next_type: T");
   //     break;
   //   case 6:
-  //     mvwprintw(next, 1, 1, "fig_type: Z");
+  //     mvwprintw(next, 1, 1, "next_type: Z");
   //     break;
   //   default:
-  //     mvwprintw(next, 1, 1, "fig_type: ?");
+  //     mvwprintw(next, 1, 1, "next_type: ?");
   // }
 
-  switch (g_state->figure.next_type) {
-    case 0:
-      mvwprintw(next, 1, 1, "next_type: I");
-      break;
-    case 1:
-      mvwprintw(next, 1, 1, "next_type: J");
-      break;
-    case 2:
-      mvwprintw(next, 1, 1, "next_type: L");
-      break;
-    case 3:
-      mvwprintw(next, 1, 1, "next_type: O");
-      break;
-    case 4:
-      mvwprintw(next, 1, 1, "next_type: S");
-      break;
-    case 5:
-      mvwprintw(next, 1, 1, "next_type: T");
-      break;
-    case 6:
-      mvwprintw(next, 1, 1, "next_type: Z");
-      break;
-    default:
-      mvwprintw(next, 1, 1, "next_type: ?");
-  }
-
-  // mvwprintw(next, 3, 1, "x: %d", g_state->figure.x);
-  // mvwprintw(next, 4, 1, "y: %d", g_state->figure.y);
-  // mvwprintw(next, 5, 1, "height: %d", g_state->figure.figure_height);
-  // mvwprintw(next, 6, 1, "width: %d", g_state->figure.figure_width);
+  mvwprintw(next, 3, 1, "x: %d", g_state->figure.x);
+  mvwprintw(next, 4, 1, "y: %d", g_state->figure.y);
+  mvwprintw(next, 5, 1, "height: %d", figure_max_height(g_state));
+  mvwprintw(next, 6, 1, "width: %d", figure_max_width(g_state));
 
   // mvwprintw(next, 7, 1, "nxt_x: %d", g_state->figure.next_x);
-  //   mvwprintw(next, 8, 1, "nxt_y: %d", g_state->figure.next_y);
-  // mvwprintw(next, 8, 1, "nxt_height: %d",
-  // g_state->figure.next_figure_height); mvwprintw(next, 9, 1, "nxt_width: %d",
-  // g_state->figure.next_figure_width);
+  // mvwprintw(next, 8, 1, "nxt_y: %d", g_state->figure.next_y);
+  mvwprintw(next, 8, 1, "nxt_height: %d", g_state->figure.next_figure_height);
+  mvwprintw(next, 9, 1, "nxt_width: %d", g_state->figure.next_figure_width);
 
-  for (int i = 0; i < g_state->figure.next_figure_height; i++) {
-    for (int j = 0; j < g_state->figure.next_figure_width; j++) {
-      if (g_state->figure.next_figure[i][j] == 1) {
-        mvwprintw(next, i + 2 + g_state->figure.next_figure_height,
-                  (j + 2 + NEXT_FIELD_X / 2) +
-                      (g_state->figure.next_figure_width / 2) - 1,
-                  "#");
-      }
-    }
-  }
+  // for (int i = 0; i < g_state->figure.next_figure_height; i++) {
+  //   for (int j = 0; j < g_state->figure.next_figure_width; j++) {
+  //     if (g_state->figure.next_figure[i][j] == 1) {
+  //       mvwprintw(next, i + 2 + g_state->figure.next_figure_height,
+  //                 (j + 2 + NEXT_FIELD_X / 2) +
+  //                     (g_state->figure.next_figure_width / 2) - 1,
+  //                 "#");
+  //     }
+  //   }
+  // }
 
   wrefresh(next);
   return next;
