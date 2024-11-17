@@ -128,7 +128,7 @@ void free_field_gi(GameInfo_t *field_t) {
 
 int figures[NUM_SHAPES][4][4] = {
     // I-образная фигура
-    {{1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}},
+    {{1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
     // J -образная фигура
     {{0, 1, 0, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}},
     // L-образная фигура
@@ -285,27 +285,28 @@ int figure_max_height(Game_state_t *g_state) {
 
   int figure_height = g_state->figure.figure_height;
 
-  // if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
-  //     g_state->figure.type == Z_SHAPE || g_state->figure.type == O_SHAPE) {
-  //   figure_height = 2;
-  // } else if (g_state->figure.type == J_SHAPE ||
-  //            g_state->figure.type == L_SHAPE) {
-  //   figure_height = 3;
-  // } else if (g_state->figure.type == I_SHAPE) {
-  //   figure_height = 4;
-  // }
-
   if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
-      g_state->figure.type == Z_SHAPE) {
-    figure_height = 3;
+      g_state->figure.type == Z_SHAPE || g_state->figure.type == O_SHAPE) {
+    figure_height = 2;
   } else if (g_state->figure.type == J_SHAPE ||
              g_state->figure.type == L_SHAPE) {
     figure_height = 3;
   } else if (g_state->figure.type == I_SHAPE) {
-    figure_height = 4;
-  } else if (g_state->figure.type == O_SHAPE) {
-    figure_height = 2;
+    figure_height = 1;
   }
+
+  // square aura
+  //   if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
+  //       g_state->figure.type == Z_SHAPE) {
+  //     figure_height = 3;
+  //   } else if (g_state->figure.type == J_SHAPE ||
+  //              g_state->figure.type == L_SHAPE) {
+  //     figure_height = 3;
+  //   } else if (g_state->figure.type == I_SHAPE) {
+  //     figure_height = 4;
+  //   } else if (g_state->figure.type == O_SHAPE) {
+  //     figure_height = 2;
+  //   }
 
   return figure_height;
 }
@@ -315,28 +316,29 @@ int figure_max_width(Game_state_t *g_state) {
 
   int figure_width = g_state->figure.figure_width;
 
-  // if (g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE ||
-  //     g_state->figure.type == O_SHAPE) {
-  //   figure_width = 2;
-  // } else if (g_state->figure.type == I_SHAPE) {
-  //   figure_width = 1;
-  // } else if (g_state->figure.type == T_SHAPE ||
-  //            g_state->figure.type == S_SHAPE ||
-  //            g_state->figure.type == Z_SHAPE) {
-  //   figure_width = 3;
-  // }
-
-  if (g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE) {
-    figure_width = 3;
+  if (g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE ||
+      g_state->figure.type == O_SHAPE) {
+    figure_width = 2;
   } else if (g_state->figure.type == I_SHAPE) {
     figure_width = 4;
   } else if (g_state->figure.type == T_SHAPE ||
              g_state->figure.type == S_SHAPE ||
              g_state->figure.type == Z_SHAPE) {
     figure_width = 3;
-  } else if (g_state->figure.type == O_SHAPE) {
-    figure_width = 2;
   }
+
+  // square aura
+  // if (g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE) {
+  //   figure_width = 3;
+  // } else if (g_state->figure.type == I_SHAPE) {
+  //   figure_width = 4;
+  // } else if (g_state->figure.type == T_SHAPE ||
+  //            g_state->figure.type == S_SHAPE ||
+  //            g_state->figure.type == Z_SHAPE) {
+  //   figure_width = 3;
+  // } else if (g_state->figure.type == O_SHAPE) {
+  //   figure_width = 2;
+  // }
 
   return figure_width;
 }
@@ -451,6 +453,12 @@ bool bottom_figure_collision(Game_state_t *g_state) {
       {
         f_collision = true;
       }
+
+      // if ((g_state->field) && (y < ROWS_GAME - 1) &&
+      //     g_state->field->field[y][x] == 1 &&
+      //     g_state->figure.figure[g_state->figure.type][i][j]) {
+      //   f_collision = true;
+      // }
     }
   }
 
@@ -507,7 +515,7 @@ void figure_to_field(Game_state_t *g_state) {
         g_state->field->field[field_y][field_x] = 1;
       }
 
-      // // показать ауру вокруг фигуры
+      // // // показать ауру вокруг фигуры
       // if (g_state->figure.figure[type][i][j] == 0 && g_state->field) {
       //   g_state->field->field[field_y][field_x] = 3;
       // }
@@ -674,7 +682,8 @@ void move_left(Game_state_t *g_state) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      if (g_state->field && g_state->field->field[field_y][field_x - 1] == 1) {
+      if (g_state->field && g_state->field->field[field_y][field_x - 1] == 1 &&
+          g_state->figure.figure[g_state->figure.type][i][j] == 1) {
         figure_collision = true;
       }
     }
@@ -707,7 +716,8 @@ void move_right(Game_state_t *g_state) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      if (g_state->field && g_state->field->field[field_y][field_x + 1] == 1) {
+      if (g_state->field && g_state->field->field[field_y][field_x + 1] == 1 &&
+          g_state->figure.figure[g_state->figure.type][i][j] == 1) {
         figure_collision = true;
       }
     }
