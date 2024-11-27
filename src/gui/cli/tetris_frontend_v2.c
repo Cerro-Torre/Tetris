@@ -333,10 +333,14 @@ WINDOW *next_display(Game_state_t *g_state) {
   //     mvwprintw(next, 1, 1, "next_type: ?");
   // }
 
+  mvwprintw(next, 1, 1, "cur_height: %d", g_state->figure.figure_height);
+  mvwprintw(next, 2, 1, "cur_width: %d", g_state->figure.figure_width);
+
   mvwprintw(next, 3, 1, "x: %d", g_state->figure.x);
   mvwprintw(next, 4, 1, "y: %d", g_state->figure.y);
   mvwprintw(next, 5, 1, "height: %d", figure_max_height(g_state));
   mvwprintw(next, 6, 1, "width: %d", figure_max_width(g_state));
+  mvwprintw(next, 7, 1, "type: %d", g_state->figure.type);
 
   // mvwprintw(next, 7, 1, "nxt_x: %d", g_state->figure.next_x);
   // mvwprintw(next, 8, 1, "nxt_y: %d", g_state->figure.next_y);

@@ -94,6 +94,7 @@ void collapse_full_lines(Game_state_t *g_state);
 
 void shift_lines(Game_state_t *g_state, int i);
 
+// void rotate_figure(Game_state_t *g_state, int direction);
 void rotate_figure(Game_state_t *g_state);
 
 void fill_top_line(Game_state_t *g_state);
