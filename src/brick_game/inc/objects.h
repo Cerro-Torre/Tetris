@@ -47,21 +47,21 @@ typedef enum {
   NUM_SHAPES
 } ShapeType;
 
-typedef enum {
-  I_SHAPE_90 = 8,
-  J_SHAPE_90,
-  J_SHAPE_180,
-  J_SHAPE_270,
-  L_SHAPE_90,
-  L_SHAPE_180,
-  L_SHAPE_270,
-  S_SHAPE_90,
-  T_SHAPE_90,
-  T_SHAPE_180,
-  T_SHAPE_270,
-  Z_SHAPE_90,
-  ROTATED_SHAPES
-} RotatedShapeType;
+// typedef enum {
+//   I_SHAPE_90 = 8,
+//   J_SHAPE_90,
+//   J_SHAPE_180,
+//   J_SHAPE_270,
+//   L_SHAPE_90,
+//   L_SHAPE_180,
+//   L_SHAPE_270,
+//   S_SHAPE_90,
+//   T_SHAPE_90,
+//   T_SHAPE_180,
+//   T_SHAPE_270,
+//   Z_SHAPE_90,
+//   ROTATED_SHAPES
+// } RotatedShapeType;
 
 typedef enum {
   COLLISION_LEFT = 1,
@@ -85,6 +85,7 @@ typedef struct {
   int figure_height;
   int figure_width;
   int type;
+  bool rotated;
   int next_x;
   int next_y;
   int **next_figure;

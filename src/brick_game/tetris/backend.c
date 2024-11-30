@@ -184,95 +184,95 @@ int figures[NUM_SHAPES][4][4] = {
 
 };
 
-int rotated_figures[ROTATED_SHAPES][4][4] = {
+// int rotated_figures[ROTATED_SHAPES][4][4] = {
 
-    // I-образная фигура, повернутая на 90 градусов
-    {
-        {1, 0, 0, 0},
-        {1, 0, 0, 0},
-        {1, 0, 0, 0},
-        {1, 0, 0, 0},
-    },
-    // J-образная фигура, повернутая на 90 градусов
-    {
-        {1, 0, 0, 0},
-        {1, 1, 1, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-    },
-    // J-образная фигура, повернутая на 180 градусов
-    {
-        {1, 1, 0, 0},
-        {1, 0, 0, 0},
-        {1, 0, 0, 0},
-        {0, 0, 0, 0},
-    },
-    // J-образная фигура, повернутая на 270 градусов
-    {
-        {1, 1, 1, 0},
-        {0, 0, 1, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-    },
-    // L-образная фигура, повернутая на 90 градусов
-    {
-        {1, 1, 1, 0},
-        {1, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-    },
-    // L-образная фигура, повернутая на 180 градусов
-    {
-        {1, 1, 0, 0},
-        {0, 1, 0, 0},
-        {0, 1, 0, 0},
-        {0, 0, 0, 0},
-    },
-    // L-образная фигура, повернутая на 270 градусов
-    {
-        {0, 0, 1, 0},
-        {1, 1, 1, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-    },
-    // S - образная фигура, повернутая на 90 градусов
-    {
-        {1, 0, 0, 0},
-        {1, 1, 0, 0},
-        {0, 1, 0, 0},
-        {0, 0, 0, 0},
-    },
-    // T-образная фигура, повернутая на 90 градусов
-    {
-        {1, 0, 0, 0},
-        {1, 1, 0, 0},
-        {1, 0, 0, 0},
-        {0, 0, 0, 0},
-    },
+//     // I-образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 0, 0, 0},
+//         {1, 0, 0, 0},
+//         {1, 0, 0, 0},
+//         {1, 0, 0, 0},
+//     },
+//     // J-образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 0, 0, 0},
+//         {1, 1, 1, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // J-образная фигура, повернутая на 180 градусов
+//     {
+//         {1, 1, 0, 0},
+//         {1, 0, 0, 0},
+//         {1, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // J-образная фигура, повернутая на 270 градусов
+//     {
+//         {1, 1, 1, 0},
+//         {0, 0, 1, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // L-образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 1, 1, 0},
+//         {1, 0, 0, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // L-образная фигура, повернутая на 180 градусов
+//     {
+//         {1, 1, 0, 0},
+//         {0, 1, 0, 0},
+//         {0, 1, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // L-образная фигура, повернутая на 270 градусов
+//     {
+//         {0, 0, 1, 0},
+//         {1, 1, 1, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // S - образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 0, 0, 0},
+//         {1, 1, 0, 0},
+//         {0, 1, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // T-образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 0, 0, 0},
+//         {1, 1, 0, 0},
+//         {1, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
 
-    // T-образная фигура, повернутая на 180 градусов
-    {
-        {1, 1, 1, 0},
-        {0, 1, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-    },
+//     // T-образная фигура, повернутая на 180 градусов
+//     {
+//         {1, 1, 1, 0},
+//         {0, 1, 0, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
 
-    // T-образная фигура, повернутая на 270 градусов
-    {
-        {0, 1, 0, 0},
-        {1, 1, 0, 0},
-        {0, 1, 0, 0},
-        {0, 0, 0, 0},
-    },
-    // Z-образная фигура, повернутая на 90 градусов
-    {
-        {0, 1, 0, 0},
-        {1, 1, 0, 0},
-        {1, 0, 0, 0},
-        {0, 0, 0, 0},
-    },
-};
+//     // T-образная фигура, повернутая на 270 градусов
+//     {
+//         {0, 1, 0, 0},
+//         {1, 1, 0, 0},
+//         {0, 1, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // Z-образная фигура, повернутая на 90 градусов
+//     {
+//         {0, 1, 0, 0},
+//         {1, 1, 0, 0},
+//         {1, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+// };
 
 int init_next_figure(Game_state_t *g_state) {
   g_state = get_game_state();
@@ -428,17 +428,17 @@ int figure_max_height(Game_state_t *g_state) {
   }
 
   // square aura
-  //   if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
-  //       g_state->figure.type == Z_SHAPE) {
-  //     figure_height = 3;
-  //   } else if (g_state->figure.type == J_SHAPE ||
-  //              g_state->figure.type == L_SHAPE) {
-  //     figure_height = 3;
-  //   } else if (g_state->figure.type == I_SHAPE) {
-  //     figure_height = 4;
-  //   } else if (g_state->figure.type == O_SHAPE) {
-  //     figure_height = 2;
-  //   }
+  // if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
+  //     g_state->figure.type == Z_SHAPE) {
+  //   figure_height = 3;
+  // } else if (g_state->figure.type == J_SHAPE ||
+  //            g_state->figure.type == L_SHAPE) {
+  //   figure_height = 3;
+  // } else if (g_state->figure.type == I_SHAPE) {
+  //   figure_height = 4;
+  // } else if (g_state->figure.type == O_SHAPE) {
+  //   figure_height = 2;
+  // }
 
   return figure_height;
 }
@@ -534,28 +534,41 @@ int border_collision(Game_state_t *g_state) {
 
   // real_figure_height = trim_figure_height(g_state);
 
-  if ((x < 1)) {
+  if (x < 1) {
     collision = COLLISION_LEFT;
   }
 
-  if (x + figure_max_width(g_state) - 1 >= 9) {
+  // if (x + figure_max_width(g_state) - 1 >= 9) {
+  //   collision = COLLISION_RIGHT;
+  // }
+
+  if (x + g_state->figure.figure_width - 1 >= 9) {
     collision = COLLISION_RIGHT;
   }
 
-  if (y + figure_max_height(g_state) >= ROWS_GAME) {
-    collision = COLLISION_DOWN;
-  }
-
-  // if (y + real_figure_height >= ROWS_GAME) {
+  // if (y + figure_max_height(g_state) >= ROWS_GAME) {
   //   collision = COLLISION_DOWN;
   // }
 
-  if ((y + figure_max_height(g_state) >= ROWS_GAME) && (x < 1)) {
+  if (y + g_state->figure.figure_height >= ROWS_GAME) {
+    collision = COLLISION_DOWN;
+  }
+
+  //  if ((y + figure_max_height(g_state) >= ROWS_GAME) && (x < 1)) {
+  //   collision = COLLISION_DL;
+  // }
+
+  if ((y + g_state->figure.figure_height >= ROWS_GAME) && (x < 1)) {
     collision = COLLISION_DL;
   }
 
-  if ((y + figure_max_height(g_state) >= ROWS_GAME) &&
-      (x + figure_max_width(g_state) - 1 >= 9)) {
+  // if ((y + figure_max_height(g_state) >= ROWS_GAME) &&
+  //     (x + figure_max_width(g_state) - 1 >= 9)) {
+  //   collision = COLLISION_DR;
+  // }
+
+  if ((y + g_state->figure.figure_height >= ROWS_GAME) &&
+      (x + g_state->figure.figure_width - 1 >= 9)) {
     collision = COLLISION_DR;
   }
 
@@ -566,8 +579,12 @@ bool bottom_figure_collision(Game_state_t *g_state) {
   g_state = get_game_state();
   // GameInfo_t g_info = updateCurrentState(g_state);
 
-  int figure_height = figure_max_height(g_state);
-  int figure_width = figure_max_width(g_state);
+  // int figure_height = figure_max_height(g_state);
+  // int figure_width = figure_max_width(g_state);
+
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
+
   // int type = g_state->figure.type;
 
   bool f_collision = false;
@@ -577,7 +594,13 @@ bool bottom_figure_collision(Game_state_t *g_state) {
       int y = i + g_state->figure.y;
       int x = j + g_state->figure.x;
 
-      if ((g_state->field) && (y < ROWS_GAME - 1) &&
+      if (
+          // (g_state->field) && (y < ROWS_GAME - 1) &&
+          //   g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
+          //   (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
+          //   (g_state->field->field[y + 1][x] == 1))
+
+          (g_state->field) && (y < ROWS_GAME - 1) &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
           (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
           (g_state->field->field[y + 1][x] == 1))
@@ -633,12 +656,6 @@ void figure_to_field(Game_state_t *g_state) {
   // int figure_height = 4;
   // int figure_width = 4;
 
-  // if (type != 6) {
-  //   type = g_state->figure.type + 1;
-  // } else {
-  //   type = 1;
-  // }
-
   // g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE ||
 
   for (int i = 0; i < figure_height; i++) {
@@ -649,10 +666,18 @@ void figure_to_field(Game_state_t *g_state) {
       if (g_state->field && (g_state->figure.figure[type][i][j] == 1)) {
         g_state->field->field[field_y][field_x] = 1;
       }
+      // else {
+      //   g_state->field->field[field_y][field_x] = 3;
+      // }
 
-      // // // показать ауру вокруг фигуры
+      // // показать ауру вокруг фигуры
       // if (g_state->figure.figure[type][i][j] == 0 && g_state->field) {
       //   g_state->field->field[field_y][field_x] = 3;
+      // }
+
+      // if (g_state->field) {
+      //   g_state->field->field[field_y][field_x] =
+      //       g_state->figure.figure[type][i][j];
       // }
     }
   }
@@ -677,11 +702,22 @@ void clear_figure(Game_state_t *g_state) {
 
       // очистить текущую фигуру
       if (g_state->field &&
-          g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
+          (g_state->figure.figure[g_state->figure.type][i][j] == 1) &&
           (g_state->field->field[field_y][field_x] == 1 ||
            g_state->field->field[field_y][field_x] == 3)) {
         g_state->field->field[field_y][field_x] = 0;
       }
+
+      // if (g_state->field &&
+      //     g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
+      //     (g_state->field->field[field_y][field_x] == 1)) {
+      //   g_state->field->field[field_y][field_x] = 0;
+      // }
+
+      // if (g_state->field &&
+      //     (g_state->figure.figure[g_state->figure.type][i][j] != 0)) {
+      //   g_state->field->field[field_y][field_x] = 0;
+      // }
     }
   }
 }
@@ -772,6 +808,7 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
   g_state = get_game_state();
 
   g_state->figure.type = g_state->figure.next_type;
+  g_state->figure.rotated = false;
 
   int figure_height = figure_max_height(g_state);
   int figure_width = figure_max_width(g_state);
@@ -816,8 +853,11 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
 void move_left(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  int figure_height = figure_max_height(g_state);
-  int figure_width = figure_max_width(g_state);
+  // int figure_height = figure_max_height(g_state);
+  // int figure_width = figure_max_width(g_state);
+
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
 
   bool figure_collision = false;
 
@@ -848,8 +888,11 @@ void move_right(Game_state_t *g_state) {
 
   // bool fig_on_the_right = right_figure_collision(g_state);
 
-  int figure_width = figure_max_width(g_state);
-  int figure_height = figure_max_height(g_state);
+  // int figure_width = figure_max_width(g_state);
+  // int figure_height = figure_max_height(g_state);
+
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
 
   bool figure_collision = false;
 
@@ -1141,190 +1184,226 @@ void rotate_figure(Game_state_t *g_state) {
 
   clear_figure(g_state);
 
+  // g_state->figure.figure_height = figure_max_height(g_state);
+  // g_state->figure.figure_width = figure_max_width(g_state);
+
+  int figure_height = 0;
+  int figure_width = 0;
+
+  // square aura
+  if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
+      g_state->figure.type == Z_SHAPE) {
+    figure_height = 3;
+  } else if (g_state->figure.type == J_SHAPE ||
+             g_state->figure.type == L_SHAPE) {
+    figure_height = 3;
+  } else if (g_state->figure.type == I_SHAPE) {
+    figure_height = 4;
+  } else if (g_state->figure.type == O_SHAPE) {
+    figure_height = 2;
+  }
+
+  // square aura
+  if (g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE) {
+    figure_width = 3;
+  } else if (g_state->figure.type == I_SHAPE) {
+    figure_width = 4;
+  } else if (g_state->figure.type == T_SHAPE ||
+             g_state->figure.type == S_SHAPE ||
+             g_state->figure.type == Z_SHAPE) {
+    figure_width = 3;
+  } else if (g_state->figure.type == O_SHAPE) {
+    figure_width = 2;
+  }
+
   // int figure_height = g_state->figure.figure_height;
   // int figure_width = g_state->figure.figure_width;
+  //
+  int temp[4][4] = {
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+  };
 
-  switch (g_state->figure.type) {
-    case I_SHAPE:
-      g_state->figure.figure_height = 4;
-      g_state->figure.figure_width = 1;
-      g_state->figure.type = I_SHAPE_90;
+  // if (figure_height > figure_width && g_state->figure.type != I_SHAPE) {
+  //   figure_width++;
+  //   // g_state->figure.figure_width = figure_width;
+  // } else {
+  //   figure_height++;
+  //   // g_state->figure.figure_height = figure_height;
+  // }
 
-      for (int i = 0; i < g_state->figure.figure_height; i++) {
-        for (int j = 0; j < g_state->figure.figure_width; j++) {
-          g_state->figure.figure[g_state->figure.type][i][j] =
-              rotated_figures[g_state->figure.type][i][j];
+  // Copy the original figure to the temp array
+  if (g_state->figure.type != I_SHAPE) {
+    for (int i = 0; i < figure_height; i++) {
+      for (int j = 0; j < figure_width; j++) {
+        if (g_state->figure.figure[g_state->figure.type][i][j] == 1) {
+          // temp[i][j] = g_state->figure.figure[g_state->figure.type][i][j];
+
+          temp[j][figure_height - i - 1] =
+              g_state->figure.figure[g_state->figure.type][i][j];
         }
-        break;
-
-        case I_SHAPE_90:
-          g_state->figure.figure_height = 1;
-          g_state->figure.figure_width = 4;
-          g_state->figure.type = I_SHAPE;
-
-          for (int i = 0; i < g_state->figure.figure_height; i++) {
-            for (int j = 0; j < g_state->figure.figure_width; j++) {
-              g_state->figure.figure[g_state->figure.type][i][j] =
-                  figures[g_state->figure.type][i][j];
-            }
-            break;
-          }
-
-        default:
-          break;
+        // else {
+        //   temp[j][figure_height - i - 1] = 3;
+        // }
       }
+    }
+  }
 
-      // int temp[4][4] = {
-      //     {0, 0, 0, 0},
-      //     {0, 0, 0, 0},
-      //     {0, 0, 0, 0},
-      //     {0, 0, 0, 0},
-      // };
+  // Rotate the figure clockwise
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      // g_state->figure.figure[g_state->figure.type][j][figure_height - i - 1]
+      // =
+      //     temp[i][j];
 
-      // if (figure_height > figure_width && g_state->figure.type != I_SHAPE) {
-      //   figure_width++;
-      // } else {
-      //   figure_height++;
-      // }
+      g_state->figure.figure[g_state->figure.type][i][j] = temp[i][j];
+    }
+  }
 
-      // // Copy the original figure to the temp array
-      // for (int i = 0; i < figure_height; i++) {
-      //   for (int j = 0; j < figure_width; j++) {
-      //     if (g_state->figure.figure[g_state->figure.type][i][j] == 1) {
-      //       temp[i][j] = g_state->figure.figure[g_state->figure.type][i][j];
-      //     } else {
-      //       temp[i][j] = 3;
-      //     }
-      //   }
-      // }
+  // g_state->figure.figure_height = figure_max_height(g_state);
+  // g_state->figure.figure_width = figure_max_width(g_state);
 
-      // // Rotate the figure clockwise
-      // for (int i = 0; i < figure_height; i++) {
-      //   for (int j = 0; j < figure_width; j++) {
-      //     g_state->figure.figure[g_state->figure.type][j][figure_height - i -
-      //     1]
-      //     =
-      //         temp[i][j];
-      //   }
-      // }
+  // for (int i = 0; i < figure_height; i++) {
+  //   int column_is_empty = 0;
+  //   for (int j = 0; j < figure_width; j++) {
+  //     if (g_state->figure.figure[g_state->figure.type][i][j] == 0 && j !=
+  //     0
+  //     &&
+  //         j != figure_width - 1) {
+  //       column_is_empty++;
+  //       i++;
+  //     }
+  //   }
 
-      // g_state->figure.figure_height = figure_max_height(g_state);
-      // g_state->figure.figure_width = figure_max_width(g_state);
+  //   if (column_is_empty == figure_height - 1) {
+  //     figure_width--;
+  //   }
+  // }
 
-      // for (int i = 0; i < figure_height; i++) {
-      //   int column_is_empty = 0;
-      //   for (int j = 0; j < figure_width; j++) {
-      //     if (g_state->figure.figure[g_state->figure.type][i][j] == 0 && j !=
-      //     0
-      //     &&
-      //         j != figure_width - 1) {
-      //       column_is_empty++;
-      //       i++;
-      //     }
-      //   }
+  // int row_is_empty = 0;
+  // for (int i = 0; i < figure_height; i++) {
+  //   for (int j = 0; j < figure_width; j++) {
+  //     if (g_state->figure.figure[g_state->figure.type][i][j] != 1) {
+  //       row_is_empty++;
+  //     }
+  //   }
+  // }
 
-      //   if (column_is_empty == figure_height - 1) {
-      //     figure_width--;
-      //   }
-      // }
+  // _____________________
+  // if (direction % 2 == 0) {
+  //   int swap = g_state->figure.figure_height;
+  //   g_state->figure.figure_height = figure_width;
+  //   g_state->figure.figure_width = swap;
+  // }
 
-      // int row_is_empty = 0;
-      // for (int i = 0; i < figure_height; i++) {
-      //   for (int j = 0; j < figure_width; j++) {
-      //     if (g_state->figure.figure[g_state->figure.type][i][j] != 1) {
-      //       row_is_empty++;
-      //     }
-      //   }
-      // }
+  // g_state->figure.figure_height = figure_height;
+  // g_state->figure.figure_width = figure_width;
 
-      // _____________________
-      // if (direction % 2 == 0) {
-      //   int swap = g_state->figure.figure_height;
-      //   g_state->figure.figure_height = figure_width;
-      //   g_state->figure.figure_width = swap;
-      // }
+  // // Update the figure's height and width
+  // if (figure_height > figure_width && g_state->figure.type != I_SHAPE &&
+  //     g_state->figure.type != O_SHAPE) {
+  //   figure_width++;
+  // } else if (g_state->figure.type != I_SHAPE &&
+  //            g_state->figure.type != O_SHAPE) {
+  //   figure_height++;
+  // }
 
-      // g_state->figure.figure_height = figure_height;
-      // g_state->figure.figure_width = figure_width;
+  // switch (g_state->figure.type) {
+  //   case Z_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
 
-      // // Update the figure's height and width
-      // if (figure_height > figure_width && g_state->figure.type != I_SHAPE &&
-      //     g_state->figure.type != O_SHAPE) {
-      //   figure_width++;
-      // } else if (g_state->figure.type != I_SHAPE &&
-      //            g_state->figure.type != O_SHAPE) {
-      //   figure_height++;
-      // }
+  //   case S_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
 
-      // switch (g_state->figure.type) {
-      //   case Z_SHAPE:
-      //     if (direction % 2 == 0) {
-      //       g_state->figure.figure_height = 2;
-      //       g_state->figure.figure_width = 3;
-      //     } else {
-      //       g_state->figure.figure_height = 3;
-      //       g_state->figure.figure_width = 2;
-      //     }
-      //     break;
+  //   case T_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
 
-      //   case S_SHAPE:
-      //     if (direction % 2 == 0) {
-      //       g_state->figure.figure_height = 2;
-      //       g_state->figure.figure_width = 3;
-      //     } else {
-      //       g_state->figure.figure_height = 3;
-      //       g_state->figure.figure_width = 2;
-      //     }
-      //     break;
+  //   case L_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
 
-      //   case T_SHAPE:
-      //     if (direction % 2 == 0) {
-      //       g_state->figure.figure_height = 2;
-      //       g_state->figure.figure_width = 3;
-      //     } else {
-      //       g_state->figure.figure_height = 3;
-      //       g_state->figure.figure_width = 2;
-      //     }
-      //     break;
+  //   case J_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
+  //   default:
+  //     break;
+  // }
 
-      //   case L_SHAPE:
-      //     if (direction % 2 == 0) {
-      //       g_state->figure.figure_height = 2;
-      //       g_state->figure.figure_width = 3;
-      //     } else {
-      //       g_state->figure.figure_height = 3;
-      //       g_state->figure.figure_width = 2;
-      //     }
-      //     break;
+  // // Draw the rotated figure on the field
+  // for (int i = 0; i < figure_height; i++) {
+  //   for (int j = 0; j < figure_width; j++) {
+  //     int x = g_state->figure.x + j;
+  //     int y = g_state->figure.y + i;
 
-      //   case J_SHAPE:
-      //     if (direction % 2 == 0) {
-      //       g_state->figure.figure_height = 2;
-      //       g_state->figure.figure_width = 3;
-      //     } else {
-      //       g_state->figure.figure_height = 3;
-      //       g_state->figure.figure_width = 2;
-      //     }
-      //     break;
-      //   default:
-      //     break;
-      // }
+  //     // if (g_state->figure.figure[g_state->figure.type][i][j] == 1) {
+  //     g_state->field->field[y][x] =
+  //         g_state->figure.figure[g_state->figure.type][i][j];
+  //     // } else {
+  //     //   g_state->field->field[y][x] = 3;
+  //     // }
+  //     // g_state->field->field[y][x] = temp[i][j];
+  //   }
+  // }
 
-      // // Draw the rotated figure on the field
-      // for (int i = 0; i < g_state->figure.figure_height; i++) {
-      //   for (int j = 0; j < g_state->figure.figure_width; j++) {
-      //     int x = g_state->figure.x + j;
-      //     int y = g_state->figure.y + i;
+  // figure_to_field(g_state);
 
-      //     g_state->field->field[y][x] =
-      //         g_state->figure.figure[g_state->figure.type][i][j];
+  // g_state->figure.figure_height--;
+  // g_state->figure.figure_width--;
+  // }
 
-      //     // g_state->field->field[y][x] = temp[i][j];
-      //   }
-      // }
+  if (!g_state->figure.rotated) {
+    g_state->figure.rotated = true;
+  } else {
+    g_state->figure.rotated = false;
+  }
 
-      // g_state->figure.figure_height--;
-      // g_state->figure.figure_width--;
+  if (!g_state->figure.rotated) {
+    g_state->figure.figure_height = figure_max_height(g_state);
+    g_state->figure.figure_width = figure_max_width(g_state);
+  } else {
+    g_state->figure.figure_height = figure_max_width(g_state);
+    g_state->figure.figure_width = figure_max_height(g_state);
+
+    // int swap = g_state->figure.figure_height;
+    // g_state->figure.figure_height = g_state->figure.figure_width;
+    // g_state->figure.figure_width = swap;
+    // g_state->figure.figure_height = figure_max_height(g_state);
+    // g_state->figure.figure_width = figure_max_width(g_state);
   }
 }
 
@@ -1333,7 +1412,7 @@ void userInput(UserAction_t action, bool hold) {
   int current_fsm_state = g_state->status.status;
   bool f_collision = bottom_figure_collision(g_state);
   int b_collision = border_collision(g_state);
-  // int action_counter = 1;
+  // bool rotated = false;
 
   (hold) ? printf("hold") : false;
 
@@ -1362,9 +1441,15 @@ void userInput(UserAction_t action, bool hold) {
           // action_counter = 1;
           figure_to_field(g_state);
         } else {
-          clear_figure(g_state);
+          // clear_figure(g_state);
           // action_counter++;
           // rotate_figure(g_state, action_counter);
+
+          // if (!rotated) {
+          //   rotated = true;
+          // } else {
+          //   rotated = false;
+          // }
           rotate_figure(g_state);
 
           figure_to_field(g_state);

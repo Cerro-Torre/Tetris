@@ -113,7 +113,7 @@ int main() {
     wrefresh(tetris);
     wrefresh(status);
     wrefresh(states_info);
-    // wrefresh(next);
+    wrefresh(next);
   }
 
   free_game(g_state);
