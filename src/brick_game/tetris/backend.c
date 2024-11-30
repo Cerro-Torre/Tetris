@@ -412,7 +412,7 @@ void finish_game(Game_state_t *g_state) {
   }
 }
 
-int figure_max_height(Game_state_t *g_state) {
+int figure_min_height(Game_state_t *g_state) {
   g_state = get_game_state();
 
   int figure_height = g_state->figure.figure_height;
@@ -443,7 +443,7 @@ int figure_max_height(Game_state_t *g_state) {
   return figure_height;
 }
 
-int figure_max_width(Game_state_t *g_state) {
+int figure_min_width(Game_state_t *g_state) {
   g_state = get_game_state();
 
   int figure_width = g_state->figure.figure_width;
@@ -478,8 +478,8 @@ int figure_max_width(Game_state_t *g_state) {
 int trim_figure_height(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  int figure_height = figure_max_height(g_state);
-  int figure_width = figure_max_width(g_state);
+  int figure_height = figure_min_height(g_state);
+  int figure_width = figure_min_width(g_state);
   int row_is_empty = 0;
 
   for (int i = 0; i < figure_height; i++) {
@@ -501,8 +501,8 @@ int trim_figure_height(Game_state_t *g_state) {
 // int trim_figure_width(Game_state_t *g_state) {
 //   g_state = get_game_state();
 
-//   int figure_height = figure_max_height(g_state);
-//   int figure_width = figure_max_width(g_state);
+//   int figure_height = figure_min_height(g_state);
+//   int figure_width = figure_min_width(g_state);
 
 //   for (int i = 0; i < figure_height; i++) {
 //     int column_is_empty = 0;
@@ -530,7 +530,7 @@ int border_collision(Game_state_t *g_state) {
   int y = g_state->figure.y;
   int collision = 0;
 
-  // int real_figure_height = figure_max_height(g_state);
+  // int real_figure_height = figure_min_height(g_state);
 
   // real_figure_height = trim_figure_height(g_state);
 
@@ -538,7 +538,7 @@ int border_collision(Game_state_t *g_state) {
     collision = COLLISION_LEFT;
   }
 
-  // if (x + figure_max_width(g_state) - 1 >= 9) {
+  // if (x + figure_min_width(g_state) - 1 >= 9) {
   //   collision = COLLISION_RIGHT;
   // }
 
@@ -546,7 +546,7 @@ int border_collision(Game_state_t *g_state) {
     collision = COLLISION_RIGHT;
   }
 
-  // if (y + figure_max_height(g_state) >= ROWS_GAME) {
+  // if (y + figure_min_height(g_state) >= ROWS_GAME) {
   //   collision = COLLISION_DOWN;
   // }
 
@@ -554,7 +554,7 @@ int border_collision(Game_state_t *g_state) {
     collision = COLLISION_DOWN;
   }
 
-  //  if ((y + figure_max_height(g_state) >= ROWS_GAME) && (x < 1)) {
+  //  if ((y + figure_min_height(g_state) >= ROWS_GAME) && (x < 1)) {
   //   collision = COLLISION_DL;
   // }
 
@@ -562,8 +562,8 @@ int border_collision(Game_state_t *g_state) {
     collision = COLLISION_DL;
   }
 
-  // if ((y + figure_max_height(g_state) >= ROWS_GAME) &&
-  //     (x + figure_max_width(g_state) - 1 >= 9)) {
+  // if ((y + figure_min_height(g_state) >= ROWS_GAME) &&
+  //     (x + figure_min_width(g_state) - 1 >= 9)) {
   //   collision = COLLISION_DR;
   // }
 
@@ -579,8 +579,8 @@ bool bottom_figure_collision(Game_state_t *g_state) {
   g_state = get_game_state();
   // GameInfo_t g_info = updateCurrentState(g_state);
 
-  // int figure_height = figure_max_height(g_state);
-  // int figure_width = figure_max_width(g_state);
+  // int figure_height = figure_min_height(g_state);
+  // int figure_width = figure_min_width(g_state);
 
   int figure_height = g_state->figure.figure_height;
   int figure_width = g_state->figure.figure_width;
@@ -600,6 +600,7 @@ bool bottom_figure_collision(Game_state_t *g_state) {
           //   (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
           //   (g_state->field->field[y + 1][x] == 1))
 
+          // тестовый вариант
           (g_state->field) && (y < ROWS_GAME - 1) &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
           (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
@@ -623,8 +624,8 @@ bool bottom_figure_collision(Game_state_t *g_state) {
 // int check_collision(Game_state_t *g_state) {
 //   g_state = get_game_state();
 
-//   // int figure_width = figure_max_width(g_state);
-//   // int figure_height = figure_max_height(g_state);
+//   // int figure_width = figure_min_width(g_state);
+//   // int figure_height = figure_min_height(g_state);
 //   // int type = g_state->figure.type;
 
 //   int collision = 0;
@@ -642,8 +643,8 @@ void figure_to_field(Game_state_t *g_state) {
   // int figure_width = g_state->figure.figure_height;
 
   int type = g_state->figure.type;
-  // int figure_height = figure_max_height(g_state);
-  // int figure_width = figure_max_width(g_state);
+  // int figure_height = figure_min_height(g_state);
+  // int figure_width = figure_min_width(g_state);
 
   int figure_height = g_state->figure.figure_height;
   int figure_width = g_state->figure.figure_width;
@@ -686,8 +687,8 @@ void figure_to_field(Game_state_t *g_state) {
 void clear_figure(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  // int figure_width = figure_max_width(g_state);
-  // int figure_height = figure_max_height(g_state);
+  // int figure_width = figure_min_width(g_state);
+  // int figure_height = figure_min_height(g_state);
 
   int figure_height = g_state->figure.figure_height;
   int figure_width = g_state->figure.figure_width;
@@ -810,8 +811,8 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
   g_state->figure.type = g_state->figure.next_type;
   g_state->figure.rotated = false;
 
-  int figure_height = figure_max_height(g_state);
-  int figure_width = figure_max_width(g_state);
+  int figure_height = figure_min_height(g_state);
+  int figure_width = figure_min_width(g_state);
 
   g_state->figure.figure_height = figure_height;
   g_state->figure.figure_width = figure_width;
@@ -853,8 +854,8 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
 void move_left(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  // int figure_height = figure_max_height(g_state);
-  // int figure_width = figure_max_width(g_state);
+  // int figure_height = figure_min_height(g_state);
+  // int figure_width = figure_min_width(g_state);
 
   int figure_height = g_state->figure.figure_height;
   int figure_width = g_state->figure.figure_width;
@@ -888,8 +889,8 @@ void move_right(Game_state_t *g_state) {
 
   // bool fig_on_the_right = right_figure_collision(g_state);
 
-  // int figure_width = figure_max_width(g_state);
-  // int figure_height = figure_max_height(g_state);
+  // int figure_width = figure_min_width(g_state);
+  // int figure_height = figure_min_height(g_state);
 
   int figure_height = g_state->figure.figure_height;
   int figure_width = g_state->figure.figure_width;
@@ -1184,8 +1185,8 @@ void rotate_figure(Game_state_t *g_state) {
 
   clear_figure(g_state);
 
-  // g_state->figure.figure_height = figure_max_height(g_state);
-  // g_state->figure.figure_width = figure_max_width(g_state);
+  // g_state->figure.figure_height = figure_min_height(g_state);
+  // g_state->figure.figure_width = figure_min_width(g_state);
 
   int figure_height = 0;
   int figure_width = 0;
@@ -1235,35 +1236,56 @@ void rotate_figure(Game_state_t *g_state) {
   // }
 
   // Copy the original figure to the temp array
-  if (g_state->figure.type != I_SHAPE) {
-    for (int i = 0; i < figure_height; i++) {
-      for (int j = 0; j < figure_width; j++) {
-        if (g_state->figure.figure[g_state->figure.type][i][j] == 1) {
-          // temp[i][j] = g_state->figure.figure[g_state->figure.type][i][j];
+  // if (g_state->figure.type != I_SHAPE) {
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      if (g_state->figure.figure[g_state->figure.type][i][j] == 1) {
+        // temp[i][j] = g_state->figure.figure[g_state->figure.type][i][j];
 
-          temp[j][figure_height - i - 1] =
-              g_state->figure.figure[g_state->figure.type][i][j];
-        }
-        // else {
-        //   temp[j][figure_height - i - 1] = 3;
-        // }
+        temp[j][figure_height - i - 1] =
+            g_state->figure.figure[g_state->figure.type][i][j];
+      } else {
+        temp[j][figure_height - i - 1] = 3;
       }
+    }
+  }
+  // }
+
+  // trimming empty figure columns
+  int empty_col = 0;
+  int col_offset = 0;
+  // int empty_row = 0;
+
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      if (temp[i][j] != 1 && j == 0) {
+        empty_col++;
+        i++;
+      } else if (temp[i][j] != 1 && j == figure_width - 1) {
+        figure_width--;
+      }
+    }
+
+    if (empty_col == figure_width) {
+      col_offset++;
     }
   }
 
   // Rotate the figure clockwise
   for (int i = 0; i < figure_height; i++) {
     for (int j = 0; j < figure_width; j++) {
-      // g_state->figure.figure[g_state->figure.type][j][figure_height - i - 1]
+      // g_state->figure.figure[g_state->figure.type][j][figure_height - i -
+      // 1]
       // =
       //     temp[i][j];
 
-      g_state->figure.figure[g_state->figure.type][i][j] = temp[i][j];
+      g_state->figure.figure[g_state->figure.type][i][j] =
+          temp[i][j + col_offset];
     }
   }
 
-  // g_state->figure.figure_height = figure_max_height(g_state);
-  // g_state->figure.figure_width = figure_max_width(g_state);
+  // g_state->figure.figure_height = figure_min_height(g_state);
+  // g_state->figure.figure_width = figure_min_width(g_state);
 
   // for (int i = 0; i < figure_height; i++) {
   //   int column_is_empty = 0;
@@ -1393,17 +1415,17 @@ void rotate_figure(Game_state_t *g_state) {
   }
 
   if (!g_state->figure.rotated) {
-    g_state->figure.figure_height = figure_max_height(g_state);
-    g_state->figure.figure_width = figure_max_width(g_state);
+    g_state->figure.figure_height = figure_min_height(g_state);
+    g_state->figure.figure_width = figure_min_width(g_state);
   } else {
-    g_state->figure.figure_height = figure_max_width(g_state);
-    g_state->figure.figure_width = figure_max_height(g_state);
+    g_state->figure.figure_height = figure_min_width(g_state);
+    g_state->figure.figure_width = figure_min_height(g_state);
 
     // int swap = g_state->figure.figure_height;
     // g_state->figure.figure_height = g_state->figure.figure_width;
     // g_state->figure.figure_width = swap;
-    // g_state->figure.figure_height = figure_max_height(g_state);
-    // g_state->figure.figure_width = figure_max_width(g_state);
+    // g_state->figure.figure_height = figure_min_height(g_state);
+    // g_state->figure.figure_width = figure_min_width(g_state);
   }
 }
 

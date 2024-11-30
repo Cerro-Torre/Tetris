@@ -230,14 +230,14 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
       break;
   }
 
-  mvwprintw(status, 11, 1, "Fig_height: %d", figure_max_height(g_state));
-  mvwprintw(status, 12, 1, "Fig_width: %d", figure_max_width(g_state));
+  mvwprintw(status, 11, 1, "Fig_height: %d", figure_min_height(g_state));
+  mvwprintw(status, 12, 1, "Fig_width: %d", figure_min_width(g_state));
 
   mvwprintw(status, 13, 1, "y+height: %d",
-            g_state->figure.y + figure_max_height(g_state));
+            g_state->figure.y + figure_min_height(g_state));
 
-  int figure_width = figure_max_width(g_state);
-  int figure_height = figure_max_height(g_state);
+  int figure_width = figure_min_width(g_state);
+  int figure_height = figure_min_height(g_state);
   for (int i = 0; i < figure_height; i++) {
     for (int j = 0; j < figure_width; j++) {
       int x = g_state->figure.x + j;
@@ -338,8 +338,8 @@ WINDOW *next_display(Game_state_t *g_state) {
 
   mvwprintw(next, 3, 1, "x: %d", g_state->figure.x);
   mvwprintw(next, 4, 1, "y: %d", g_state->figure.y);
-  mvwprintw(next, 5, 1, "height: %d", figure_max_height(g_state));
-  mvwprintw(next, 6, 1, "width: %d", figure_max_width(g_state));
+  mvwprintw(next, 5, 1, "height: %d", figure_min_height(g_state));
+  mvwprintw(next, 6, 1, "width: %d", figure_min_width(g_state));
   mvwprintw(next, 7, 1, "type: %d", g_state->figure.type);
 
   // mvwprintw(next, 7, 1, "nxt_x: %d", g_state->figure.next_x);
