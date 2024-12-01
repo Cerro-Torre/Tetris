@@ -1244,32 +1244,35 @@ void rotate_figure(Game_state_t *g_state) {
 
         temp[j][figure_height - i - 1] =
             g_state->figure.figure[g_state->figure.type][i][j];
-      } else {
-        temp[j][figure_height - i - 1] = 3;
       }
+      // else {
+      //   temp[j][figure_height - i - 1] = 3;
+      // }
     }
   }
   // }
 
-  // trimming empty figure columns
-  int empty_col = 0;
-  int col_offset = 0;
-  // int empty_row = 0;
+  // // trimming empty figure columns
+  // int empty_col = 0;
+  // int col_offset = 0;
+  // // int empty_row = 0;
 
-  for (int i = 0; i < figure_height; i++) {
-    for (int j = 0; j < figure_width; j++) {
-      if (temp[i][j] != 1 && j == 0) {
-        empty_col++;
-        i++;
-      } else if (temp[i][j] != 1 && j == figure_width - 1) {
-        figure_width--;
-      }
-    }
+  // for (int i = 0; i < figure_height; i++) {
+  //   for (int j = 0; j < figure_width; j++) {
+  //     if (temp[i][j] != 1 && j == 0) {
+  //       empty_col++;
+  //       i++;
+  //     } else if (temp[i][j] != 1 && j == figure_width - 1) {
+  //       figure_width--;
+  //     }
+  //   }
 
-    if (empty_col == figure_width) {
-      col_offset++;
-    }
-  }
+  //   if (empty_col == figure_width) {
+  //     col_offset++;
+  //   }
+  // }
+
+  clear_figure(g_state);
 
   // Rotate the figure clockwise
   for (int i = 0; i < figure_height; i++) {
@@ -1279,8 +1282,13 @@ void rotate_figure(Game_state_t *g_state) {
       // =
       //     temp[i][j];
 
-      g_state->figure.figure[g_state->figure.type][i][j] =
-          temp[i][j + col_offset];
+      // g_state->figure.figure[g_state->figure.type][i][j] =
+      //     temp[i][j + col_offset];
+      if (temp[i][j] == 1) {
+        g_state->figure.figure[g_state->figure.type][i][j] = 1;
+      } else {
+        g_state->figure.figure[g_state->figure.type][i][j] = 0;
+      }
     }
   }
 
