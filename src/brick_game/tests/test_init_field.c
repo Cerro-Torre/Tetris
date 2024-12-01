@@ -52,6 +52,25 @@ START_TEST(test_init_game_state) {
   free_game(game_state);
 }
 
+// START_TEST(test_on_pause_state) {
+//   Game_state_t g_state;
+
+//   init_game_state(&g_state, NULL);
+
+//   UserAction_t action = Pause;
+
+//   on_pause_state(&g_state, action);
+
+//   ck_assert_int_eq(g_state.status.pause, true);
+//   ck_assert_int_eq(g_state.status.status, PAUSE);
+
+//   on_pause_state(&g_state, action);
+
+//   ck_assert_int_eq(g_state.status.pause, false);
+//   ck_assert_int_eq(g_state.status.status, MOVING);
+// }
+// END_TEST
+
 END_TEST
 
 Suite *test_init_field_suite(void) {
@@ -62,11 +81,27 @@ Suite *test_init_field_suite(void) {
   tcase_add_test(tc_core, test_init_field_success);
   tcase_add_test(tc_core, test_init_field_game_info_success);
   tcase_add_test(tc_core, test_init_game_state);
+  // tcase_add_test(tc_core, test_on_pause_state);
 
   suite_add_tcase(s, tc_core);
 
   return s;
 }
+
+// int main(void) {
+//   Suite *s1 = suite_create("Core");
+//   TCase *tc1_1 = tcase_create("Core");
+//   SRunner *sr = srunner_create(s1);
+
+//   tcase_add_test(tc1_1, test_on_pause_state);
+//   suite_add_tcase(s1, tc1_1);
+
+//   srunner_run_all(sr, CK_ENV);
+//   int number_failed = srunner_ntests_failed(sr);
+//   srunner_free(sr);
+
+//   return (number_failed == 0) ? 0 : 1;
+// }
 
 int test_init_field(void) {
   Suite *s = test_init_field_suite();
