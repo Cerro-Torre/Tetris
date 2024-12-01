@@ -45,7 +45,7 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
 
-  WINDOW *status = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.2,
+  WINDOW *status = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.3,
                           yMax / 10, xMax / 2.5 + 5);
 
   box(status, 0, 0);
@@ -83,6 +83,9 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
       break;
     case GAMEOVER:
       mvwprintw(status, 8, 1, "Status: GAMEOVER");
+      break;
+    case PAUSE:
+      mvwprintw(status, 8, 1, "Status: PAUSE");
       break;
     default:
       mvwprintw(status, 8, 1, "Status: UNKNOWN");
@@ -186,7 +189,7 @@ WINDOW *next_display(GameInfo_t *g_info) {
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
 
-  WINDOW *next = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.2,
+  WINDOW *next = newwin(GAME_BORDER_HEIGHT / 2, GAME_BORDER_WIDTH * 1.3,
                         yMax / 10 + (GAME_BORDER_HEIGHT / 2), xMax / 2.5 + 5);
 
   box(next, 0, 0);

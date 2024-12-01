@@ -55,13 +55,14 @@ int main() {
     wrefresh(tetris);
     wrefresh(next);
 
-    int b_collision = border_collision(g_state);
-    int f_collision = bottom_figure_collision(g_state);
+    // int b_collision = border_collision(g_state);
+    // int f_collision = bottom_figure_collision(g_state);
+    // if (g_state->status.status == MOVING && b_collision != COLLISION_DOWN &&
+    //      b_collision != COLLISION_DL && b_collision != COLLISION_DR &&
+    //      !f_collision)
 
-    if ((g_state->status.status == MOVING && b_collision != COLLISION_DOWN &&
-         b_collision != COLLISION_DL && b_collision != COLLISION_DR &&
-         !f_collision) ||
-        g_state->status.status == START) {
+    if ((g_state->status.status == MOVING) || g_state->status.status == START ||
+        g_state->status.status == PAUSE) {
       g_state = get_game_state();
 
       next = next_display(&g_info);

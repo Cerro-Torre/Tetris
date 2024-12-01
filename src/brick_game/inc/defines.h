@@ -39,9 +39,6 @@
 #define INTRO_MESSAGE "Press \"t\" to start tetris!"
 #define INTRO_MESSAGE_LEN 28
 
-#define LEVEL_CNT 5
-#define LEVELNAME_MAX 25
-
 #define MAX_WIN_COUNT 10
 
 #define FIGURE_N 4

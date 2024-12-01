@@ -664,19 +664,21 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
       g_state->status.status = GAMEOVER;
       break;
     case Left:
-
-      if (b_collision != COLLISION_LEFT && b_collision != COLLISION_DL) {
+      if (b_collision != COLLISION_LEFT && b_collision != COLLISION_DL &&
+          g_state->status.pause == false) {
         move_left(g_state);
       }
       break;
     case Right:
-
-      if (b_collision != COLLISION_RIGHT && b_collision != COLLISION_DR) {
+      if (b_collision != COLLISION_RIGHT && b_collision != COLLISION_DR &&
+          g_state->status.pause == false) {
         move_right(g_state);
       }
       break;
     case Down:
-      move_down(g_state);
+      if (g_state->status.pause == false) {
+        move_down(g_state);
+      }
       break;
     case Up:
       // clear_figure(g_state);
@@ -684,13 +686,13 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
       // figure_to_field(g_state);
       break;
     case Pause:
-      g_state->status.pause = !g_state->status.pause;
+      g_state->status.pause = true;
       g_state->status.status = PAUSE;
       break;
     default:
-      if (g_state->status.is_playing && !g_state->status.pause) {
-        g_state->status.status = MOVING;
-      }
+      // if (g_state->status.is_playing && !g_state->status.pause) {
+      //   g_state->status.status = MOVING;
+      // }
       break;
   }
 }
@@ -747,10 +749,10 @@ void collapse_full_lines(Game_state_t *g_state) {
     }
   }
 
-  update_score_and_level(g_state, num_full_lines);
+  update_score(g_state, num_full_lines);
 }
 
-void update_score_and_level(Game_state_t *g_state, int num_full_lines) {
+void update_score(Game_state_t *g_state, int num_full_lines) {
   g_state = get_game_state();
 
   switch (num_full_lines) {
@@ -794,7 +796,8 @@ void userInput(UserAction_t action, bool hold) {
       f_collision = bottom_figure_collision(g_state);
 
       if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
-          b_collision != COLLISION_DR && !f_collision) {
+          b_collision != COLLISION_DR && !f_collision &&
+          g_state->status.pause == false) {
         if (action != Action) {
           clear_figure(g_state);
           on_move_state(g_state, action);
@@ -809,6 +812,28 @@ void userInput(UserAction_t action, bool hold) {
       break;
     case ATTACHING:
       on_attach_state(g_state, action);
+      break;
+    case PAUSE:
+      on_pause_state(g_state, action);
+      break;
+    default:
+      break;
+  }
+}
+
+void on_pause_state(Game_state_t *g_state, UserAction_t action) {
+  g_state = get_game_state();
+
+  switch (action) {
+    case Terminate:
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+      break;
+    case Pause:
+      g_state->status.pause = !g_state->status.pause;
+      if (!g_state->status.pause) {
+        g_state->status.status = MOVING;
+      }
       break;
     default:
       break;

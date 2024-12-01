@@ -43,6 +43,7 @@ void on_start_state(Game_state_t *g_state, UserAction_t action);
 void on_spawn_state(Game_state_t *g_state, UserAction_t action);
 void on_move_state(Game_state_t *g_state, UserAction_t action);
 void on_attach_state(Game_state_t *g_state, UserAction_t action);
+void on_pause_state(Game_state_t *g_state, UserAction_t action);
 
 // ________draws________
 
@@ -73,6 +74,6 @@ void shift_lines(Game_state_t *g_state, int i);
 
 // void rotate_figure(Game_state_t *g_state);
 
-void update_score_and_level(Game_state_t *g_state, int num_full_lines);
+void update_score(Game_state_t *g_state, int num_full_lines);
 
 #endif
