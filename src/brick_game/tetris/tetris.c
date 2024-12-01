@@ -4,7 +4,6 @@ int main() {
   initscr();
   noecho();
   curs_set(0);
-  // attron(A_ALTCHARSET);
 
   WINDOW *menu = print_menu();
   wrefresh(menu);
@@ -25,9 +24,6 @@ int main() {
   refresh();
 
   GameInfo_t g_info = updateCurrentState();
-  // ;
-  // g_info = updateCurrentState();
-  // g_info = copy_game_to_gi(g_state);
 
   WINDOW *tetris = print_tetris_overlay();
   wrefresh(tetris);
@@ -41,10 +37,6 @@ int main() {
   int key2 = 0;
   WINDOW *states_info = print_states(g_state, key2);
   wrefresh(states_info);
-
-  // printw("bw status = %d\n", g_state->status.status);
-
-  // create_next_figure(g_state);
 
   wrefresh(states_info);
   wrefresh(tetris);
@@ -71,9 +63,6 @@ int main() {
          !f_collision) ||
         g_state->status.status == START) {
       g_state = get_game_state();
-      // g_info = updateCurrentState();
-      // printw("inside\n");
-      // wrefresh(states_info);
 
       next = next_display(g_state);
 
@@ -81,15 +70,6 @@ int main() {
 
       key2 = wgetch(tetris);
 
-      // if (key2 == 'l') {
-      //   move_left(g_state);
-      // }
-
-      // if (key2 == 'o') {
-      //   move_right(g_state);
-      // }
-      // int action2 = get_user_action(key2);
-      // userInput(get_user_action(key2), false);
       g_info = copy_game_to_gi(g_state);
       render_game_gi(tetris, g_info);
       wrefresh(tetris);
@@ -101,15 +81,10 @@ int main() {
     int action = get_user_action(key2);
     userInput(action, false);
 
-    // if (g_state->status.status == ATTACHING) {
-    //   printw("ATTACHING\n");
-    // }
-
     states_info = print_states(g_state, action);
     status = print_status_gi(&g_info);
     // next = next_display(g_state);
 
-    // clear_figure(g_state);
     wrefresh(tetris);
     wrefresh(status);
     wrefresh(states_info);
@@ -120,13 +95,10 @@ int main() {
   free_field_gi(&g_info);
   g_info.field = NULL;
 
-  // wattron(tetris, COLOR_RED);
   mvwprintw(tetris, 0, 3, "Game Over");
-  // wattroff(tetris, COLOR_RED);
   wgetch(tetris);
 
   delwin(status);
-  // attroff(A_ALTCHARSET);
 
   delwin(tetris);
   delwin(states_info);

@@ -40,8 +40,6 @@ START_TEST(test_init_game_state) {
   Game_state_t *game_state = get_game_state();
 
   Game_field_t field_t = {0};
-  // init_field(&field_t);
-  // game_state->field = &field_t;
 
   init_game_state(game_state, &field_t);
 
