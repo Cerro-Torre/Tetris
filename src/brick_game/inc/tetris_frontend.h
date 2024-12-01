@@ -15,7 +15,7 @@ void print_rectangle(int top_y, int bottom_y, int left_x, int right_x);
 WINDOW *print_tetris_overlay();
 WINDOW *print_status_gi(GameInfo_t *g_info);
 WINDOW *print_states(Game_state_t *g_state, int key);
-WINDOW *next_display(Game_state_t *g_state);
+WINDOW *next_display(GameInfo_t *g_info);
 
 void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info);
 // void render_game_gs(WINDOW *tetris_window, Game_state_t *g_state);

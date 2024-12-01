@@ -31,7 +31,7 @@ int main() {
   WINDOW *status = print_status_gi(&g_info);
   wrefresh(status);
 
-  WINDOW *next = next_display(g_state);
+  WINDOW *next = next_display(&g_info);
   wrefresh(next);
 
   int key2 = 0;
@@ -49,7 +49,7 @@ int main() {
     g_state = get_game_state();
     g_info = updateCurrentState();
     g_info = copy_game_to_gi(g_state);
-    next = next_display(g_state);
+    next = next_display(&g_info);
 
     render_game_gi(tetris, g_info);
     wrefresh(tetris);
@@ -64,7 +64,7 @@ int main() {
         g_state->status.status == START) {
       g_state = get_game_state();
 
-      next = next_display(g_state);
+      next = next_display(&g_info);
 
       wrefresh(next);
 

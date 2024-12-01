@@ -70,7 +70,7 @@ void init_game_info(GameInfo_t *g_info) {
   g_info->field = NULL;
   init_field_gi(g_info);
 
-  g_info->next = NULL;
+  // g_info->next = NULL;
   init_array(4, 4, g_info->next);
 
   g_info->score = 0;
@@ -476,8 +476,7 @@ GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
   g_info.level = g_state->stats.level;
   g_info.speed = g_state->stats.speed;
   g_info.pause = g_state->status.pause;
-  // segfault
-  // g_info.next = g_state->figure.next_figure;
+  g_info.next = g_state->figure.next_figure;
 
   int error_on_field_init = init_field_gi(&g_info);
   if (!error_on_field_init && g_state->field) {

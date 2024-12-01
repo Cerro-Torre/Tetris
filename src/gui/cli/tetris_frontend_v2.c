@@ -181,7 +181,7 @@ void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
   wrefresh(tetris_window);
 }
 
-WINDOW *next_display(Game_state_t *g_state) {
+WINDOW *next_display(GameInfo_t *g_info) {
   int yMax = 0;
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
@@ -192,14 +192,13 @@ WINDOW *next_display(Game_state_t *g_state) {
   box(next, 0, 0);
 
   wrefresh(next);
-
-  for (int i = 0; i < g_state->figure.next_figure_height; i++) {
-    for (int j = 0; j < g_state->figure.next_figure_width; j++) {
-      if (g_state->figure.next_figure[i][j] == 1) {
-        mvwprintw(next, i + 2 + g_state->figure.next_figure_height,
-                  (j + 2 + NEXT_FIELD_X / 2) +
-                      (g_state->figure.next_figure_width / 2) - 2,
-                  "#");
+  if (g_info->next != NULL) {
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        if (g_info->next[i][j] == 1) {
+          mvwprintw(next, i + 2 + 4, (j + 2 + NEXT_FIELD_X / 2) + (4 / 2) - 2,
+                    "#");
+        }
       }
     }
   }
