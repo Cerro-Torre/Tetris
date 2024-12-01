@@ -1,5 +1,6 @@
 CC = gcc
 CFLAGS = -std=c99 -Wall -Werror -Wextra
+GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 SRC_DIRS = gui/cli tetris
 OBJS_FSMTABLE = out/tetris.o out/backend.o out/tetris_frontend_v2.o
 LIBNAME = s21_tetris.a
@@ -10,44 +11,43 @@ VALGRIND = valgrind --track-origins=yes --tool=memcheck --leak-check=full --show
 TESTS_C = $(wildcard tests/*.c)
 TESTS_O = $(patsubst tests/%.c, tests/%.o, $(TESTS_C))
 
-
-# --log-file=$(VG_LOG_FILE)
-# out/fsm_matrix.o out/backend.o out/frontend.o
+LCOV = lcov --capture --directory . --output-file buf_coverage.info && sed '/tests\//d' buf_coverage.info > coverage.info && rm buf_coverage.info
+GENHTML = genhtml coverage.info --output-directory report
+XDG = xdg-open report/index.html
 
 $(LIBNAME): $(OBJS_FSMTABLE)
 	if [ ! -d "libs" ]; then \
-		mkdir libs; \
+	  mkdir libs; \
 	fi
 	ar rcs libs/$(LIBNAME) $^
-
-back_lib: $(OBJS_FSMTABLE)
-	ar rcs backend_lib.a $^
 
 $(GAMENAME): $(OBJS_FSMTABLE)
 	$(CC) $(CFLAGS) $^ -o $@ -lncurses
 
 out/%.o: tetris/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(GCOV_FLAGS) -c $< -o $@
 
 out/%.o: ../gui/cli/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-clean:
-	rm -f out/*.o tests/*.o $(GAMENAME) test_res *.a libs/* *.out $(VG_LOG_FILE)
-	rm -rf libs
-
-rebuild:
-	make clean && make $(GAMENAME)
-
-front:
-	gcc ../gui/cli/tetris_frontend_v2.c -lncurses  -o front.out && ./front.out
-
-$(LIB_BACKEND): $(OBJS_FSMTABLE)
-	$(CC) $(CFLAGS) tetris/backend.c -o out/backend.out
+	$(CC) $(CFLAGS) $(GCOV_FLAGS) -c $< -o $@
 
 tests: $(LIBNAME) $(TESTS_O)
-	$(CC) $(CFLAGS) $(TESTS_O) -L: ./libs/$(LIBNAME) -lcheck -lsubunit -o test_res -lm
+	$(CC) $(CFLAGS) $(GCOV_FLAGS) $(TESTS_O) -L:./libs/$(LIBNAME) -o test_res -lcheck -lsubunit -lm
 	./test_res
 
 vg: tests
-	$(VALGRIND) ./test_res
+	$(VALGRIND) ./test_res  
+
+gcov_report: $(LIBNAME) $(TESTS_C)
+	mkdir -p report
+	$(CC) $(CFLAGS) $(GCOV_FLAGS) $(TESTS_C) -Llibs -l:$(LIBNAME) -o test_res -lcheck -lsubunit -lm
+	./test_res
+	$(LCOV)
+	$(GENHTML)
+	$(XDG)
+
+clean:
+	rm -f out/*.o tests/*.o $(GAMENAME) test_res *.a libs/* *.out $(VG_LOG_FILE) *.info *.gc* coverage.info
+	rm -rf libs report gcov
+
+rebuild:
+	make clean && make $(GAMENAME)

@@ -14,11 +14,8 @@ START_TEST(test_init_field_success) {
   ck_assert_ptr_nonnull(p_x);
   ck_assert_ptr_nonnull(p_y);
 
-  printf("%d %d\n", *p_x, *p_y);
-
   free_field(&field_t);
   ck_assert_ptr_eq(field_t.field, NULL);
-  printf("%d %d\n", *p_x, *p_y);
 }
 END_TEST
 
@@ -47,16 +44,12 @@ START_TEST(test_init_game_state) {
 
   ck_assert_ptr_ne(game_state, NULL);
   ck_assert_ptr_ne(game_state->field, NULL);
-  ck_assert_int_lt(game_state->figure.type, 5);
+  ck_assert_int_lt(game_state->figure.type, 7);
   ck_assert_int_eq(game_state->status.is_playing, 0);
   ck_assert_int_eq(game_state->stats.score, 0);
 
-  int *p_x = &field_t.x;
-  int *p_y = &field_t.y;
-  printf("%d %d\n", *p_x, *p_y);
-
   // free_field(game_state->field);
-  free_game(game_state, game_state->field);
+  free_game(game_state);
 }
 
 END_TEST
