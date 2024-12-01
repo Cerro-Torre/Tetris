@@ -42,8 +42,51 @@ int init_field_gi(GameInfo_t *field_t) {
   return error;
 }
 
+int init_array(int rows, int cols, int **array) {
+  int error = 0;
+  array = (int **)calloc(rows, sizeof(int *));
+
+  if (array != NULL) {
+    for (int i = 0; i < rows; i++) {
+      array[i] = (int *)calloc(cols, sizeof(int));
+    }
+  } else {
+    free(array);
+    array = NULL;
+    error = 1;
+    // printf("init_field_gi error\n");
+  }
+
+  return error;
+}
+
+void free_array(int **array) {
+  if (array != NULL) {
+    for (int i = 0; i < 4; i++) {
+      free(array[i]);
+    }
+    free(array);
+
+    array = NULL;
+  }
+}
+
+void init_game_info(GameInfo_t *g_info) {
+  g_info->field = NULL;
+  init_field_gi(g_info);
+
+  g_info->next = NULL;
+  init_array(4, 4, g_info->next);
+
+  g_info->score = 0;
+  g_info->high_score = 0;
+  g_info->level = 0;
+  g_info->speed = 0;
+  g_info->pause = 0;
+}
+
 void free_field(Game_field_t *field_t) {
-  if (field_t->field != NULL) {
+  if (field_t && field_t->field != NULL) {
     for (int i = 0; i < ROWS_GAME; i++) {
       free(field_t->field[i]);
     }
@@ -56,14 +99,14 @@ void free_field(Game_field_t *field_t) {
   }
 }
 
-void free_next_figure(Figure_t *figure_t) {
-  if (figure_t->next_figure != NULL) {
-    for (int i = 0; i < figure_t->next_figure_height; i++) {
-      free(figure_t->next_figure[i]);
+void free_next_figure(int **figure_t) {
+  if (figure_t != NULL) {
+    for (int i = 0; i < 4; i++) {
+      free(figure_t[i]);
     }
-    free(figure_t->next_figure);
+    free(figure_t);
 
-    figure_t->next_figure = NULL;
+    figure_t = NULL;
   }
 }
 
@@ -71,17 +114,6 @@ GameInfo_t updateCurrentState() {
   static GameInfo_t g_info = {0};
   return g_info;
 }
-
-// void free_next_figure_gi(GameInfo_t *g_info) {
-//   if (g_info->next != NULL) {
-//     for (int i = 0; i < ROWS_GAME; i++) {
-//       free(g_info->next[i]);
-//     }
-//     free(g_info->next);
-
-//     g_info->next = NULL;
-//   }
-// }
 
 void free_field_gi(GameInfo_t *field_t) {
   if (field_t->field != NULL) {
@@ -96,86 +128,202 @@ void free_field_gi(GameInfo_t *field_t) {
 
 int figures[NUM_SHAPES][4][4] = {
     // I-образная фигура
-    {{1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}},
+    {
+        {1, 1, 1, 1},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+    },
+
     // J -образная фигура
-    {{0, 1, 0, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}},
+    {
+        {0, 1, 0, 0},
+        {0, 1, 0, 0},
+        {1, 1, 0, 0},
+        {0, 0, 0, 0},
+    },
+
     // L-образная фигура
-    {{1, 0, 0, 0}, {1, 0, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}},
+    {
+        {1, 0, 0, 0},
+        {1, 0, 0, 0},
+        {1, 1, 0, 0},
+        {0, 0, 0, 0},
+    },
+
     // O-образная фигура
-    {{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    {
+        {1, 1, 0, 0},
+        {1, 1, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+    },
     // S-образная фигура
-    {{0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    {
+        {0, 1, 1, 0},
+        {1, 1, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+    },
+
     // T-образная фигура
-    {{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}},
+    {
+        {0, 1, 0, 0},
+        {1, 1, 1, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+    },
+
     // Z-образная фигура
-    {{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
+    {
+        {1, 1, 0, 0},
+        {0, 1, 1, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+    },
 
-// int init_next_figure(Game_state_t *g_state) {
-//   g_state = get_game_state();
+};
 
-//   // srand(time(NULL));
-//   // int rnd_figure = rand() % 7;
+// int rotated_figures[ROTATED_SHAPES][4][4] = {
 
-//   // g_state->figure.next_type = rnd_figure;
-//   // g_state->figure.next_x = NEXT_FIELD_X / 2 - 2;
-//   // g_state->figure.next_y = NEXT_FIELD_Y / 2;
+//     // I-образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 0, 0, 0},
+//         {1, 0, 0, 0},
+//         {1, 0, 0, 0},
+//         {1, 0, 0, 0},
+//     },
+//     // J-образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 0, 0, 0},
+//         {1, 1, 1, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // J-образная фигура, повернутая на 180 градусов
+//     {
+//         {1, 1, 0, 0},
+//         {1, 0, 0, 0},
+//         {1, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // J-образная фигура, повернутая на 270 градусов
+//     {
+//         {1, 1, 1, 0},
+//         {0, 0, 1, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // L-образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 1, 1, 0},
+//         {1, 0, 0, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // L-образная фигура, повернутая на 180 градусов
+//     {
+//         {1, 1, 0, 0},
+//         {0, 1, 0, 0},
+//         {0, 1, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // L-образная фигура, повернутая на 270 градусов
+//     {
+//         {0, 0, 1, 0},
+//         {1, 1, 1, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // S - образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 0, 0, 0},
+//         {1, 1, 0, 0},
+//         {0, 1, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // T-образная фигура, повернутая на 90 градусов
+//     {
+//         {1, 0, 0, 0},
+//         {1, 1, 0, 0},
+//         {1, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
 
-//   g_state->figure.next_type = 1;
-//   g_state->figure.next_x = 0;
-//   g_state->figure.next_y = 0;
+//     // T-образная фигура, повернутая на 180 градусов
+//     {
+//         {1, 1, 1, 0},
+//         {0, 1, 0, 0},
+//         {0, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
 
-//   int figure_height = trim_figure_height(g_state);
-//   int figure_width = trim_figure_width(g_state);
-//   g_state->figure.figure_height = figure_height;
-//   g_state->figure.figure_height = figure_width;
+//     // T-образная фигура, повернутая на 270 градусов
+//     {
+//         {0, 1, 0, 0},
+//         {1, 1, 0, 0},
+//         {0, 1, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+//     // Z-образная фигура, повернутая на 90 градусов
+//     {
+//         {0, 1, 0, 0},
+//         {1, 1, 0, 0},
+//         {1, 0, 0, 0},
+//         {0, 0, 0, 0},
+//     },
+// };
 
-//   int error = 0;
-//   g_state->figure.next_figure = (int **)calloc(figure_height, sizeof(int *));
+int init_next_figure(Game_state_t *g_state) {
+  g_state = get_game_state();
 
-//   if (g_state->figure.next_figure != NULL) {
-//     for (int i = 0; i < g_state->figure.next_type; i++) {
-//       g_state->figure.next_figure[i] = (int *)calloc(figure_width,
-//       sizeof(int));
-//     }
-//   } else {
-//     free(g_state->figure.next_figure);
-//     g_state->figure.next_figure = NULL;
-//     error = 1;
-//     // printf("init_field_gi error\n");
-//   }
+  srand(time(NULL));
+  int rnd_figure = rand() % 6;
+  g_state->figure.next_type = rnd_figure;
 
-//   return error;
-// }
+  fill_next_figure(g_state);
+  // g_state->figure.next_type = J_SHAPE;
+  g_state->figure.next_x = 0;
+  g_state->figure.next_y = 0;
+
+  int figure_height = 4;
+  int figure_width = 4;
+  g_state->figure.next_figure_height = figure_height;
+  g_state->figure.next_figure_width = figure_width;
+
+  int error = 0;
+  g_state->figure.next_figure = (int **)calloc(figure_height, sizeof(int *));
+
+  if (g_state->figure.next_figure != NULL) {
+    for (int i = 0; i < g_state->figure.next_figure_height; i++) {
+      g_state->figure.next_figure[i] = (int *)calloc(figure_width, sizeof(int));
+    }
+  } else {
+    free(g_state->figure.next_figure);
+    g_state->figure.next_figure = NULL;
+    error = 1;
+    // printf("init_field_gi error\n");
+  }
+
+  return error;
+}
 
 void init_figure(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  srand(time(NULL));
-  int rnd_figure = rand() % 7;
+  // srand(time(NULL));
+  // int rnd_figure = rand() % 7;
 
-  // create_next_fig_size(g_state, rnd_figure);
-  // if (init_next_figure(g_state)) {
-  //   for (int i = 0; i < g_state->figure.next_figure_height; i++) {
-  //     for (int j = 0; j < g_state->figure.next_figure_width; j++) {
-  //       g_state->figure.next_figure[i][j] = 0;
-  //     }
-  //   }
-  // }
-
-  // init_next_figure(g_state);
-  // figure_t->type = (rnd_figure != 6) ? (rnd_figure = rnd_figure + 1)
-  //                                    : (rnd_figure = rnd_figure);
-
-  // g_state->figure.type = g_state->figure.next_type;
-  g_state->figure.type = rnd_figure;
-  g_state->figure.figure_height = trim_figure_height(g_state);
-  g_state->figure.figure_width = trim_figure_width(g_state);
-  g_state->figure.x = COLS_GAME / 2 - 2;
+  g_state->figure.x = 0;
   g_state->figure.y = 0;
+  g_state->figure.type = g_state->figure.next_type + 1;
+  g_state->figure.figure_height = 4;
+  g_state->figure.figure_width = 4;
 
   for (int i = 0; i < g_state->figure.figure_height; i++) {
     for (int j = 0; j < g_state->figure.figure_width; j++) {
-      g_state->figure.figure[g_state->figure.type][i][j] = 0;
+      g_state->figure.figure[g_state->figure.type][i][j] =
+          figures[g_state->figure.type][i][j];
     }
   }
 }
@@ -200,24 +348,37 @@ Game_state_t *get_game_state() {
 }
 
 // ________инициализация одной функцией________
-void init_game_state(Game_state_t *game_state, Game_field_t *field) {
-  game_state = get_game_state();
+void init_game_state(Game_state_t *g_state, Game_field_t *field) {
+  g_state = get_game_state();
 
   init_field(field);
-  game_state->field = field;
+  g_state->field = field;
 
-  init_figure(game_state);
+  int error_on_init_next = init_next_figure(g_state);
 
-  init_game_status(&game_state->status);
+  if (!error_on_init_next) {
+    init_figure(g_state);
+  }
 
-  init_game_stats(&game_state->stats);
+  init_game_status(&g_state->status);
+
+  init_game_stats(&g_state->stats);
 }
 
 // ______________
 
 void free_game(Game_state_t *g_state) {
+  g_state = get_game_state();
+  GameInfo_t g_info = updateCurrentState();
   // free_field(field);
   free_field(g_state->field);
+  g_state->field = NULL;
+
+  free_next_figure(g_state->figure.next_figure);
+  free_next_figure(g_info.next);
+
+  g_state->field = NULL;
+  g_info.next = NULL;
 
   // free_next_figure(&g_state->figure);
 
@@ -229,7 +390,7 @@ void free_game(Game_state_t *g_state) {
   g_state->figure.next_figure_width = 0;
   g_state->figure.next_type = 0;
 
-  g_state->status.status = GAMEOVER;
+  // g_state->status.status = GAMEOVER;
   g_state->status.pause = 0;
   g_state->status.win = 0;
   g_state->status.is_playing = 0;
@@ -251,7 +412,7 @@ void finish_game(Game_state_t *g_state) {
   }
 }
 
-int trim_figure_height(Game_state_t *g_state) {
+int figure_min_height(Game_state_t *g_state) {
   g_state = get_game_state();
 
   int figure_height = g_state->figure.figure_height;
@@ -263,13 +424,26 @@ int trim_figure_height(Game_state_t *g_state) {
              g_state->figure.type == L_SHAPE) {
     figure_height = 3;
   } else if (g_state->figure.type == I_SHAPE) {
-    figure_height = 4;
+    figure_height = 1;
   }
+
+  // square aura
+  // if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
+  //     g_state->figure.type == Z_SHAPE) {
+  //   figure_height = 3;
+  // } else if (g_state->figure.type == J_SHAPE ||
+  //            g_state->figure.type == L_SHAPE) {
+  //   figure_height = 3;
+  // } else if (g_state->figure.type == I_SHAPE) {
+  //   figure_height = 4;
+  // } else if (g_state->figure.type == O_SHAPE) {
+  //   figure_height = 2;
+  // }
 
   return figure_height;
 }
 
-int trim_figure_width(Game_state_t *g_state) {
+int figure_min_width(Game_state_t *g_state) {
   g_state = get_game_state();
 
   int figure_width = g_state->figure.figure_width;
@@ -278,15 +452,76 @@ int trim_figure_width(Game_state_t *g_state) {
       g_state->figure.type == O_SHAPE) {
     figure_width = 2;
   } else if (g_state->figure.type == I_SHAPE) {
-    figure_width = 1;
+    figure_width = 4;
   } else if (g_state->figure.type == T_SHAPE ||
              g_state->figure.type == S_SHAPE ||
              g_state->figure.type == Z_SHAPE) {
     figure_width = 3;
   }
 
+  // square aura
+  // if (g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE) {
+  //   figure_width = 3;
+  // } else if (g_state->figure.type == I_SHAPE) {
+  //   figure_width = 4;
+  // } else if (g_state->figure.type == T_SHAPE ||
+  //            g_state->figure.type == S_SHAPE ||
+  //            g_state->figure.type == Z_SHAPE) {
+  //   figure_width = 3;
+  // } else if (g_state->figure.type == O_SHAPE) {
+  //   figure_width = 2;
+  // }
+
   return figure_width;
 }
+
+int trim_figure_height(Game_state_t *g_state) {
+  g_state = get_game_state();
+
+  int figure_height = figure_min_height(g_state);
+  int figure_width = figure_min_width(g_state);
+  int row_is_empty = 0;
+
+  for (int i = 0; i < figure_height; i++) {
+    row_is_empty = 0;
+    for (int j = 0; j < figure_width; j++) {
+      if (g_state->figure.figure[g_state->figure.type][i][j] == 0 && i != 0) {
+        row_is_empty++;
+      }
+    }
+
+    if (row_is_empty == figure_width) {
+      figure_height--;
+    }
+  }
+
+  return figure_height;
+}
+
+// int trim_figure_width(Game_state_t *g_state) {
+//   g_state = get_game_state();
+
+//   int figure_height = figure_min_height(g_state);
+//   int figure_width = figure_min_width(g_state);
+
+//   for (int i = 0; i < figure_height; i++) {
+//     int column_is_empty = 0;
+//     for (int j = 0; j < figure_width; j++) {
+//       if (g_state->figure.figure[g_state->figure.type][i][j] == 0 && j != 0
+//       &&
+//           j != figure_width - 1) {
+//         column_is_empty++;
+//         i++;
+//       }
+//     }
+
+//     if (column_is_empty == figure_height - 1) {
+//       figure_width--;
+//     }
+//   }
+
+//   return figure_width;
+// }
 
 int border_collision(Game_state_t *g_state) {
   g_state = get_game_state();
@@ -295,24 +530,45 @@ int border_collision(Game_state_t *g_state) {
   int y = g_state->figure.y;
   int collision = 0;
 
-  if ((x < 1)) {
+  // int real_figure_height = figure_min_height(g_state);
+
+  // real_figure_height = trim_figure_height(g_state);
+
+  if (x < 1) {
     collision = COLLISION_LEFT;
   }
 
-  if (x + trim_figure_width(g_state) - 1 >= 9) {
+  // if (x + figure_min_width(g_state) - 1 >= 9) {
+  //   collision = COLLISION_RIGHT;
+  // }
+
+  if (x + g_state->figure.figure_width - 1 >= 9) {
     collision = COLLISION_RIGHT;
   }
 
-  if (y + trim_figure_height(g_state) >= ROWS_GAME) {
+  // if (y + figure_min_height(g_state) >= ROWS_GAME) {
+  //   collision = COLLISION_DOWN;
+  // }
+
+  if (y + g_state->figure.figure_height >= ROWS_GAME) {
     collision = COLLISION_DOWN;
   }
 
-  if ((y + trim_figure_height(g_state) >= ROWS_GAME) && (x < 1)) {
+  //  if ((y + figure_min_height(g_state) >= ROWS_GAME) && (x < 1)) {
+  //   collision = COLLISION_DL;
+  // }
+
+  if ((y + g_state->figure.figure_height >= ROWS_GAME) && (x < 1)) {
     collision = COLLISION_DL;
   }
 
-  if ((y + trim_figure_height(g_state) >= ROWS_GAME) &&
-      (x + trim_figure_width(g_state) - 1 >= 9)) {
+  // if ((y + figure_min_height(g_state) >= ROWS_GAME) &&
+  //     (x + figure_min_width(g_state) - 1 >= 9)) {
+  //   collision = COLLISION_DR;
+  // }
+
+  if ((y + g_state->figure.figure_height >= ROWS_GAME) &&
+      (x + g_state->figure.figure_width - 1 >= 9)) {
     collision = COLLISION_DR;
   }
 
@@ -323,8 +579,12 @@ bool bottom_figure_collision(Game_state_t *g_state) {
   g_state = get_game_state();
   // GameInfo_t g_info = updateCurrentState(g_state);
 
-  int figure_height = trim_figure_height(g_state);
-  int figure_width = trim_figure_width(g_state);
+  // int figure_height = figure_min_height(g_state);
+  // int figure_width = figure_min_width(g_state);
+
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
+
   // int type = g_state->figure.type;
 
   bool f_collision = false;
@@ -334,7 +594,14 @@ bool bottom_figure_collision(Game_state_t *g_state) {
       int y = i + g_state->figure.y;
       int x = j + g_state->figure.x;
 
-      if ((g_state->field) && (y < ROWS_GAME - 1) &&
+      if (
+          // (g_state->field) && (y < ROWS_GAME - 1) &&
+          //   g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
+          //   (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
+          //   (g_state->field->field[y + 1][x] == 1))
+
+          // тестовый вариант
+          (g_state->field) && (y < ROWS_GAME - 1) &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
           (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
           (g_state->field->field[y + 1][x] == 1))
@@ -342,6 +609,12 @@ bool bottom_figure_collision(Game_state_t *g_state) {
       {
         f_collision = true;
       }
+
+      // if ((g_state->field) && (y < ROWS_GAME - 1) &&
+      //     g_state->field->field[y][x] == 1 &&
+      //     g_state->figure.figure[g_state->figure.type][i][j]) {
+      //   f_collision = true;
+      // }
     }
   }
 
@@ -351,8 +624,8 @@ bool bottom_figure_collision(Game_state_t *g_state) {
 // int check_collision(Game_state_t *g_state) {
 //   g_state = get_game_state();
 
-//   // int figure_width = trim_figure_width(g_state);
-//   // int figure_height = trim_figure_height(g_state);
+//   // int figure_width = figure_min_width(g_state);
+//   // int figure_height = figure_min_height(g_state);
 //   // int type = g_state->figure.type;
 
 //   int collision = 0;
@@ -370,14 +643,19 @@ void figure_to_field(Game_state_t *g_state) {
   // int figure_width = g_state->figure.figure_height;
 
   int type = g_state->figure.type;
-  int figure_height = trim_figure_height(g_state);
-  int figure_width = trim_figure_width(g_state);
+  // int figure_height = figure_min_height(g_state);
+  // int figure_width = figure_min_width(g_state);
 
-  // if (type != 6) {
-  //   type = g_state->figure.type + 1;
-  // } else {
-  //   type = 1;
-  // }
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
+
+  // int figure_height = 4;
+  // int figure_width = 4;
+
+  // figure_height = trim_figure_height(g_state);
+
+  // int figure_height = 4;
+  // int figure_width = 4;
 
   // g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE ||
 
@@ -387,22 +665,20 @@ void figure_to_field(Game_state_t *g_state) {
       int field_x = g_state->figure.x + j;
 
       if (g_state->field && (g_state->figure.figure[type][i][j] == 1)) {
-        g_state->field->field[field_y][field_x] =
-            g_state->figure.figure[type][i][j];
+        g_state->field->field[field_y][field_x] = 1;
       }
-      // отображение 9 (?)
-      // else if (g_state->field && (g_state->figure.figure[type][i][j] ==
-      // 9)) {
-      //   g_state->field->field[field_y][field_x] = 9;
-      // }
-
-      //  else {
-      //   g_state->field->field[field_y][field_x] = 0;
-      // }
-
-      // // // показать ауру вокруг фигуры
-      // if (figures[g_state->figure.type][i][j] == 0 && g_state->field) {
+      // else {
       //   g_state->field->field[field_y][field_x] = 3;
+      // }
+
+      // // показать ауру вокруг фигуры
+      // if (g_state->figure.figure[type][i][j] == 0 && g_state->field) {
+      //   g_state->field->field[field_y][field_x] = 3;
+      // }
+
+      // if (g_state->field) {
+      //   g_state->field->field[field_y][field_x] =
+      //       g_state->figure.figure[type][i][j];
       // }
     }
   }
@@ -411,8 +687,14 @@ void figure_to_field(Game_state_t *g_state) {
 void clear_figure(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  int figure_width = trim_figure_width(g_state);
-  int figure_height = trim_figure_height(g_state);
+  // int figure_width = figure_min_width(g_state);
+  // int figure_height = figure_min_height(g_state);
+
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
+
+  // int figure_width = 4;
+  // int figure_height = 4;
 
   for (int i = 0; i < figure_height; i++) {
     for (int j = 0; j < figure_width; j++) {
@@ -420,94 +702,26 @@ void clear_figure(Game_state_t *g_state) {
       int field_x = g_state->figure.x + j;
 
       // очистить текущую фигуру
-      if (g_state->field && (figures[g_state->figure.type][i][j] == 1 ||
-                             g_state->field->field[field_y][field_x] == 3)) {
+      if (g_state->field &&
+          (g_state->figure.figure[g_state->figure.type][i][j] == 1) &&
+          (g_state->field->field[field_y][field_x] == 1 ||
+           g_state->field->field[field_y][field_x] == 3)) {
         g_state->field->field[field_y][field_x] = 0;
       }
+
+      // if (g_state->field &&
+      //     g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
+      //     (g_state->field->field[field_y][field_x] == 1)) {
+      //   g_state->field->field[field_y][field_x] = 0;
+      // }
+
+      // if (g_state->field &&
+      //     (g_state->figure.figure[g_state->figure.type][i][j] != 0)) {
+      //   g_state->field->field[field_y][field_x] = 0;
+      // }
     }
   }
 }
-
-void create_next_fig_size(Game_state_t *g_state, int type) {
-  g_state = get_game_state();
-
-  // srand(time(NULL));
-  // int type = rand() % 7;
-
-  // g_state->figure.type = type;
-  // центрируем фигуру по Х: g_state->figure.x - figure_t->figure_size /
-  // 2;
-  g_state->figure.next_x = COLS_GAME / 2 - trim_figure_width(g_state) / 2;
-  g_state->figure.next_y = 0;
-  // int type = Z_SHAPE;
-
-  switch (type) {
-    case I_SHAPE:
-      g_state->figure.next_figure_height = 4;
-      g_state->figure.next_figure_width = 4;
-
-      break;
-    case J_SHAPE:
-      g_state->figure.next_figure_height = 3;
-      g_state->figure.next_figure_width = 3;
-      break;
-    case L_SHAPE:
-      g_state->figure.next_figure_height = 3;
-      g_state->figure.next_figure_width = 3;
-      break;
-    case O_SHAPE:
-      g_state->figure.next_figure_height = 2;
-      g_state->figure.next_figure_width = 2;
-      break;
-    case S_SHAPE:
-      g_state->figure.next_figure_height = 3;
-      g_state->figure.next_figure_width = 3;
-      break;
-    case T_SHAPE:
-      g_state->figure.next_figure_height = 3;
-      g_state->figure.next_figure_width = 3;
-      break;
-    case Z_SHAPE:
-      g_state->figure.next_figure_height = 3;
-      g_state->figure.next_figure_width = 3;
-      break;
-    default:
-      break;
-  }
-
-  // for (int i = 0; i < trim_figure_height(g_state); i++) {
-  //   for (int j = 0; j < trim_figure_width(g_state); j++) {
-  //     if (g_state->figure.next_figure) {
-  //       g_state->figure.next_figure[i][j] = figures[type][i][j];
-  //     }
-  //   }
-  // }
-
-  // явное задание типа фигуры
-  // g_state->figure.type = S_SHAPE;
-}
-
-// void create_next_figure(Figure_t *figure_t, int type, int y, int x) {
-//   figure_t->next_type = type;
-//   figure_t->next_y = y;
-//   figure_t->next_x = x;
-// }
-
-// void next_figure_to_current(Game_state_t *g_state) {
-//   g_state = get_game_state();
-//   g_state->figure.type = g_state->figure.next_type;
-//   g_state->figure.x = trim_figure_width(g_state) / 2;
-//   g_state->figure.y = 0;
-
-//   if (g_state->figure.next_figure && g_state->figure.figure) {
-//     for (int i = 0; i < g_state->figure.figure_height; i++) {
-//       for (int j = 0; j < g_state->figure.figure_width; j++) {
-//         g_state->figure.figure[g_state->figure.type][i][j] =
-//             g_state->figure.next_figure[i][j];
-//       }
-//     }
-//   }
-// }
 
 void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix) {
   for (int i = 0; i < rows; i++) {
@@ -516,15 +730,6 @@ void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix) {
     }
   }
 }
-
-// void copy_next(int rows, int cols, int **src_matrix, int **dest_matrix)
-// {
-//   for (int i = 0; i < rows; i++) {
-//     for (int j = 0; j < cols; j++) {
-//       dest_matrix[i][j] = src_matrix[i][j];
-//     }
-//   }
-// }
 
 GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
   g_state = get_game_state();
@@ -559,7 +764,7 @@ void on_init_state(Game_state_t *g_state, UserAction_t action) {
     case Start:
       g_state->status.is_playing = true;
       g_state->status.status = START;
-      // create_next_fig_size(g_state, S_SHAPE);
+      // create_next_figure(g_state, S_SHAPE);
       break;
     case Terminate:
       g_state->status.is_playing = false;
@@ -571,7 +776,20 @@ void on_init_state(Game_state_t *g_state, UserAction_t action) {
   }
 }
 
+void fill_next_figure(Game_state_t *g_state) {
+  g_state = get_game_state();
+
+  for (int i = 0; i < g_state->figure.next_figure_height; i++) {
+    for (int j = 0; j < g_state->figure.next_figure_width; j++) {
+      g_state->figure.next_figure[i][j] =
+          figures[g_state->figure.next_type][i][j];
+    }
+  }
+}
+
 void on_start_state(Game_state_t *g_state, UserAction_t action) {
+  g_state = get_game_state();
+
   switch (action) {
     case Terminate:
       g_state->status.is_playing = false;
@@ -579,7 +797,8 @@ void on_start_state(Game_state_t *g_state, UserAction_t action) {
       break;
     default:
       if (g_state->status.is_playing) {
-        create_next_fig_size(g_state, S_SHAPE);
+        fill_next_figure(g_state);
+
         g_state->status.status = SPAWN;
       }
       break;
@@ -589,32 +808,35 @@ void on_start_state(Game_state_t *g_state, UserAction_t action) {
 void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
   g_state = get_game_state();
 
-  g_state->figure.x = COLS_GAME / 2 - trim_figure_width(g_state) / 2;
-  g_state->figure.y = 0;
+  g_state->figure.type = g_state->figure.next_type;
+  g_state->figure.rotated = false;
 
-  srand(time(NULL));
-  int rnd_figure = rand() % 7;
+  int figure_height = figure_min_height(g_state);
+  int figure_width = figure_min_width(g_state);
 
-  g_state->figure.type = rnd_figure;
-  g_state->figure.figure_height = trim_figure_height(g_state);
-  g_state->figure.figure_width = trim_figure_width(g_state);
+  g_state->figure.figure_height = figure_height;
+  g_state->figure.figure_width = figure_width;
 
-  // create_next_fig_size(g_state, rnd_figure);
-  // next_figure_to_current(g_state);
-
-  // create_next_fig_size(g_state, S_SHAPE);
-  for (int i = g_state->figure.figure_height;
-       i >= 0 && g_state->field &&
-       (g_state->field->field[i + g_state->figure.y][g_state->figure.x] != 1);
-       i--) {
-    for (int j = 0; j < g_state->figure.figure_width; j++) {
-      g_state->figure.figure[g_state->figure.type][i][j] =
-          figures[g_state->figure.type][i][j];
+  // next figure to current
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      if (g_state->figure.next_figure) {
+        g_state->figure.figure[g_state->figure.type][i][j] =
+            g_state->figure.next_figure[i][j];
+      }
     }
   }
-  // if ((g_state->figure.type > -1) && (g_state->figure.type < 7)) {
-  figure_to_field(g_state);
-  // }
+
+  // create rnd next figure
+  srand(time(NULL));
+  int rnd_figure = rand() % 7;
+  g_state->figure.next_type = rnd_figure;
+
+  fill_next_figure(g_state);
+
+  // установка начальной позиции figure
+  g_state->figure.x = COLS_GAME / 2 - g_state->figure.figure_width / 2 + 1;
+  g_state->figure.y = 0;
 
   switch (action) {
     case Terminate:
@@ -632,8 +854,11 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
 void move_left(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  int figure_height = trim_figure_height(g_state);
-  int figure_width = trim_figure_width(g_state);
+  // int figure_height = figure_min_height(g_state);
+  // int figure_width = figure_min_width(g_state);
+
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
 
   bool figure_collision = false;
 
@@ -643,7 +868,7 @@ void move_left(Game_state_t *g_state) {
       int field_x = g_state->figure.x + j;
 
       if (g_state->field && g_state->field->field[field_y][field_x - 1] == 1 &&
-          figures[g_state->figure.type][i][j] == 1) {
+          g_state->figure.figure[g_state->figure.type][i][j] == 1) {
         figure_collision = true;
       }
     }
@@ -664,8 +889,11 @@ void move_right(Game_state_t *g_state) {
 
   // bool fig_on_the_right = right_figure_collision(g_state);
 
-  int figure_width = trim_figure_width(g_state);
-  int figure_height = trim_figure_height(g_state);
+  // int figure_width = figure_min_width(g_state);
+  // int figure_height = figure_min_height(g_state);
+
+  int figure_height = g_state->figure.figure_height;
+  int figure_width = g_state->figure.figure_width;
 
   bool figure_collision = false;
 
@@ -677,7 +905,7 @@ void move_right(Game_state_t *g_state) {
       int field_x = g_state->figure.x + j;
 
       if (g_state->field && g_state->field->field[field_y][field_x + 1] == 1 &&
-          figures[g_state->figure.type][i][j] == 1) {
+          g_state->figure.figure[g_state->figure.type][i][j] == 1) {
         figure_collision = true;
       }
     }
@@ -738,8 +966,7 @@ bool figure_is_attaching(Game_state_t *g_state) {
       int x = g_state->figure.x + j;
       int y = g_state->figure.y + i;
 
-      if ((figures[g_state->figure.type][i][j] == 1) &&
-          (y > FIELD_N - 1 || (y > -1 && (g_state->field->field[y][x] == 1)))) {
+      if ((y > FIELD_N - 1 || (y > -1 && (g_state->field->field[y][x] == 1)))) {
         is_attaching = true;
       }
     }
@@ -807,7 +1034,8 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
       // collision = border_collision(g_state);
 
       // clear_figure(g_state);
-      // if ((b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
+      // if ((b_collision != COLLISION_DOWN && b_collision != COLLISION_DL
+      // &&
       //  b_collision != COLLISION_DR)) {
       // if (!f_collision) {
       move_down(g_state);
@@ -830,14 +1058,19 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
       figure_to_field(g_state);
       // }
       break;
-    case Action:
+      // case Action:
       // move_in_array(g_state);
       // clear_figure(g_state);
       // figure_to_field(g_state, figures);
       // move_in_array(g_state);
       // figure_to_field(g_state);
-      g_state->status.status = SPAWN;
-      break;
+      // g_state->status.status = SPAWN;
+      // clear_figure(g_state);
+      // rotate_figure(g_state);
+      // g_state->status.status = MOVING;
+
+      // clear_figure(g_state);
+      // break;
     case Pause:
       g_state->status.pause = !g_state->status.pause;
       break;
@@ -860,6 +1093,18 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
     g_state->status.status = GAMEOVER;
   }
 
+  // // for (int i = ROWS_GAME; i > line_to_check; i--) {
+  // for (int j = 0; j < COLS_GAME; j++) {
+  //   int line_to_check =
+  //       g_state->figure.y - 1 + g_state->figure.figure_height - 1;
+  //   // if (g_state->field->field[i][j] == 1) {
+  //   //   g_state->field->field[i][j] = 0;
+  //   //   g_state->field->field[i + 1][j] = 1;
+  //   // }
+  //   g_state->field->field[line_to_check][j] = 0;
+  // }
+  // // }
+
   switch (action) {
     case Terminate:
       g_state->status.is_playing = false;
@@ -880,17 +1125,316 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
         g_state->status.status = MOVING;
       } else {
         // figure_to_field(g_state);
+        collapse_full_lines(g_state);
         g_state->status.status = SPAWN;
       }
       break;
   }
 }
 
+// bool line_is_full(Game_state_t *g_state) {
+//   for (int i = 0; i < ROWS_GAME; i++) {
+//     for (int j = 0; j < COLS_GAME; j++) {
+//     }
+//   }
+//   return true;
+// }
+
+void shift_lines(Game_state_t *g_state, int i) {
+  for (int j = i; j > 0; j--) {
+    for (int k = 0; k < FIELD_M; k++) {
+      g_state->field->field[j][k] = g_state->field->field[j - 1][k];
+    }
+  }
+}
+
+// void fill_top_line(Game_state_t *gs) {
+//   for (int j = 0; j < FIELD_M; j++) {
+//     gs->field->field[0][j] = 0;
+//   }
+// }
+
+void collapse_full_lines(Game_state_t *g_state) {
+  int num_full_lines = 0;
+
+  for (int i = ROWS_GAME - 1; i >= 0; i--) {
+    // bool is_full = true;
+    // int current_line = i;
+
+    int line_is_full = 0;
+    for (int j = 0; j < COLS_GAME; j++) {
+      line_is_full += g_state->field->field[i][j];
+    }
+
+    if (line_is_full == COLS_GAME) {
+      // is_full = false;
+
+      shift_lines(g_state, i);
+      // fill_top_line(g_state);
+      num_full_lines++;
+      i++;
+    }
+  }
+
+  // update_score_and_level(gs, num_full_lines);
+}
+
+// void rotate_figure(Game_state_t *g_state, int direction) {
+void rotate_figure(Game_state_t *g_state) {
+  g_state = get_game_state();
+
+  clear_figure(g_state);
+
+  // g_state->figure.figure_height = figure_min_height(g_state);
+  // g_state->figure.figure_width = figure_min_width(g_state);
+
+  int figure_height = 0;
+  int figure_width = 0;
+
+  // square aura
+  if (g_state->figure.type == T_SHAPE || g_state->figure.type == S_SHAPE ||
+      g_state->figure.type == Z_SHAPE) {
+    figure_height = 3;
+  } else if (g_state->figure.type == J_SHAPE ||
+             g_state->figure.type == L_SHAPE) {
+    figure_height = 3;
+  } else if (g_state->figure.type == I_SHAPE) {
+    figure_height = 4;
+  } else if (g_state->figure.type == O_SHAPE) {
+    figure_height = 2;
+  }
+
+  // square aura
+  if (g_state->figure.type == J_SHAPE || g_state->figure.type == L_SHAPE) {
+    figure_width = 3;
+  } else if (g_state->figure.type == I_SHAPE) {
+    figure_width = 4;
+  } else if (g_state->figure.type == T_SHAPE ||
+             g_state->figure.type == S_SHAPE ||
+             g_state->figure.type == Z_SHAPE) {
+    figure_width = 3;
+  } else if (g_state->figure.type == O_SHAPE) {
+    figure_width = 2;
+  }
+
+  // int figure_height = g_state->figure.figure_height;
+  // int figure_width = g_state->figure.figure_width;
+  //
+  int temp[4][4] = {
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+      {0, 0, 0, 0},
+  };
+
+  // if (figure_height > figure_width && g_state->figure.type != I_SHAPE) {
+  //   figure_width++;
+  //   // g_state->figure.figure_width = figure_width;
+  // } else {
+  //   figure_height++;
+  //   // g_state->figure.figure_height = figure_height;
+  // }
+
+  // Copy the original figure to the temp array
+  // if (g_state->figure.type != I_SHAPE) {
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      if (g_state->figure.figure[g_state->figure.type][i][j] == 1) {
+        // temp[i][j] = g_state->figure.figure[g_state->figure.type][i][j];
+
+        temp[j][figure_height - i - 1] =
+            g_state->figure.figure[g_state->figure.type][i][j];
+      } else {
+        temp[j][figure_height - i - 1] = 3;
+      }
+    }
+  }
+  // }
+
+  // trimming empty figure columns
+  int empty_col = 0;
+  int col_offset = 0;
+  // int empty_row = 0;
+
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      if (temp[i][j] != 1 && j == 0) {
+        empty_col++;
+        i++;
+      } else if (temp[i][j] != 1 && j == figure_width - 1) {
+        figure_width--;
+      }
+    }
+
+    if (empty_col == figure_width) {
+      col_offset++;
+    }
+  }
+
+  // Rotate the figure clockwise
+  for (int i = 0; i < figure_height; i++) {
+    for (int j = 0; j < figure_width; j++) {
+      // g_state->figure.figure[g_state->figure.type][j][figure_height - i -
+      // 1]
+      // =
+      //     temp[i][j];
+
+      g_state->figure.figure[g_state->figure.type][i][j] =
+          temp[i][j + col_offset];
+    }
+  }
+
+  // g_state->figure.figure_height = figure_min_height(g_state);
+  // g_state->figure.figure_width = figure_min_width(g_state);
+
+  // for (int i = 0; i < figure_height; i++) {
+  //   int column_is_empty = 0;
+  //   for (int j = 0; j < figure_width; j++) {
+  //     if (g_state->figure.figure[g_state->figure.type][i][j] == 0 && j !=
+  //     0
+  //     &&
+  //         j != figure_width - 1) {
+  //       column_is_empty++;
+  //       i++;
+  //     }
+  //   }
+
+  //   if (column_is_empty == figure_height - 1) {
+  //     figure_width--;
+  //   }
+  // }
+
+  // int row_is_empty = 0;
+  // for (int i = 0; i < figure_height; i++) {
+  //   for (int j = 0; j < figure_width; j++) {
+  //     if (g_state->figure.figure[g_state->figure.type][i][j] != 1) {
+  //       row_is_empty++;
+  //     }
+  //   }
+  // }
+
+  // _____________________
+  // if (direction % 2 == 0) {
+  //   int swap = g_state->figure.figure_height;
+  //   g_state->figure.figure_height = figure_width;
+  //   g_state->figure.figure_width = swap;
+  // }
+
+  // g_state->figure.figure_height = figure_height;
+  // g_state->figure.figure_width = figure_width;
+
+  // // Update the figure's height and width
+  // if (figure_height > figure_width && g_state->figure.type != I_SHAPE &&
+  //     g_state->figure.type != O_SHAPE) {
+  //   figure_width++;
+  // } else if (g_state->figure.type != I_SHAPE &&
+  //            g_state->figure.type != O_SHAPE) {
+  //   figure_height++;
+  // }
+
+  // switch (g_state->figure.type) {
+  //   case Z_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
+
+  //   case S_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
+
+  //   case T_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
+
+  //   case L_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
+
+  //   case J_SHAPE:
+  //     if (direction % 2 == 0) {
+  //       g_state->figure.figure_height = 2;
+  //       g_state->figure.figure_width = 3;
+  //     } else {
+  //       g_state->figure.figure_height = 3;
+  //       g_state->figure.figure_width = 2;
+  //     }
+  //     break;
+  //   default:
+  //     break;
+  // }
+
+  // // Draw the rotated figure on the field
+  // for (int i = 0; i < figure_height; i++) {
+  //   for (int j = 0; j < figure_width; j++) {
+  //     int x = g_state->figure.x + j;
+  //     int y = g_state->figure.y + i;
+
+  //     // if (g_state->figure.figure[g_state->figure.type][i][j] == 1) {
+  //     g_state->field->field[y][x] =
+  //         g_state->figure.figure[g_state->figure.type][i][j];
+  //     // } else {
+  //     //   g_state->field->field[y][x] = 3;
+  //     // }
+  //     // g_state->field->field[y][x] = temp[i][j];
+  //   }
+  // }
+
+  // figure_to_field(g_state);
+
+  // g_state->figure.figure_height--;
+  // g_state->figure.figure_width--;
+  // }
+
+  if (!g_state->figure.rotated) {
+    g_state->figure.rotated = true;
+  } else {
+    g_state->figure.rotated = false;
+  }
+
+  if (!g_state->figure.rotated) {
+    g_state->figure.figure_height = figure_min_height(g_state);
+    g_state->figure.figure_width = figure_min_width(g_state);
+  } else {
+    g_state->figure.figure_height = figure_min_width(g_state);
+    g_state->figure.figure_width = figure_min_height(g_state);
+
+    // int swap = g_state->figure.figure_height;
+    // g_state->figure.figure_height = g_state->figure.figure_width;
+    // g_state->figure.figure_width = swap;
+    // g_state->figure.figure_height = figure_min_height(g_state);
+    // g_state->figure.figure_width = figure_min_width(g_state);
+  }
+}
+
 void userInput(UserAction_t action, bool hold) {
   Game_state_t *g_state = get_game_state();
   int current_fsm_state = g_state->status.status;
-  int f_collision = bottom_figure_collision(g_state);
+  bool f_collision = bottom_figure_collision(g_state);
   int b_collision = border_collision(g_state);
+  // bool rotated = false;
 
   (hold) ? printf("hold") : false;
 
@@ -903,6 +1447,7 @@ void userInput(UserAction_t action, bool hold) {
       break;
     case SPAWN:
       on_spawn_state(g_state, action);
+      figure_to_field(g_state);
       break;
     case MOVING:
       f_collision = bottom_figure_collision(g_state);
@@ -912,18 +1457,34 @@ void userInput(UserAction_t action, bool hold) {
         // if (!f_collision) {
         // f_collision = bottom_figure_collision(g_state);
         // clear_figure(g_state);
+        if (action != Action) {
+          clear_figure(g_state);
+          on_move_state(g_state, action);
+          // action_counter = 1;
+          figure_to_field(g_state);
+        } else {
+          // clear_figure(g_state);
+          // action_counter++;
+          // rotate_figure(g_state, action_counter);
 
-        clear_figure(g_state);
-        on_move_state(g_state, action);
-        // if (!bottom_figure_collision(g_state)) {
-        figure_to_field(g_state);
-        // }
-        // }
-        // f_collision = bottom_figure_collision(g_state);
-      } else {
+          // if (!rotated) {
+          //   rotated = true;
+          // } else {
+          //   rotated = false;
+          // }
+          rotate_figure(g_state);
+
+          figure_to_field(g_state);
+        }
+      }
+      // else if (action == Action) {
+      // rotate_figure(g_state);
+      // }
+
+      if (b_collision == COLLISION_DOWN || b_collision == COLLISION_DL ||
+          b_collision == COLLISION_DR || f_collision) {
         g_state->status.status = ATTACHING;
       }
-
       break;
     // case SHIFTING:
     //   move_down(g_state);

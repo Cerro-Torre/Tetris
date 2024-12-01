@@ -4,6 +4,7 @@ int main() {
   initscr();
   noecho();
   curs_set(0);
+  // attron(A_ALTCHARSET);
 
   WINDOW *menu = print_menu();
   wrefresh(menu);
@@ -43,7 +44,7 @@ int main() {
 
   // printw("bw status = %d\n", g_state->status.status);
 
-  // create_next_fig_size(g_state);
+  // create_next_figure(g_state);
 
   wrefresh(states_info);
   wrefresh(tetris);
@@ -56,9 +57,11 @@ int main() {
     g_state = get_game_state();
     g_info = updateCurrentState();
     g_info = copy_game_to_gi(g_state);
+    next = next_display(g_state);
 
     render_game_gi(tetris, g_info);
     wrefresh(tetris);
+    wrefresh(next);
 
     int b_collision = border_collision(g_state);
     int f_collision = bottom_figure_collision(g_state);
@@ -71,6 +74,10 @@ int main() {
       // g_info = updateCurrentState();
       // printw("inside\n");
       // wrefresh(states_info);
+
+      next = next_display(g_state);
+
+      wrefresh(next);
 
       key2 = wgetch(tetris);
 
@@ -100,7 +107,7 @@ int main() {
 
     states_info = print_states(g_state, action);
     status = print_status_gi(&g_info);
-    next = next_display(g_state);
+    // next = next_display(g_state);
 
     // clear_figure(g_state);
     wrefresh(tetris);
@@ -111,11 +118,16 @@ int main() {
 
   free_game(g_state);
   free_field_gi(&g_info);
+  g_info.field = NULL;
 
+  // wattron(tetris, COLOR_RED);
   mvwprintw(tetris, 0, 3, "Game Over");
+  // wattroff(tetris, COLOR_RED);
   wgetch(tetris);
 
   delwin(status);
+  // attroff(A_ALTCHARSET);
+
   delwin(tetris);
   delwin(states_info);
   // free_next_figure_gi(&g_info);
