@@ -98,6 +98,9 @@ typedef struct {
   Figure_t figure;
   Game_status_t status;
   Game_stats_t stats;
+  long time;
+  long test;
+
 } Game_state_t;
 
 #endif

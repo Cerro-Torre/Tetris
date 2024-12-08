@@ -91,6 +91,9 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
       mvwprintw(status, 8, 1, "Status: UNKNOWN");
       break;
   }
+
+  mvwprintw(status, 9, 1, "t: %ld", clock() / CLOCKS_PER_SEC);
+  mvwprintw(status, 10, 1, "test: %ld", g_state->test);
   return status;
 }
 

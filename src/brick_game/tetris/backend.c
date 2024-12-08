@@ -239,7 +239,7 @@ void init_game_stats(Game_stats_t *game_stats) {
   game_stats->level = 1;
   game_stats->score = 0;
   game_stats->high_score = 1;
-  game_stats->speed = 1;
+  game_stats->speed = 1000000;
 }
 
 Game_state_t *get_game_state() {
@@ -779,6 +779,7 @@ void userInput(UserAction_t action, bool hold) {
   int current_fsm_state = g_state->status.status;
   bool f_collision = bottom_figure_collision(g_state);
   int b_collision = border_collision(g_state);
+  g_state->time = clock();
 
   (hold) ? printf("hold") : false;
 
@@ -810,7 +811,26 @@ void userInput(UserAction_t action, bool hold) {
           b_collision == COLLISION_DR || f_collision) {
         g_state->status.status = ATTACHING;
       }
+      // else {
+      //   g_state->status.status = SHIFTING;
+      // }
       break;
+      // case SHIFTING:
+
+      //   if (clock() - g_state->time > g_state->stats.speed) {
+      //     // on_shift_state(g_state, action);
+      //     // g_state->test = clock() - g_state->time;
+      //     clear_figure(g_state);
+      //     on_move_state(g_state, Down);
+      //     figure_to_field(g_state);
+      //   } else {
+      //     g_state->status.status = MOVING;
+      //   }
+      //   break;
+
+    // case SHIFTING:
+    //   on_shift_state(g_state, action);
+    //   break;
     case ATTACHING:
       on_attach_state(g_state, action);
       break;
@@ -818,6 +838,32 @@ void userInput(UserAction_t action, bool hold) {
       on_pause_state(g_state, action);
       break;
     default:
+      break;
+  }
+}
+
+void on_shift_state(Game_state_t *g_state, UserAction_t action) {
+  g_state = get_game_state();
+
+  bool f_collision = bottom_figure_collision(g_state);
+  int b_collision = border_collision(g_state);
+
+  switch (action) {
+    case Terminate:
+      g_state->status.is_playing = false;
+      g_state->status.status = GAMEOVER;
+      break;
+    default:
+      if (g_state->status.pause == false) {
+        if (b_collision != COLLISION_DOWN && !f_collision) {
+          clear_figure(g_state);
+          on_move_state(g_state, Down);
+          figure_to_field(g_state);
+        } else {
+          g_state->status.status = ATTACHING;
+        }
+        g_state->status.status = MOVING;
+      }
       break;
   }
 }

@@ -48,16 +48,59 @@ int main() {
   while (g_state->status.is_playing && g_state->status.status != GAMEOVER) {
     g_state = get_game_state();
     g_info = updateCurrentState();
+    // static clock_t last_shift_time = 0;
+    // clock_t current_time = clock();
 
     int action = -1;
 
-    if ((g_state->status.status == MOVING) || g_state->status.status == START ||
-        g_state->status.status == PAUSE) {
-      g_state = get_game_state();
-
+    if (g_state->status.status == START || g_state->status.status == PAUSE) {
       key2 = wgetch(tetris);
       action = get_user_action(key2);
     }
+
+    if (g_state->status.status == MOVING) {
+      nodelay(tetris, TRUE);
+      clock_t start_time = clock();
+      while (clock() - start_time < 500) {
+        int key2 = wgetch(tetris);
+        action = get_user_action(key2);
+        userInput(action, false);
+
+        wrefresh(tetris);
+        wrefresh(status);
+        wrefresh(next);
+        wrefresh(states_info);
+      }
+      nodelay(tetris, FALSE);
+      // key2 = wgetch(tetris);
+      // action = get_user_action(key2);
+    }
+
+    // int key2 = wgetch(tetris);
+    // if (key2 != ERR) {
+    //   action = get_user_action(key2);
+    //   userInput(action, false);
+    // }
+
+    // _________________
+    // while (g_state->status.status == MOVING) {
+    //   key2 = wgetch(tetris);
+
+    //   action = get_user_action(key2);
+    //   userInput(action, false);
+    //   g_info = copy_game_to_gi(g_state);
+    //   render_game_gi(tetris, g_info);
+    // }
+    // __________________
+
+    // if ((double)(current_time - last_shift_time) / CLOCKS_PER_SEC >=
+    //     200) {  // Интервал 0.5 секунды
+    //   if (g_state->status.status == MOVING) {
+    //     g_state->status.status = SHIFTING;
+    //     userInput(-1, false);
+    //   }
+    //   last_shift_time = current_time;
+    // }
 
     userInput(action, false);
     g_info = copy_game_to_gi(g_state);
@@ -80,6 +123,7 @@ int main() {
   free_field_gi(&g_info);
   g_info.field = NULL;
 
+  nodelay(tetris, FALSE);
   mvwprintw(tetris, 0, 3, "Game Over");
   wgetch(tetris);
 

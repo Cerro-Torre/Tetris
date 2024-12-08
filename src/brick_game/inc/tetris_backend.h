@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "defines.h"
 #include "objects.h"
@@ -44,6 +45,7 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action);
 void on_move_state(Game_state_t *g_state, UserAction_t action);
 void on_attach_state(Game_state_t *g_state, UserAction_t action);
 void on_pause_state(Game_state_t *g_state, UserAction_t action);
+void on_shift_state(Game_state_t *g_state, UserAction_t action);
 
 // ________draws________
 
