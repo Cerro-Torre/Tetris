@@ -59,17 +59,21 @@ int main() {
     }
 
     if (g_state->status.status == MOVING) {
-      nodelay(tetris, TRUE);
       clock_t start_time = clock();
-      while (clock() - start_time < 500) {
+      while (clock() - start_time < CLOCKS_PER_SEC * g_state->stats.speed) {
+        nodelay(tetris, TRUE);
         int key2 = wgetch(tetris);
-        action = get_user_action(key2);
-        userInput(action, false);
+        if (key2 != ERR) {
+          action = get_user_action(key2);
+          userInput(action, false);
 
-        wrefresh(tetris);
-        wrefresh(status);
-        wrefresh(next);
-        wrefresh(states_info);
+          wrefresh(tetris);
+          wrefresh(status);
+          wrefresh(next);
+          wrefresh(states_info);
+        } else {
+          g_state->status.status = SHIFTING;
+        }
       }
       nodelay(tetris, FALSE);
       // key2 = wgetch(tetris);

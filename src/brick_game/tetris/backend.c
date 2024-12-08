@@ -239,7 +239,7 @@ void init_game_stats(Game_stats_t *game_stats) {
   game_stats->level = 1;
   game_stats->score = 0;
   game_stats->high_score = 1;
-  game_stats->speed = 1000000;
+  game_stats->speed = 1;
 }
 
 Game_state_t *get_game_state() {
@@ -828,9 +828,9 @@ void userInput(UserAction_t action, bool hold) {
       //   }
       //   break;
 
-    // case SHIFTING:
-    //   on_shift_state(g_state, action);
-    //   break;
+    case SHIFTING:
+      on_shift_state(g_state, action);
+      break;
     case ATTACHING:
       on_attach_state(g_state, action);
       break;
@@ -853,16 +853,20 @@ void on_shift_state(Game_state_t *g_state, UserAction_t action) {
       g_state->status.is_playing = false;
       g_state->status.status = GAMEOVER;
       break;
+    case Pause:
+      g_state->status.pause = true;
+      g_state->status.status = PAUSE;
+      break;
     default:
       if (g_state->status.pause == false) {
         if (b_collision != COLLISION_DOWN && !f_collision) {
           clear_figure(g_state);
           on_move_state(g_state, Down);
           figure_to_field(g_state);
+          g_state->status.status = MOVING;
         } else {
           g_state->status.status = ATTACHING;
         }
-        g_state->status.status = MOVING;
       }
       break;
   }
