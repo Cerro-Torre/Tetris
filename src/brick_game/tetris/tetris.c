@@ -48,43 +48,27 @@ int main() {
   while (g_state->status.is_playing && g_state->status.status != GAMEOVER) {
     g_state = get_game_state();
     g_info = updateCurrentState();
-    g_info = copy_game_to_gi(g_state);
-    next = next_display(&g_info);
 
-    render_game_gi(tetris, g_info);
-    wrefresh(tetris);
-    wrefresh(next);
-
-    // int b_collision = border_collision(g_state);
-    // int f_collision = bottom_figure_collision(g_state);
-    // if (g_state->status.status == MOVING && b_collision != COLLISION_DOWN &&
-    //      b_collision != COLLISION_DL && b_collision != COLLISION_DR &&
-    //      !f_collision)
+    int action = -1;
 
     if ((g_state->status.status == MOVING) || g_state->status.status == START ||
         g_state->status.status == PAUSE) {
       g_state = get_game_state();
 
-      next = next_display(&g_info);
-
-      wrefresh(next);
-
       key2 = wgetch(tetris);
-
-      g_info = copy_game_to_gi(g_state);
-      render_game_gi(tetris, g_info);
-      wrefresh(tetris);
-      wrefresh(status);
-      wrefresh(states_info);
-      wrefresh(next);
+      action = get_user_action(key2);
     }
 
-    int action = get_user_action(key2);
     userInput(action, false);
+    g_info = copy_game_to_gi(g_state);
+    render_game_gi(tetris, g_info);
+
+    // int action = get_user_action(key2);
+    // userInput(action, false);
 
     states_info = print_states(g_state, action);
     status = print_status_gi(&g_info);
-    // next = next_display(g_state);
+    next = next_display(&g_info);
 
     wrefresh(tetris);
     wrefresh(status);

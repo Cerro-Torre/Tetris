@@ -721,6 +721,7 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
         collapse_full_lines(g_state);
         g_state->status.status = SPAWN;
       }
+
       break;
   }
 }

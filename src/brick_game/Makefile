@@ -5,9 +5,11 @@ SRC_DIRS = gui/cli tetris
 OBJS_FSMTABLE = out/tetris.o out/backend.o out/tetris_frontend_v2.o
 LIBNAME = s21_tetris.a
 GAMENAME = game
-VG_LOG_FILE = valgrind-$(GAMENAME).log
 TESTS_C = $(wildcard tests/*.c)
 TESTS_O = $(patsubst tests/%.c, tests/%.o, $(TESTS_C))
+VALGRIND = valgrind --track-origins=yes --tool=memcheck --leak-check=full --show-leak-kinds=all -s 
+
+
 
 $(LIBNAME): $(OBJS_FSMTABLE)
 	if [ ! -d "libs" ]; then \
@@ -39,7 +41,10 @@ clean:
 	rm -f $(VG_LOG_FILE) *.info *.gc* coverage.info
 	rm -rf libs report gcov
 	
-
 rebuild:
 	make clean && make $(GAMENAME)
+
+vg: tests
+	$(VALGRIND) ./test_res
+
 
