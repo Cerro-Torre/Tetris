@@ -810,10 +810,9 @@ void userInput(UserAction_t action, bool hold) {
       if (b_collision == COLLISION_DOWN || b_collision == COLLISION_DL ||
           b_collision == COLLISION_DR || f_collision) {
         g_state->status.status = ATTACHING;
+      } else {
+        g_state->status.status = SHIFTING;
       }
-      // else {
-      //   g_state->status.status = SHIFTING;
-      // }
       break;
       // case SHIFTING:
 
@@ -859,12 +858,17 @@ void on_shift_state(Game_state_t *g_state, UserAction_t action) {
       break;
     default:
       if (g_state->status.pause == false) {
-        if (b_collision != COLLISION_DOWN && !f_collision) {
+        if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
+            b_collision != COLLISION_DR && !f_collision &&
+            g_state->status.pause == false) {
           clear_figure(g_state);
           on_move_state(g_state, Down);
           figure_to_field(g_state);
           g_state->status.status = MOVING;
-        } else {
+        }
+
+        if (b_collision == COLLISION_DOWN || b_collision == COLLISION_DL ||
+            b_collision == COLLISION_DR || f_collision) {
           g_state->status.status = ATTACHING;
         }
       }
