@@ -52,22 +52,11 @@ int main() {
     // clock_t current_time = clock();
     nodelay(tetris, TRUE);
 
-    // int action = wgetch(tetris);
-    // int *last_action = &key2;
-
     if (g_state->status.status == START || g_state->status.status == PAUSE) {
       nodelay(tetris, FALSE);
-      // key2 = wgetch(tetris);
-      // *last_action = key2;
-      // int action = get_user_action(key2);
 
       userInput(get_user_action(wgetch(tetris)), false);
       nodelay(tetris, TRUE);
-
-      // userInput(get_user_action(*last_action), false);
-
-      // g_info = copy_game_to_gi(g_state);
-      // render_game_gi(tetris, g_info);
     }
     if (g_state->status.status == MOVING) {
       // ||
@@ -77,48 +66,28 @@ int main() {
              CLOCKS_PER_SEC / g_state->stats.speed * 0.7) {
         nodelay(tetris, TRUE);
         int key2 = wgetch(tetris);
-        // *last_action = key2;
 
-        if (key2 != ERR && g_state->status.status == MOVING) {
-          // int action = get_user_action(key2);
-          // userInput(action, false);
-
+        if (key2 != ERR) {
           userInput(get_user_action(key2), false);
 
           g_info = copy_game_to_gi(g_state);
           render_game_gi(tetris, g_info);
 
           wrefresh(tetris);
-          // wrefresh(status);
-          // wrefresh(next);
-          // wrefresh(states_info);
+          wrefresh(status);
+          wrefresh(next);
+          wrefresh(states_info);
         }
+
+        g_state->status.status = MOVING;
       }
-      // nodelay(tetris, FALSE);
-      // key2 = wgetch(tetris);
-      // action = get_user_action(key2);
     }
 
-    // if (g_state->status.status != START && g_state->status.status != PAUSE
-    // &&
-    //     g_state->status.status != MOVING) {
-    //   userInput(-1, false);
-    //   g_info = copy_game_to_gi(g_state);
-    //   render_game_gi(tetris, g_info);
-    // }
-
-    // g_state = get_game_state();
-
-    // int action = get_user_action(key2);
     userInput(get_user_action(key2), false);
 
-    // userInput(get_user_action(*last_action), false);
     g_info = copy_game_to_gi(g_state);
     render_game_gi(tetris, g_info);
 
-    // states_info = print_states(g_state, action);
-
-    // states_info = print_states(g_state, get_user_action(*last_action));
     status = print_status_gi(&g_info);
     next = next_display(&g_info);
 

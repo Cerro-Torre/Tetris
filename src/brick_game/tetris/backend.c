@@ -796,12 +796,11 @@ void userInput(UserAction_t action, bool hold) {
       break;
     case MOVING:
       f_collision = bottom_figure_collision(g_state);
-      clock_t start_time = clock();
 
       if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
           b_collision != COLLISION_DR && !f_collision &&
           g_state->status.pause == false) {
-        if (action != Action) {
+        if (action != Action && g_state->status.status != SHIFTING) {
           clear_figure(g_state);
           on_move_state(g_state, action);
           figure_to_field(g_state);
@@ -812,25 +811,13 @@ void userInput(UserAction_t action, bool hold) {
           b_collision == COLLISION_DR || f_collision) {
         g_state->status.status = ATTACHING;
       }
-
-      if (!g_state->status.pause &&
-          ((clock() - start_time) <
-           CLOCKS_PER_SEC / (g_state->stats.speed * 0.7))) {
+      if (!g_state->status.pause && action >= 0) {
         g_state->status.status = SHIFTING;
       }
+      // else {
+      // g_state->status.status = MOVING;
+      // }
       break;
-      // case SHIFTING:
-
-      //   if (clock() - g_state->time > g_state->stats.speed) {
-      //     // on_shift_state(g_state, action);
-      //     // g_state->test = clock() - g_state->time;
-      //     clear_figure(g_state);
-      //     on_move_state(g_state, Down);
-      //     figure_to_field(g_state);
-      //   } else {
-      //     g_state->status.status = MOVING;
-      //   }
-      //   break;
 
     case SHIFTING:
       on_shift_state(g_state, action);
