@@ -50,75 +50,75 @@ int main() {
     g_info = updateCurrentState();
     // static clock_t last_shift_time = 0;
     // clock_t current_time = clock();
+    nodelay(tetris, TRUE);
 
-    int action = -1;
+    // int action = wgetch(tetris);
+    // int *last_action = &key2;
 
     if (g_state->status.status == START || g_state->status.status == PAUSE) {
-      key2 = wgetch(tetris);
-      action = get_user_action(key2);
+      nodelay(tetris, FALSE);
+      // key2 = wgetch(tetris);
+      // *last_action = key2;
+      // int action = get_user_action(key2);
 
-      // userInput(action, false);
+      userInput(get_user_action(wgetch(tetris)), false);
+      nodelay(tetris, TRUE);
+
+      // userInput(get_user_action(*last_action), false);
+
       // g_info = copy_game_to_gi(g_state);
       // render_game_gi(tetris, g_info);
     }
-
     if (g_state->status.status == MOVING) {
+      // ||
+      // g_state->status.status == SHIFTING) {
       clock_t start_time = clock();
-      while (clock() - start_time < CLOCKS_PER_SEC / g_state->stats.speed) {
+      while (clock() - start_time <
+             CLOCKS_PER_SEC / g_state->stats.speed * 0.7) {
         nodelay(tetris, TRUE);
         int key2 = wgetch(tetris);
-        if (key2 != ERR) {
-          action = get_user_action(key2);
-          userInput(action, false);
+        // *last_action = key2;
+
+        if (key2 != ERR && g_state->status.status == MOVING) {
+          // int action = get_user_action(key2);
+          // userInput(action, false);
+
+          userInput(get_user_action(key2), false);
 
           g_info = copy_game_to_gi(g_state);
           render_game_gi(tetris, g_info);
 
           wrefresh(tetris);
-          wrefresh(status);
-          wrefresh(next);
-          wrefresh(states_info);
+          // wrefresh(status);
+          // wrefresh(next);
+          // wrefresh(states_info);
         }
       }
-      nodelay(tetris, FALSE);
+      // nodelay(tetris, FALSE);
       // key2 = wgetch(tetris);
       // action = get_user_action(key2);
     }
 
-    // int key2 = wgetch(tetris);
-    // if (key2 != ERR) {
-    //   action = get_user_action(key2);
-    //   userInput(action, false);
-    // }
-
-    // _________________
-    // while (g_state->status.status == MOVING) {
-    //   key2 = wgetch(tetris);
-
-    //   action = get_user_action(key2);
-    //   userInput(action, false);
+    // if (g_state->status.status != START && g_state->status.status != PAUSE
+    // &&
+    //     g_state->status.status != MOVING) {
+    //   userInput(-1, false);
     //   g_info = copy_game_to_gi(g_state);
     //   render_game_gi(tetris, g_info);
     // }
-    // __________________
 
-    // if ((double)(current_time - last_shift_time) / CLOCKS_PER_SEC >=
-    //     200) {  // Интервал 0.5 секунды
-    //   if (g_state->status.status == MOVING) {
-    //     g_state->status.status = SHIFTING;
-    //     userInput(-1, false);
-    //   }
-    //   last_shift_time = current_time;
-    // }
+    // g_state = get_game_state();
 
-    userInput(action, false);
+    // int action = get_user_action(key2);
+    userInput(get_user_action(key2), false);
+
+    // userInput(get_user_action(*last_action), false);
     g_info = copy_game_to_gi(g_state);
     render_game_gi(tetris, g_info);
 
-    // int action = get_user_action(key2);
-    // userInput(action, false);
+    // states_info = print_states(g_state, action);
 
-    states_info = print_states(g_state, action);
+    // states_info = print_states(g_state, get_user_action(*last_action));
     status = print_status_gi(&g_info);
     next = next_display(&g_info);
 

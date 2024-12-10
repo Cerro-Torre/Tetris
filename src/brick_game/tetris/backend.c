@@ -796,6 +796,7 @@ void userInput(UserAction_t action, bool hold) {
       break;
     case MOVING:
       f_collision = bottom_figure_collision(g_state);
+      clock_t start_time = clock();
 
       if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
           b_collision != COLLISION_DR && !f_collision &&
@@ -810,7 +811,11 @@ void userInput(UserAction_t action, bool hold) {
       if (b_collision == COLLISION_DOWN || b_collision == COLLISION_DL ||
           b_collision == COLLISION_DR || f_collision) {
         g_state->status.status = ATTACHING;
-      } else {
+      }
+
+      if (!g_state->status.pause &&
+          ((clock() - start_time) <
+           CLOCKS_PER_SEC / (g_state->stats.speed * 0.7))) {
         g_state->status.status = SHIFTING;
       }
       break;
@@ -857,21 +862,21 @@ void on_shift_state(Game_state_t *g_state, UserAction_t action) {
       g_state->status.status = PAUSE;
       break;
     default:
-      if (g_state->status.pause == false) {
-        if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
-            b_collision != COLLISION_DR && !f_collision &&
-            g_state->status.pause == false) {
-          clear_figure(g_state);
-          on_move_state(g_state, Down);
-          figure_to_field(g_state);
-          g_state->status.status = MOVING;
-        }
-
-        if (b_collision == COLLISION_DOWN || b_collision == COLLISION_DL ||
-            b_collision == COLLISION_DR || f_collision) {
-          g_state->status.status = ATTACHING;
-        }
+      // if (g_state->status.pause == false) {
+      if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
+          b_collision != COLLISION_DR && !f_collision &&
+          g_state->status.pause == false) {
+        clear_figure(g_state);
+        on_move_state(g_state, Down);
+        figure_to_field(g_state);
+        g_state->status.status = MOVING;
       }
+
+      if (b_collision == COLLISION_DOWN || b_collision == COLLISION_DL ||
+          b_collision == COLLISION_DR || f_collision) {
+        g_state->status.status = ATTACHING;
+      }
+      // }
       break;
   }
 }
