@@ -58,6 +58,7 @@ int main() {
       userInput(get_user_action(wgetch(tetris)), false);
       nodelay(tetris, TRUE);
     }
+
     if (g_state->status.status == MOVING) {
       // ||
       // g_state->status.status == SHIFTING) {
@@ -72,14 +73,16 @@ int main() {
 
           g_info = copy_game_to_gi(g_state);
           render_game_gi(tetris, g_info);
-
-          wrefresh(tetris);
-          wrefresh(status);
-          wrefresh(next);
-          wrefresh(states_info);
         }
 
-        g_state->status.status = MOVING;
+        if (g_state->status.status != PAUSE) {
+          g_state->status.status = MOVING;
+        }
+
+        wrefresh(tetris);
+        wrefresh(status);
+        wrefresh(next);
+        wrefresh(states_info);
       }
     }
 
