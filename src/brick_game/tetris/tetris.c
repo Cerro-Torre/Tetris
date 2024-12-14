@@ -8,10 +8,11 @@ int main() {
   WINDOW *menu = print_menu();
   wrefresh(menu);
 
-  Game_field_t field_t = {0};
+  // Game_field_t field_t = {0};
   Game_state_t *g_state = get_game_state();
 
-  init_game_state(g_state, &field_t);
+  // init_game_state(g_state, &field_t);
+  init_game_state(g_state);
 
   int key = 0;
 
@@ -78,12 +79,13 @@ int main() {
         if (g_state->status.status != PAUSE) {
           g_state->status.status = MOVING;
         }
-
-        wrefresh(tetris);
-        wrefresh(status);
-        wrefresh(next);
-        wrefresh(states_info);
       }
+      // states_info = print_states(g_state, key2);
+
+      // wrefresh(tetris);
+      // wrefresh(status);
+      // wrefresh(next);
+      // wrefresh(states_info);
     }
 
     userInput(get_user_action(key2), false);
@@ -91,6 +93,7 @@ int main() {
     g_info = copy_game_to_gi(g_state);
     render_game_gi(tetris, g_info);
 
+    states_info = print_states(g_state, key2);
     status = print_status_gi(&g_info);
     next = next_display(&g_info);
 

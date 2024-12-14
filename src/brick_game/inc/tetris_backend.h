@@ -18,17 +18,17 @@ Game_state_t *get_game_state();
 GameInfo_t copy_game_to_gi(Game_state_t *g_state);
 
 // ________inits________
-int init_field(Game_field_t *field_t);
+int init_field(Game_state_t *g_state);
 int init_field_gi(GameInfo_t *field_t);
 void init_game_info(GameInfo_t *g_info);
 void init_figure(Game_state_t *g_state);
 void init_game_status(Game_status_t *game_status);
 void init_game_stats(Game_stats_t *game_stats);
-void init_game_state(Game_state_t *g_state, Game_field_t *field);
+void init_game_state(Game_state_t *g_state);
 int init_array(int rows, int cols, int **array);
 
 // ________frees________
-void free_field(Game_field_t *field_t);
+void free_field(Game_state_t *g_state);
 void free_field_gi(GameInfo_t *field_t);
 void free_next_figure_gi(GameInfo_t *g_info);
 void free_array(int **array);

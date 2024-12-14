@@ -2,22 +2,43 @@
 
 #include "../inc/tetris_backend.h"
 
-int init_field(Game_field_t *field_t) {
+int init_array(int rows, int cols, int **array) {
   int error = 0;
-  field_t->field = (int **)calloc(ROWS_GAME, sizeof(int *));
+  array = (int **)calloc(rows, sizeof(int *));
 
-  if (field_t->field != NULL) {
-    for (int i = 0; i < ROWS_GAME; i++) {
-      field_t->field[i] = (int *)calloc(COLS_GAME, sizeof(int));
+  if (array != NULL) {
+    for (int i = 0; i < rows; i++) {
+      array[i] = (int *)calloc(cols, sizeof(int));
     }
   } else {
-    free(field_t->field);
-    field_t->field = NULL;
+    free(array);
+    array = NULL;
     error = 1;
   }
 
-  field_t->x = 0;
-  field_t->y = 0;
+  return error;
+}
+
+int init_field(Game_state_t *g_state) {
+  g_state = get_game_state();
+
+  int error = 0;
+  g_state->field.field = (int **)calloc(ROWS_GAME, sizeof(int *));
+
+  if (g_state->field.field != NULL) {
+    for (int i = 0; i < ROWS_GAME; i++) {
+      g_state->field.field[i] = (int *)calloc(COLS_GAME, sizeof(int));
+    }
+  } else {
+    free(g_state->field.field);
+    g_state->field.field = NULL;
+    error = 1;
+  }
+
+  // init_array(ROWS_GAME, COLS_GAME, g_state->field->field)
+
+  g_state->field.x = 0;
+  g_state->field.y = 0;
   return error;
 }
 
@@ -32,23 +53,6 @@ int init_field_gi(GameInfo_t *field_t) {
   } else {
     free(field_t->field);
     field_t->field = NULL;
-    error = 1;
-  }
-
-  return error;
-}
-
-int init_array(int rows, int cols, int **array) {
-  int error = 0;
-  array = (int **)calloc(rows, sizeof(int *));
-
-  if (array != NULL) {
-    for (int i = 0; i < rows; i++) {
-      array[i] = (int *)calloc(cols, sizeof(int));
-    }
-  } else {
-    free(array);
-    array = NULL;
     error = 1;
   }
 
@@ -80,17 +84,17 @@ void init_game_info(GameInfo_t *g_info) {
   g_info->pause = 0;
 }
 
-void free_field(Game_field_t *field_t) {
-  if (field_t && field_t->field != NULL) {
+void free_field(Game_state_t *g_state) {
+  if (g_state->field.field) {
     for (int i = 0; i < ROWS_GAME; i++) {
-      free(field_t->field[i]);
+      free(g_state->field.field[i]);
     }
-    free(field_t->field);
+    free(g_state->field.field);
 
-    field_t->field = NULL;
+    g_state->field.field = NULL;
 
-    field_t->x = 0;
-    field_t->y = 0;
+    g_state->field.x = 0;
+    g_state->field.y = 0;
   }
 }
 
@@ -247,11 +251,11 @@ Game_state_t *get_game_state() {
   return &game_state;
 }
 
-void init_game_state(Game_state_t *g_state, Game_field_t *field) {
+void init_game_state(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  init_field(field);
-  g_state->field = field;
+  init_field(g_state);
+  // g_state->field = field;
 
   int error_on_init_next = init_next_figure(g_state);
 
@@ -267,13 +271,13 @@ void init_game_state(Game_state_t *g_state, Game_field_t *field) {
 void free_game(Game_state_t *g_state) {
   g_state = get_game_state();
   GameInfo_t g_info = updateCurrentState();
-  free_field(g_state->field);
-  g_state->field = NULL;
+  free_field(g_state);
+  g_state->field.field = NULL;
 
   free_next_figure(g_state->figure.next_figure);
   free_next_figure(g_info.next);
 
-  g_state->field = NULL;
+  g_state->field.field = NULL;
   g_info.next = NULL;
 
   g_state->figure.figure_height = 0;
@@ -404,10 +408,10 @@ bool bottom_figure_collision(Game_state_t *g_state) {
       int y = i + g_state->figure.y;
       int x = j + g_state->figure.x;
 
-      if ((g_state->field) && (y < ROWS_GAME - 1) &&
+      if ((g_state->field.field) && (y < ROWS_GAME - 1) &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
           (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
-          (g_state->field->field[y + 1][x] == 1))
+          (g_state->field.field[y + 1][x] == 1))
 
       {
         f_collision = true;
@@ -431,8 +435,8 @@ void figure_to_field(Game_state_t *g_state) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      if (g_state->field && (g_state->figure.figure[type][i][j] == 1)) {
-        g_state->field->field[field_y][field_x] = 1;
+      if (g_state->field.field && (g_state->figure.figure[type][i][j] == 1)) {
+        g_state->field.field[field_y][field_x] = 1;
       }
     }
   }
@@ -449,11 +453,11 @@ void clear_figure(Game_state_t *g_state) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      if (g_state->field &&
+      if (g_state->field.field &&
           (g_state->figure.figure[g_state->figure.type][i][j] == 1) &&
-          (g_state->field->field[field_y][field_x] == 1 ||
-           g_state->field->field[field_y][field_x] == 3)) {
-        g_state->field->field[field_y][field_x] = 0;
+          (g_state->field.field[field_y][field_x] == 1 ||
+           g_state->field.field[field_y][field_x] == 3)) {
+        g_state->field.field[field_y][field_x] = 0;
       }
     }
   }
@@ -479,8 +483,8 @@ GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
   g_info.next = g_state->figure.next_figure;
 
   int error_on_field_init = init_field_gi(&g_info);
-  if (!error_on_field_init && g_state->field) {
-    copy_field(FIELD_N, FIELD_M, g_state->field->field, g_info.field);
+  if (!error_on_field_init && g_state->field.field) {
+    copy_field(FIELD_N, FIELD_M, g_state->field.field, g_info.field);
   }
 
   return g_info;
@@ -589,7 +593,8 @@ void move_left(Game_state_t *g_state) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      if (g_state->field && g_state->field->field[field_y][field_x - 1] == 1 &&
+      if (g_state->field.field &&
+          g_state->field.field[field_y][field_x - 1] == 1 &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1) {
         figure_collision = true;
       }
@@ -614,7 +619,8 @@ void move_right(Game_state_t *g_state) {
       int field_y = g_state->figure.y + i;
       int field_x = g_state->figure.x + j;
 
-      if (g_state->field && g_state->field->field[field_y][field_x + 1] == 1 &&
+      if (g_state->field.field &&
+          g_state->field.field[field_y][field_x + 1] == 1 &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1) {
         figure_collision = true;
       }
@@ -646,7 +652,7 @@ bool figure_is_attaching(Game_state_t *g_state) {
       int x = g_state->figure.x + j;
       int y = g_state->figure.y + i;
 
-      if ((y > FIELD_N - 1 || (y > -1 && (g_state->field->field[y][x] == 1)))) {
+      if ((y > FIELD_N - 1 || (y > -1 && (g_state->field.field[y][x] == 1)))) {
         is_attaching = true;
       }
     }
@@ -729,7 +735,7 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
 void shift_lines(Game_state_t *g_state, int i) {
   for (int j = i; j > 0; j--) {
     for (int k = 0; k < FIELD_M; k++) {
-      g_state->field->field[j][k] = g_state->field->field[j - 1][k];
+      g_state->field.field[j][k] = g_state->field.field[j - 1][k];
     }
   }
 }
@@ -740,7 +746,7 @@ void collapse_full_lines(Game_state_t *g_state) {
   for (int i = ROWS_GAME - 1; i >= 0; i--) {
     int line_is_full = 0;
     for (int j = 0; j < COLS_GAME; j++) {
-      line_is_full += g_state->field->field[i][j];
+      line_is_full += g_state->field.field[i][j];
     }
 
     if (line_is_full == COLS_GAME) {
