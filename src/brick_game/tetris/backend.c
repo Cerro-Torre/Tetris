@@ -535,7 +535,7 @@ void on_spawn_state(Game_state_t *g_state, UserAction_t action) {
   g_state = get_game_state();
 
   g_state->figure.type = g_state->figure.next_type;
-  g_state->figure.rotated = false;
+  // g_state->figure.rotated = false;
 
   int figure_height = figure_min_height(g_state);
   int figure_width = figure_min_width(g_state);

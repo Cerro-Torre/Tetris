@@ -49,6 +49,14 @@ typedef enum {
 } ShapeType;
 
 typedef enum {
+  NO_ROTATION = 0,
+  ROTATION_90,
+  ROTATION_180,
+  ROTATION_270,
+  ROTATIONS_ALL
+} ROTATIONS;
+
+typedef enum {
   COLLISION_LEFT = 1,
   COLLISION_RIGHT,
   COLLISION_DOWN,
@@ -70,7 +78,7 @@ typedef struct {
   int figure_height;
   int figure_width;
   int type;
-  bool rotated;
+  int rotation;
   int next_x;
   int next_y;
   int **next_figure;
