@@ -35,7 +35,7 @@ int init_field(Game_state_t *g_state) {
     error = 1;
   }
 
-  // init_array(ROWS_GAME, COLS_GAME, g_state->field->field)
+  // int error = init_array(ROWS_GAME, COLS_GAME, g_state->field.field);
 
   g_state->field.x = 0;
   g_state->field.y = 0;
@@ -73,6 +73,7 @@ void free_array(int **array) {
 void init_game_info(GameInfo_t *g_info) {
   g_info->field = NULL;
   init_field_gi(g_info);
+  // init_array(ROWS_GAME, COLS_GAME, g_info->field);
 
   // g_info->next = NULL;
   init_array(4, 4, g_info->next);
@@ -110,7 +111,7 @@ void free_next_figure(int **figure_t) {
 }
 
 GameInfo_t updateCurrentState() {
-  static GameInfo_t g_info = {0};
+  static GameInfo_t g_info;
   return g_info;
 }
 
@@ -255,6 +256,7 @@ void init_game_state(Game_state_t *g_state) {
   g_state = get_game_state();
 
   init_field(g_state);
+  // init_array(ROWS_GAME, COLS_GAME, g_state->field.field);
   // g_state->field = field;
 
   int error_on_init_next = init_next_figure(g_state);

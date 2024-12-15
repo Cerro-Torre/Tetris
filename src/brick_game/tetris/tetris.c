@@ -12,8 +12,9 @@ int main() {
   Game_state_t *g_state = get_game_state();
 
   // init_game_state(g_state, &field_t);
+  // int error_on_init =
   init_game_state(g_state);
-
+  // if (!error_on_init) {
   int key = 0;
 
   while (g_state->status.status == INIT) {
@@ -25,6 +26,7 @@ int main() {
   refresh();
 
   GameInfo_t g_info = updateCurrentState();
+  init_game_info(&g_info);
 
   WINDOW *tetris = print_tetris_overlay();
   wrefresh(tetris);
@@ -35,8 +37,8 @@ int main() {
   WINDOW *next = next_display(&g_info);
   wrefresh(next);
 
-  int key2 = 0;
-  WINDOW *states_info = print_states(g_state, key2);
+  int user_inp_key = 0;
+  WINDOW *states_info = print_states(g_state, user_inp_key);
   wrefresh(states_info);
 
   wrefresh(states_info);
@@ -67,10 +69,10 @@ int main() {
       while (clock() - start_time <
              CLOCKS_PER_SEC / g_state->stats.speed * 0.7) {
         nodelay(tetris, TRUE);
-        int key2 = wgetch(tetris);
+        int user_inp_key = wgetch(tetris);
 
-        if (key2 != ERR) {
-          userInput(get_user_action(key2), false);
+        if (user_inp_key != ERR) {
+          userInput(get_user_action(user_inp_key), false);
 
           g_info = copy_game_to_gi(g_state);
           render_game_gi(tetris, g_info);
@@ -80,7 +82,7 @@ int main() {
           g_state->status.status = MOVING;
         }
       }
-      // states_info = print_states(g_state, key2);
+      // states_info = print_states(g_state, user_inp_key);
 
       // wrefresh(tetris);
       // wrefresh(status);
@@ -88,12 +90,12 @@ int main() {
       // wrefresh(states_info);
     }
 
-    userInput(get_user_action(key2), false);
+    userInput(get_user_action(user_inp_key), false);
 
     g_info = copy_game_to_gi(g_state);
     render_game_gi(tetris, g_info);
 
-    states_info = print_states(g_state, key2);
+    states_info = print_states(g_state, user_inp_key);
     status = print_status_gi(&g_info);
     next = next_display(&g_info);
 
@@ -101,6 +103,8 @@ int main() {
     wrefresh(status);
     wrefresh(states_info);
     wrefresh(next);
+
+    sleep(1 / (g_state->stats.speed * 10));
   }
 
   free_game(g_state);
@@ -118,7 +122,7 @@ int main() {
   // free_next_figure_gi(&g_info);
   refresh();
   endwin();
-
+  // }
   return 0;
 }
 

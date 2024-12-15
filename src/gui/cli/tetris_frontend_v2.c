@@ -92,8 +92,8 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
       break;
   }
 
-  mvwprintw(status, 9, 1, "t: %ld", clock() / CLOCKS_PER_SEC);
-  mvwprintw(status, 10, 1, "test: %ld", g_state->test);
+  // mvwprintw(status, 9, 1, "t: %ld", g_state->time);
+  // mvwprintw(status, 10, 1, "test: %ld", g_state->test);
   return status;
 }
 
