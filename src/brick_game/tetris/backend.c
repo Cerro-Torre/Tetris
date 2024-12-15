@@ -19,7 +19,7 @@ int init_array(int rows, int cols, int **array) {
 }
 
 int init_field(Game_state_t *g_state) {
-  g_state = get_game_state();
+  // g_state = get_game_state();
 
   int error = 0;
   g_state->field.field = (int **)calloc(ROWS_GAME, sizeof(int *));
@@ -58,15 +58,15 @@ int init_field_gi(GameInfo_t *field_t) {
   return error;
 }
 
-void free_array(int **array) {
-  if (array != NULL) {
-    for (int i = 0; i < 4; i++) {
+void free_array(int rows, int **array) {
+  if (array) {
+    for (int i = 0; i < rows; i++) {
       free(array[i]);
     }
     free(array);
-
-    array = NULL;
   }
+
+  array = NULL;
 }
 
 void init_game_info(GameInfo_t *g_info) {
@@ -98,16 +98,16 @@ void free_field(Game_state_t *g_state) {
   }
 }
 
-void free_next_figure(int **figure_t) {
-  if (figure_t != NULL) {
-    for (int i = 0; i < 4; i++) {
-      free(figure_t[i]);
-    }
-    free(figure_t);
+// void free_next_figure(int **figure_t) {
+//   if (figure_t != NULL) {
+//     for (int i = 0; i < 4; i++) {
+//       free(figure_t[i]);
+//     }
+//     free(figure_t);
 
-    figure_t = NULL;
-  }
-}
+//     figure_t = NULL;
+//   }
+// }
 
 GameInfo_t updateCurrentState() {
   static GameInfo_t g_info;
@@ -190,7 +190,10 @@ int init_next_figure(Game_state_t *g_state) {
   int rnd_figure = rand() % 6;
   g_state->figure.next_type = rnd_figure;
 
-  fill_next_figure(g_state);
+  if (g_state) {
+    fill_next_figure(g_state);
+  }
+
   g_state->figure.next_x = 0;
   g_state->figure.next_y = 0;
 
@@ -200,16 +203,19 @@ int init_next_figure(Game_state_t *g_state) {
   g_state->figure.next_figure_width = figure_width;
 
   int error = 0;
-  g_state->figure.next_figure = (int **)calloc(figure_height, sizeof(int *));
+  if (g_state->figure.next_figure) {
+    g_state->figure.next_figure = (int **)calloc(figure_height, sizeof(int *));
 
-  if (g_state->figure.next_figure != NULL) {
-    for (int i = 0; i < g_state->figure.next_figure_height; i++) {
-      g_state->figure.next_figure[i] = (int *)calloc(figure_width, sizeof(int));
+    if (g_state->figure.next_figure != NULL) {
+      for (int i = 0; i < g_state->figure.next_figure_height; i++) {
+        g_state->figure.next_figure[i] =
+            (int *)calloc(figure_width, sizeof(int));
+      }
+    } else {
+      free(g_state->figure.next_figure);
+      g_state->figure.next_figure = NULL;
+      error = 1;
     }
-  } else {
-    free(g_state->figure.next_figure);
-    g_state->figure.next_figure = NULL;
-    error = 1;
   }
 
   return error;
@@ -245,7 +251,7 @@ Game_state_t *get_game_state() {
 }
 
 void init_game_state(Game_state_t *g_state) {
-  g_state = get_game_state();
+  // g_state = get_game_state();
 
   init_field(g_state);
   // init_array(ROWS_GAME, COLS_GAME, g_state->field.field);
@@ -268,8 +274,13 @@ void free_game(Game_state_t *g_state) {
   free_field(g_state);
   g_state->field.field = NULL;
 
-  free_next_figure(g_state->figure.next_figure);
-  free_next_figure(g_info.next);
+  // free_next_figure(g_state->figure.next_figure);
+  // free_next_figure(g_info.next);
+
+  free_array(ROWS_GAME, g_state->field.field);
+  free_array(g_state->figure.next_figure_height, g_state->figure.next_figure);
+  free_array(4, g_info.next);
+  free_array(ROWS_GAME, g_info.field);
 
   g_state->field.field = NULL;
   g_info.next = NULL;
@@ -327,30 +338,6 @@ int figure_min_width(Game_state_t *g_state) {
 
   return figure_width;
 }
-
-// int trim_figure_height(Game_state_t *g_state) {
-//   g_state = get_game_state();
-
-//   int figure_height = figure_min_height(g_state);
-//   int figure_width = figure_min_width(g_state);
-//   int row_is_empty = 0;
-
-//   for (int i = 0; i < figure_height; i++) {
-//     row_is_empty = 0;
-//     for (int j = 0; j < figure_width; j++) {
-//       if (g_state->figure.figure[g_state->figure.type][i][j] == 0 && i != 0)
-//       {
-//         row_is_empty++;
-//       }
-//     }
-
-//     if (row_is_empty == figure_width) {
-//       figure_height--;
-//     }
-//   }
-
-//   return figure_height;
-// }
 
 int border_collision(Game_state_t *g_state) {
   g_state = get_game_state();

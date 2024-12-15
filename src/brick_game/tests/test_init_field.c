@@ -2,20 +2,24 @@
 
 START_TEST(test_init_field_success) {
   Game_state_t g_state = {0};
+  // init_game_state(&g_state);
   int error = init_field(&g_state);
+
   ck_assert_int_eq(error, 0);
 
-  // ck_assert_ptr_ne(g_state.field.field, NULL);
-  // for (int i = 0; i < ROWS_GAME; i++) {
-  //   ck_assert_ptr_ne(g_state.field.field[i], NULL);
-  // }
+  for (int i = 0; i < ROWS_GAME; i++) {
+    for (int j = 0; j < COLS_GAME; j++) {
+      ck_assert_int_eq(g_state.field.field[i][j], 0);
+    }
+  }
 
-  int *p_x = &g_state.field.x;
-  int *p_y = &g_state.field.y;
-  ck_assert_ptr_nonnull(p_x);
-  ck_assert_ptr_nonnull(p_y);
+  ck_assert_ptr_ne(g_state.field.field, NULL);
+  for (int i = 0; i < ROWS_GAME; i++) {
+    ck_assert_ptr_ne(g_state.field.field[i], NULL);
+  }
 
   free_field(&g_state);
+  // free_array(ROWS_GAME, g_state.field.field);
   ck_assert_ptr_eq(g_state.field.field, NULL);
 }
 END_TEST

@@ -47,8 +47,6 @@ int main() {
   while (g_state->status.is_playing && g_state->status.status != GAMEOVER) {
     g_state = get_game_state();
     g_info = updateCurrentState();
-    // static clock_t last_shift_time = 0;
-    // clock_t current_time = clock();
     nodelay(tetris, TRUE);
 
     if (g_state->status.status == START || g_state->status.status == PAUSE) {
