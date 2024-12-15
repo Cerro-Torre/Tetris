@@ -8,13 +8,9 @@ int main() {
   WINDOW *menu = print_menu();
   wrefresh(menu);
 
-  // Game_field_t field_t = {0};
   Game_state_t *g_state = get_game_state();
 
-  // init_game_state(g_state, &field_t);
-  // int error_on_init =
   init_game_state(g_state);
-  // if (!error_on_init) {
   int key = 0;
 
   while (g_state->status.status == INIT) {
@@ -63,8 +59,6 @@ int main() {
     }
 
     if (g_state->status.status == MOVING) {
-      // ||
-      // g_state->status.status == SHIFTING) {
       clock_t start_time = clock();
       while (clock() - start_time <
              CLOCKS_PER_SEC / g_state->stats.speed * 0.7) {
@@ -82,12 +76,6 @@ int main() {
           g_state->status.status = MOVING;
         }
       }
-      // states_info = print_states(g_state, user_inp_key);
-
-      // wrefresh(tetris);
-      // wrefresh(status);
-      // wrefresh(next);
-      // wrefresh(states_info);
     }
 
     userInput(get_user_action(user_inp_key), false);
@@ -119,10 +107,8 @@ int main() {
 
   delwin(tetris);
   delwin(states_info);
-  // free_next_figure_gi(&g_info);
   refresh();
   endwin();
-  // }
   return 0;
 }
 
@@ -136,11 +122,9 @@ UserAction_t get_user_action(int ch) {
       action = Pause;
       break;
     case KEY_Q:
-      refresh();
       action = Terminate;
       break;
     case KEY_LEFT:
-      refresh();
       action = Left;
       break;
     case KEY_RIGHT:

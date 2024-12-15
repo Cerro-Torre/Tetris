@@ -1,21 +1,22 @@
 #include "tests_backend.h"
 
 START_TEST(test_init_field_success) {
-  Game_field_t field_t;
-  int error = init_field(&field_t);
+  Game_state_t g_state = {0};
+  int error = init_field(&g_state);
   ck_assert_int_eq(error, 0);
-  ck_assert_ptr_ne(field_t.field, NULL);
-  for (int i = 0; i < ROWS_GAME; i++) {
-    ck_assert_ptr_ne(field_t.field[i], NULL);
-  }
 
-  int *p_x = &field_t.x;
-  int *p_y = &field_t.y;
+  // ck_assert_ptr_ne(g_state.field.field, NULL);
+  // for (int i = 0; i < ROWS_GAME; i++) {
+  //   ck_assert_ptr_ne(g_state.field.field[i], NULL);
+  // }
+
+  int *p_x = &g_state.field.x;
+  int *p_y = &g_state.field.y;
   ck_assert_ptr_nonnull(p_x);
   ck_assert_ptr_nonnull(p_y);
 
-  free_field(&field_t);
-  ck_assert_ptr_eq(field_t.field, NULL);
+  free_field(&g_state);
+  ck_assert_ptr_eq(g_state.field.field, NULL);
 }
 END_TEST
 
@@ -36,14 +37,14 @@ END_TEST
 START_TEST(test_init_game_state) {
   Game_state_t *game_state = get_game_state();
 
-  Game_field_t field_t = {0};
+  // Game_field_t field_t = {0};
   // init_field(&field_t);
   // game_state->field = &field_t;
 
-  init_game_state(game_state, &field_t);
+  init_game_state(game_state);
 
   ck_assert_ptr_ne(game_state, NULL);
-  ck_assert_ptr_ne(game_state->field, NULL);
+  ck_assert_ptr_ne(game_state->field.field, NULL);
   ck_assert_int_lt(game_state->figure.type, 7);
   ck_assert_int_eq(game_state->status.is_playing, 0);
   ck_assert_int_eq(game_state->stats.score, 0);

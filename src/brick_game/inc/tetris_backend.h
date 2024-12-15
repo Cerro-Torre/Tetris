@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-// #include <time.h>
+#include <time.h>
 
 #include "defines.h"
 #include "objects.h"
@@ -36,16 +36,6 @@ void free_array(int **array);
 // void free_field_gs(Game_state_t *game_state);
 void free_game(Game_state_t *g_state);
 void finish_game(Game_state_t *g_state);
-
-// _______fsm________
-
-void on_init_state(Game_state_t *g_state, UserAction_t action);
-void on_start_state(Game_state_t *g_state, UserAction_t action);
-void on_spawn_state(Game_state_t *g_state, UserAction_t action);
-void on_move_state(Game_state_t *g_state, UserAction_t action);
-void on_attach_state(Game_state_t *g_state, UserAction_t action);
-void on_pause_state(Game_state_t *g_state, UserAction_t action);
-void on_shift_state(Game_state_t *g_state, UserAction_t action);
 
 // ________draws________
 
