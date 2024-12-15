@@ -7,12 +7,12 @@ void init_game_status(Game_status_t *game_status) {
   game_status->is_playing = 0;
 }
 
-void finish_game(Game_state_t *g_state) {
-  if (g_state->status.status != GAMEOVER && !g_state->status.win) {
-    g_state->status.is_playing = false;
-    free_game(g_state);
-  }
-}
+// void finish_game(Game_state_t *g_state) {
+//   if (g_state->status.status != GAMEOVER && !g_state->status.win) {
+//     g_state->status.is_playing = false;
+//     free_game(g_state);
+//   }
+// }
 
 void on_init_state(Game_state_t *g_state, UserAction_t action) {
   switch (action) {

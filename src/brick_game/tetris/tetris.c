@@ -21,8 +21,7 @@ int main() {
   delwin(menu);
   refresh();
 
-  GameInfo_t g_info = updateCurrentState();
-  init_game_info(&g_info);
+  GameInfo_t g_info = init_game_info();
 
   WINDOW *tetris = print_tetris_overlay();
   wrefresh(tetris);
@@ -94,8 +93,9 @@ int main() {
   }
 
   free_game(g_state);
-  free_field_gi(&g_info);
-  g_info.field = NULL;
+  g_state = NULL;
+  // free_game_gi(&g_info);
+  // g_info.field = NULL;
 
   nodelay(tetris, FALSE);
   mvwprintw(tetris, 0, 3, "Game Over");

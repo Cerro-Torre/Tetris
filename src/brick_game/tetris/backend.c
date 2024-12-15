@@ -1,9 +1,11 @@
 
 #include "../inc/tetris_backend.h"
 
-int init_array(int rows, int cols, int **array) {
-  int error = 0;
-  array = (int **)calloc(rows, sizeof(int *));
+int **init_array(int rows, int cols) {
+  // array = NULL;
+
+  // int error = 0;
+  int **array = (int **)calloc(rows, sizeof(int *));
 
   if (array != NULL) {
     for (int i = 0; i < rows; i++) {
@@ -12,34 +14,34 @@ int init_array(int rows, int cols, int **array) {
   } else {
     free(array);
     array = NULL;
-    error = 1;
+    // error = 1;
   }
 
-  return error;
+  return array;
 }
 
-int init_field(Game_state_t *g_state) {
-  // g_state = get_game_state();
+// int init_field(Game_state_t *g_state) {
+//   // g_state = get_game_state();
 
-  int error = 0;
-  g_state->field.field = (int **)calloc(ROWS_GAME, sizeof(int *));
+//   int error = 0;
+//   g_state->field.field = (int **)calloc(ROWS_GAME, sizeof(int *));
 
-  if (g_state->field.field != NULL) {
-    for (int i = 0; i < ROWS_GAME; i++) {
-      g_state->field.field[i] = (int *)calloc(COLS_GAME, sizeof(int));
-    }
-  } else {
-    free(g_state->field.field);
-    g_state->field.field = NULL;
-    error = 1;
-  }
+//   if (g_state->field.field != NULL) {
+//     for (int i = 0; i < ROWS_GAME; i++) {
+//       g_state->field.field[i] = (int *)calloc(COLS_GAME, sizeof(int));
+//     }
+//   } else {
+//     free(g_state->field.field);
+//     g_state->field.field = NULL;
+//     error = 1;
+//   }
 
-  // int error = init_array(ROWS_GAME, COLS_GAME, g_state->field.field);
+//   // int error = init_array(ROWS_GAME, COLS_GAME, g_state->field.field);
 
-  g_state->field.x = 0;
-  g_state->field.y = 0;
-  return error;
-}
+//   g_state->field.x = 0;
+//   g_state->field.y = 0;
+//   return error;
+// }
 
 int init_field_gi(GameInfo_t *field_t) {
   int error = 0;
@@ -59,44 +61,44 @@ int init_field_gi(GameInfo_t *field_t) {
 }
 
 void free_array(int rows, int **array) {
-  if (array) {
+  if (array != NULL) {
     for (int i = 0; i < rows; i++) {
       free(array[i]);
     }
     free(array);
   }
 
-  array = NULL;
+  // array = NULL;
 }
 
-void init_game_info(GameInfo_t *g_info) {
-  g_info->field = NULL;
-  init_field_gi(g_info);
-  // init_array(ROWS_GAME, COLS_GAME, g_info->field);
+GameInfo_t init_game_info() {
+  GameInfo_t g_info = {0};
 
-  // g_info->next = NULL;
-  init_array(4, 4, g_info->next);
+  g_info.field = init_array(ROWS_GAME, COLS_GAME);
+  g_info.next = init_array(4, 4);
 
-  g_info->score = 0;
-  g_info->high_score = 0;
-  g_info->level = 0;
-  g_info->speed = 0;
-  g_info->pause = 0;
+  g_info.score = 0;
+  g_info.high_score = 0;
+  g_info.level = 0;
+  g_info.speed = 0;
+  g_info.pause = 0;
+
+  return g_info;
 }
 
-void free_field(Game_state_t *g_state) {
-  if (g_state->field.field) {
-    for (int i = 0; i < ROWS_GAME; i++) {
-      free(g_state->field.field[i]);
-    }
-    free(g_state->field.field);
+// void free_field(Game_state_t *g_state) {
+//   if (g_state->field.field != NULL) {
+//     for (int i = 0; i < ROWS_GAME; i++) {
+//       free(g_state->field.field[i]);
+//     }
+//     free(g_state->field.field);
 
-    g_state->field.field = NULL;
+//     g_state->field.field = NULL;
 
-    g_state->field.x = 0;
-    g_state->field.y = 0;
-  }
-}
+//     g_state->field.x = 0;
+//     g_state->field.y = 0;
+//   }
+// }
 
 // void free_next_figure(int **figure_t) {
 //   if (figure_t != NULL) {
@@ -114,16 +116,16 @@ GameInfo_t updateCurrentState() {
   return g_info;
 }
 
-void free_field_gi(GameInfo_t *field_t) {
-  if (field_t->field != NULL) {
-    for (int i = 0; i < ROWS_GAME; i++) {
-      free(field_t->field[i]);
-    }
-    free(field_t->field);
+// void free_field_gi(GameInfo_t *field_t) {
+//   if (field_t->field != NULL) {
+//     for (int i = 0; i < ROWS_GAME; i++) {
+//       free(field_t->field[i]);
+//     }
+//     free(field_t->field);
 
-    field_t->field = NULL;
-  }
-}
+//     field_t->field = NULL;
+//   }
+// }
 
 int figures[NUM_SHAPES][4][4] = {
     // I-образная фигура
@@ -183,16 +185,25 @@ int figures[NUM_SHAPES][4][4] = {
 
 };
 
-int init_next_figure(Game_state_t *g_state) {
+void fill_next_figure(Game_state_t *g_state) {
+  g_state = get_game_state();
+
+  for (int i = 0; i < g_state->figure.next_figure_height; i++) {
+    for (int j = 0; j < g_state->figure.next_figure_width; j++) {
+      g_state->figure.next_figure[i][j] =
+          figures[g_state->figure.next_type][i][j];
+    }
+  }
+}
+
+void init_next_figure(Game_state_t *g_state) {
   g_state = get_game_state();
 
   srand(time(NULL));
   int rnd_figure = rand() % 6;
   g_state->figure.next_type = rnd_figure;
 
-  if (g_state) {
-    fill_next_figure(g_state);
-  }
+  g_state->figure.next_figure = init_array(4, 4);
 
   g_state->figure.next_x = 0;
   g_state->figure.next_y = 0;
@@ -202,23 +213,25 @@ int init_next_figure(Game_state_t *g_state) {
   g_state->figure.next_figure_height = figure_height;
   g_state->figure.next_figure_width = figure_width;
 
-  int error = 0;
-  if (g_state->figure.next_figure) {
-    g_state->figure.next_figure = (int **)calloc(figure_height, sizeof(int *));
-
-    if (g_state->figure.next_figure != NULL) {
-      for (int i = 0; i < g_state->figure.next_figure_height; i++) {
-        g_state->figure.next_figure[i] =
-            (int *)calloc(figure_width, sizeof(int));
-      }
-    } else {
-      free(g_state->figure.next_figure);
-      g_state->figure.next_figure = NULL;
-      error = 1;
-    }
+  if ((g_state != NULL) && (g_state->figure.next_figure != NULL)) {
+    fill_next_figure(g_state);
   }
+  // int error = 0;
+  // if (g_state->figure.next_figure) {
+  //   g_state->figure.next_figure = (int **)calloc(figure_height, sizeof(int
+  //   *));
 
-  return error;
+  //   if (g_state->figure.next_figure != NULL) {
+  //     for (int i = 0; i < g_state->figure.next_figure_height; i++) {
+  //       g_state->figure.next_figure[i] =
+  //           (int *)calloc(figure_width, sizeof(int));
+  //     }
+  //   } else {
+  //     free(g_state->figure.next_figure);
+  //     g_state->figure.next_figure = NULL;
+  //     error = 1;
+  //   }
+  // }
 }
 
 void init_figure(Game_state_t *g_state) {
@@ -251,17 +264,20 @@ Game_state_t *get_game_state() {
 }
 
 void init_game_state(Game_state_t *g_state) {
-  // g_state = get_game_state();
+  g_state = get_game_state();
 
-  init_field(g_state);
+  // init_field(g_state);
   // init_array(ROWS_GAME, COLS_GAME, g_state->field.field);
   // g_state->field = field;
 
-  int error_on_init_next = init_next_figure(g_state);
+  g_state->field.field = init_array(ROWS_GAME, COLS_GAME);
+  // g_state->figure.next_figure = init_array(4, 4);
 
-  if (!error_on_init_next) {
-    init_figure(g_state);
-  }
+  init_next_figure(g_state);
+
+  // if (!error_on_init_next) {
+  init_figure(g_state);
+  // }
 
   init_game_status(&g_state->status);
 
@@ -271,19 +287,45 @@ void init_game_state(Game_state_t *g_state) {
 void free_game(Game_state_t *g_state) {
   g_state = get_game_state();
   GameInfo_t g_info = updateCurrentState();
-  free_field(g_state);
-  g_state->field.field = NULL;
+
+  // free_field(g_state);
+  // g_state->field.field = NULL;
 
   // free_next_figure(g_state->figure.next_figure);
   // free_next_figure(g_info.next);
+  if (g_state->field.field && g_state->field.field != NULL) {
+    free_array(ROWS_GAME, g_state->field.field);
+    g_state->field.field = NULL;
+  }
 
-  free_array(ROWS_GAME, g_state->field.field);
-  free_array(g_state->figure.next_figure_height, g_state->figure.next_figure);
-  free_array(4, g_info.next);
-  free_array(ROWS_GAME, g_info.field);
+  if (g_info.field && g_info.field != NULL) {
+    free_array(ROWS_GAME, g_info.field);
+    g_info.field = NULL;
+  }
 
-  g_state->field.field = NULL;
-  g_info.next = NULL;
+  // if (g_state->figure.next_figure) {
+  //   free_array(4, g_state->figure.next_figure);
+  //   g_state->figure.next_figure = NULL;
+  // }
+
+  if (g_state->figure.next_figure && g_state->figure.next_figure != NULL) {
+    free_array(4, g_state->figure.next_figure);
+    g_state->figure.next_figure = NULL;
+  }
+
+  if (g_info.next && g_info.next != NULL) {
+    free_array(4, g_info.next);
+    g_info.next = NULL;
+  }
+
+  // free_array(ROWS_GAME, g_state->field.field);
+  // free_array(g_state->figure.next_figure_height,
+  // g_state->figure.next_figure);
+
+  // free_array(4, g_info.next);
+  // free_array(ROWS_GAME, g_info.field);
+
+  // g_info.next = NULL;
 
   g_state->figure.figure_height = 0;
   g_state->figure.figure_width = 0;
@@ -301,6 +343,20 @@ void free_game(Game_state_t *g_state) {
   g_state->stats.high_score = 0;
   g_state->stats.level = 0;
   g_state->stats.speed = 0;
+}
+
+void free_game_gi(GameInfo_t *g_info) {
+  if (g_info != NULL) {
+    if (g_info->field) {
+      free_array(ROWS_GAME, g_info->field);
+      g_info->field = NULL;
+    }
+
+    if (g_info->next) {
+      free_array(4, g_info->next);
+      g_info->next = NULL;
+    }
+  }
 }
 
 int figure_min_height(Game_state_t *g_state) {
@@ -463,17 +519,6 @@ GameInfo_t copy_game_to_gi(Game_state_t *g_state) {
   }
 
   return g_info;
-}
-
-void fill_next_figure(Game_state_t *g_state) {
-  g_state = get_game_state();
-
-  for (int i = 0; i < g_state->figure.next_figure_height; i++) {
-    for (int j = 0; j < g_state->figure.next_figure_width; j++) {
-      g_state->figure.next_figure[i][j] =
-          figures[g_state->figure.next_type][i][j];
-    }
-  }
 }
 
 void shift_lines(Game_state_t *g_state, int i) {

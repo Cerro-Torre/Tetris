@@ -49,7 +49,7 @@ gcov_report: $(LIBNAME)
 
 clean:
 	rm -f out/*.o tests/*.o $(GAMENAME) test_res *.a libs/* *.out 
-	rm -f $(VG_LOG_FILE) *.info *.gc* coverage.info
+	rm -f $(VG_LOG_FILE) *.info *.gc* coverage.info ./out/*
 	rm -rf libs report gcov
 	
 rebuild:

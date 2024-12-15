@@ -1,49 +1,109 @@
 #include "tests_backend.h"
 
-START_TEST(test_init_field_success) {
-  Game_state_t g_state = {0};
-  // init_game_state(&g_state);
-  int error = init_field(&g_state);
+START_TEST(test_init_array) {
+  Game_state_t *g_state = get_game_state();
 
-  ck_assert_int_eq(error, 0);
+  g_state->field.field = init_array(ROWS_GAME, COLS_GAME);
 
   for (int i = 0; i < ROWS_GAME; i++) {
     for (int j = 0; j < COLS_GAME; j++) {
-      ck_assert_int_eq(g_state.field.field[i][j], 0);
+      ck_assert_int_eq(g_state->field.field[i][j], 0);
     }
   }
 
-  ck_assert_ptr_ne(g_state.field.field, NULL);
+  ck_assert_ptr_ne(g_state->field.field, NULL);
   for (int i = 0; i < ROWS_GAME; i++) {
-    ck_assert_ptr_ne(g_state.field.field[i], NULL);
+    ck_assert_ptr_ne(g_state->field.field[i], NULL);
   }
 
-  free_field(&g_state);
-  // free_array(ROWS_GAME, g_state.field.field);
-  ck_assert_ptr_eq(g_state.field.field, NULL);
+  free_array(ROWS_GAME, g_state->field.field);
+
+  g_state->field.field = NULL;
+  ck_assert_ptr_eq(g_state->field.field, NULL);
 }
 END_TEST
 
-START_TEST(test_init_field_game_info_success) {
-  GameInfo_t g_info;
-  int error = init_field_gi(&g_info);
-  ck_assert_int_eq(error, 0);
-  ck_assert_ptr_ne(g_info.field, NULL);
-  for (int i = 0; i < ROWS_GAME; i++) {
-    ck_assert_ptr_ne(g_info.field[i], NULL);
+START_TEST(test_init_next_figure) {
+  Game_state_t *g_state = get_game_state();
+
+  int figures[NUM_SHAPES][4][4] = {
+      // I-образная фигура
+      {
+          {1, 1, 1, 1},
+          {0, 0, 0, 0},
+          {0, 0, 0, 0},
+          {0, 0, 0, 0},
+      },
+
+      // J -образная фигура
+      {
+          {0, 1, 0, 0},
+          {0, 1, 0, 0},
+          {1, 1, 0, 0},
+          {0, 0, 0, 0},
+      },
+
+      // L-образная фигура
+      {
+          {1, 0, 0, 0},
+          {1, 0, 0, 0},
+          {1, 1, 0, 0},
+          {0, 0, 0, 0},
+      },
+
+      // O-образная фигура
+      {
+          {1, 1, 0, 0},
+          {1, 1, 0, 0},
+          {0, 0, 0, 0},
+          {0, 0, 0, 0},
+      },
+      // S-образная фигура
+      {
+          {0, 1, 1, 0},
+          {1, 1, 0, 0},
+          {0, 0, 0, 0},
+          {0, 0, 0, 0},
+      },
+
+      // T-образная фигура
+      {
+          {0, 1, 0, 0},
+          {1, 1, 1, 0},
+          {0, 0, 0, 0},
+          {0, 0, 0, 0},
+      },
+
+      // Z-образная фигура
+      {
+          {1, 1, 0, 0},
+          {0, 1, 1, 0},
+          {0, 0, 0, 0},
+          {0, 0, 0, 0},
+      },
+
+  };
+
+  init_next_figure(g_state);
+  ck_assert_int_ge(g_state->figure.next_type, 0);
+  ck_assert_int_le(g_state->figure.next_type, 6);
+
+  ck_assert_ptr_ne(g_state, NULL);
+
+  ck_assert_ptr_ne(g_state->figure.next_figure, NULL);
+
+  for (int i = 0; i < g_state->figure.next_figure_height; i++) {
+    for (int j = 0; j < g_state->figure.next_figure_width; j++) {
+      ck_assert_int_eq(g_state->figure.next_figure[i][j],
+                       figures[g_state->figure.next_type][i][j]);
+    }
   }
 
-  free_field_gi(&g_info);
-  ck_assert_ptr_eq(g_info.field, NULL);
+  free_game(g_state);
 }
-END_TEST
 
 START_TEST(test_init_game_state) {
   Game_state_t *game_state = get_game_state();
-
-  // Game_field_t field_t = {0};
-  // init_field(&field_t);
-  // game_state->field = &field_t;
 
   init_game_state(game_state);
 
@@ -53,29 +113,86 @@ START_TEST(test_init_game_state) {
   ck_assert_int_eq(game_state->status.is_playing, 0);
   ck_assert_int_eq(game_state->stats.score, 0);
 
-  // free_field(game_state->field);
   free_game(game_state);
+
+  ck_assert_ptr_eq(game_state->field.field, NULL);
+  ck_assert_ptr_eq(game_state->figure.next_figure, NULL);
+
+  ck_assert_int_eq(game_state->figure.figure_height, 0);
+  ck_assert_int_eq(game_state->figure.figure_width, 0);
+  ck_assert_int_eq(game_state->figure.type, 0);
+
+  ck_assert_int_eq(game_state->figure.next_figure_height, 0);
+  ck_assert_int_eq(game_state->figure.next_figure_width, 0);
+  ck_assert_int_eq(game_state->figure.next_type, 0);
+
+  ck_assert_int_eq(game_state->status.pause, 0);
+  ck_assert_int_eq(game_state->status.win, 0);
+  ck_assert_int_eq(game_state->status.is_playing, 0);
+
+  ck_assert_int_eq(game_state->stats.score, 0);
+  ck_assert_int_eq(game_state->stats.high_score, 0);
+  ck_assert_int_eq(game_state->stats.level, 0);
+  ck_assert_int_eq(game_state->stats.speed, 0);
 }
+END_TEST
 
-// START_TEST(test_on_pause_state) {
-//   Game_state_t g_state;
+START_TEST(test_init_game_info) {
+  GameInfo_t game_info = init_game_info();
 
-//   init_game_state(&g_state, NULL);
+  ck_assert_ptr_ne(game_info.field, NULL);
+  ck_assert_ptr_ne(game_info.next, NULL);
 
-//   UserAction_t action = Pause;
+  free_game_gi(&game_info);
 
-//   on_pause_state(&g_state, action);
+  ck_assert_ptr_eq(game_info.field, NULL);
+  ck_assert_ptr_eq(game_info.next, NULL);
+}
+END_TEST
 
-//   ck_assert_int_eq(g_state.status.pause, true);
-//   ck_assert_int_eq(g_state.status.status, PAUSE);
+START_TEST(test_init_copy_field) {
+  int **a = init_array(4, 4);
+  int **b = init_array(4, 4);
 
-//   on_pause_state(&g_state, action);
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      a[i][j] = 3;
+    }
+  }
 
-//   ck_assert_int_eq(g_state.status.pause, false);
-//   ck_assert_int_eq(g_state.status.status, MOVING);
-// }
-// END_TEST
+  copy_field(4, 4, a, b);
 
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      ck_assert_int_eq(a[i][j], b[i][j]);
+    }
+  }
+
+  free_array(4, a);
+  free_array(4, b);
+
+  a = NULL;
+  b = NULL;
+
+  ck_assert_ptr_eq(a, NULL);
+  ck_assert_ptr_eq(b, NULL);
+}
+END_TEST
+
+START_TEST(test_copy_game_to_gi) {
+  Game_state_t *g_state = get_game_state();
+  GameInfo_t game_info = init_game_info();
+
+  init_game_state(g_state);
+
+  free_game(g_state);
+  g_state = NULL;
+  free_game_gi(&game_info);
+
+  ck_assert_ptr_eq(g_state, NULL);
+  ck_assert_ptr_eq(game_info.field, NULL);
+  ck_assert_ptr_eq(game_info.next, NULL);
+}
 END_TEST
 
 Suite *test_init_field_suite(void) {
@@ -83,30 +200,18 @@ Suite *test_init_field_suite(void) {
   TCase *tc_core;
   s = suite_create("test_init_field");
   tc_core = tcase_create("Core");
-  tcase_add_test(tc_core, test_init_field_success);
-  tcase_add_test(tc_core, test_init_field_game_info_success);
+
+  tcase_add_test(tc_core, test_init_array);
+  tcase_add_test(tc_core, test_init_next_figure);
   tcase_add_test(tc_core, test_init_game_state);
-  // tcase_add_test(tc_core, test_on_pause_state);
+  tcase_add_test(tc_core, test_init_game_info);
+  tcase_add_test(tc_core, test_init_copy_field);
+  tcase_add_test(tc_core, test_copy_game_to_gi);
 
   suite_add_tcase(s, tc_core);
 
   return s;
 }
-
-// int main(void) {
-//   Suite *s1 = suite_create("Core");
-//   TCase *tc1_1 = tcase_create("Core");
-//   SRunner *sr = srunner_create(s1);
-
-//   tcase_add_test(tc1_1, test_on_pause_state);
-//   suite_add_tcase(s1, tc1_1);
-
-//   srunner_run_all(sr, CK_ENV);
-//   int number_failed = srunner_ntests_failed(sr);
-//   srunner_free(sr);
-
-//   return (number_failed == 0) ? 0 : 1;
-// }
 
 int test_init_field(void) {
   Suite *s = test_init_field_suite();
