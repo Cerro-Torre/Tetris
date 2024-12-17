@@ -1,4 +1,4 @@
-#include "../inc/fsm.h"
+#include "../inc/tetris_fsm.h"
 
 void init_game_status(Game_status_t *game_status) {
   game_status->status = INIT;
@@ -338,7 +338,7 @@ void on_pause_state(Game_state_t *g_state, UserAction_t action) {
     case Pause:
       g_state->status.pause = !g_state->status.pause;
       if (!g_state->status.pause) {
-        g_state->status.status = MOVING;
+        g_state->status.status = SHIFTING;
       }
       break;
     default:

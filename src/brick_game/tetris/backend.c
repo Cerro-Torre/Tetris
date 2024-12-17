@@ -293,12 +293,12 @@ void free_game(Game_state_t *g_state) {
 
   // free_next_figure(g_state->figure.next_figure);
   // free_next_figure(g_info.next);
-  if (g_state->field.field && g_state->field.field != NULL) {
+  if (g_state->field.field) {
     free_array(ROWS_GAME, g_state->field.field);
     g_state->field.field = NULL;
   }
 
-  if (g_info.field && g_info.field != NULL) {
+  if (g_info.field) {
     free_array(ROWS_GAME, g_info.field);
     g_info.field = NULL;
   }
@@ -308,12 +308,12 @@ void free_game(Game_state_t *g_state) {
   //   g_state->figure.next_figure = NULL;
   // }
 
-  if (g_state->figure.next_figure && g_state->figure.next_figure != NULL) {
+  if (g_state->figure.next_figure) {
     free_array(4, g_state->figure.next_figure);
     g_state->figure.next_figure = NULL;
   }
 
-  if (g_info.next && g_info.next != NULL) {
+  if (g_info.next) {
     free_array(4, g_info.next);
     g_info.next = NULL;
   }

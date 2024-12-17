@@ -1,5 +1,5 @@
-#ifndef __FSM_H__
-#define __FSM_H__
+#ifndef FSM_H
+#define FSM_H
 
 #include "../inc/defines.h"
 #include "../inc/tetris_backend.h"

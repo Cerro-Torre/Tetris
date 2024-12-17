@@ -89,7 +89,10 @@ int main() {
     wrefresh(states_info);
     wrefresh(next);
 
-    sleep(1 / (g_state->stats.speed * 10));
+    struct timespec req;
+    req.tv_sec = 0;
+    req.tv_nsec = 1000000 / (10 * 10);
+    nanosleep(&req, NULL);
   }
 
   free_game(g_state);
