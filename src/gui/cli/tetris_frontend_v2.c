@@ -17,7 +17,7 @@ WINDOW *print_menu() {
   mvwprintw(menu, yMax / 4 - 1, xMax / 4 - (INTRO_MESSAGE_LEN / 2 - 1),
             INTRO_MESSAGE);
 
-  wrefresh(menu);
+  // wrefresh(menu);
 
   return menu;
 }
@@ -35,15 +35,15 @@ WINDOW *print_tetris_overlay() {
 
   box(tetris, 0, 0);
 
-  wrefresh(tetris);
+  // wrefresh(tetris);
 
   return tetris;
 }
 
 WINDOW *print_status_gi(GameInfo_t *g_info) {
-  if (!g_info) {
-    return NULL;
-  }
+  // if (!g_info) {
+  //   return NULL;
+  // }
 
   int yMax = 0;
   int xMax = 0;
@@ -54,7 +54,7 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
 
   box(status, 0, 0);
 
-  wrefresh(status);
+  // wrefresh(status);
 
   mvwprintw(status, 1, 1, "Score: %d", g_info->score);
   mvwprintw(status, 4, 1, "High Score: %d", g_info->high_score);
@@ -102,9 +102,9 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
 }
 
 WINDOW *print_states(Game_state_t *g_state, int key) {
-  if (!g_state) {
-    return NULL;
-  }
+  // if (!g_state) {
+  //   return NULL;
+  // }
 
   int yMax = 0;
   int xMax = 0;
@@ -115,7 +115,7 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 
   box(status, 0, 0);
 
-  wrefresh(status);
+  // wrefresh(status);
 
   mvwprintw(status, 1, 1, "Key: %d", key);
   mvwprintw(status, 2, 1, "Status: %d", g_state->status.status);
@@ -175,9 +175,9 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 }
 
 void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
-  if (!g_info.field) {
-    return;
-  }
+  // if (!g_info.field) {
+  //   return;
+  // }
 
   for (int i = 0; i < 20; i++) {
     for (int j = 0; j < 10; j++) {
@@ -196,13 +196,13 @@ void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
     }
   }
 
-  wrefresh(tetris_window);
+  // wrefresh(tetris_window);
 }
 
 WINDOW *next_display(GameInfo_t *g_info) {
-  if (!g_info) {
-    return NULL;
-  }
+  // if (!g_info) {
+  //   return NULL;
+  // }
 
   int yMax = 0;
   int xMax = 0;
@@ -213,8 +213,8 @@ WINDOW *next_display(GameInfo_t *g_info) {
 
   box(next, 0, 0);
 
-  wrefresh(next);
-  if (g_info->next != NULL) {
+  // wrefresh(next);
+  if (g_info->next) {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         if (g_info->next[i][j] == 1) {
@@ -240,6 +240,6 @@ WINDOW *next_display(GameInfo_t *g_info) {
   // g_state->figure.next_figure_height); mvwprintw(next, 9, 1, "nxt_width: %d",
   // g_state->figure.next_figure_width);
 
-  wrefresh(next);
+  // wrefresh(next);
   return next;
 }

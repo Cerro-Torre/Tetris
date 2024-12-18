@@ -204,7 +204,7 @@ END_TEST
 
 START_TEST(test_copy_game_to_gi) {
   Game_state_t *g_state = get_game_state();
-  GameInfo_t game_info = init_game_info();
+  GameInfo_t game_info;
 
   init_game_state(g_state);
 
@@ -216,7 +216,7 @@ START_TEST(test_copy_game_to_gi) {
 
   g_state->stats.speed = 3;
 
-  game_info = copy_game_to_gi(g_state);
+  copy_game_to_gi(g_state, &game_info);
 
   ck_assert_int_eq(game_info.score, g_state->stats.score);
 
@@ -230,10 +230,12 @@ START_TEST(test_copy_game_to_gi) {
   free_game_gi(&game_info);
 
   g_state = NULL;
-  // game_info = NULL;
+  game_info.field = NULL;
+  game_info.next = NULL;
 
   ck_assert_ptr_eq(g_state, NULL);
-  // ck_assert_ptr_eq(&game_info, NULL);
+  ck_assert_ptr_eq(game_info.field, NULL);
+  ck_assert_ptr_eq(game_info.next, NULL);
 
   ck_assert_ptr_eq(game_info.field, NULL);
   ck_assert_ptr_eq(game_info.next, NULL);

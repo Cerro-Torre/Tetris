@@ -33,15 +33,17 @@ int main() {
   wrefresh(next);
 
   int user_inp_key = 0;
-  WINDOW *states_info = print_states(g_state, user_inp_key);
-  wrefresh(states_info);
+  // WINDOW *states_info = print_states(g_state, user_inp_key);
+  // wrefresh(states_info);
 
-  wrefresh(states_info);
+  // wrefresh(states_info);
   wrefresh(tetris);
   wrefresh(status);
   wrefresh(next);
 
   keypad(tetris, TRUE);
+
+  free_game_gi(&g_info);
 
   while (g_state->status.is_playing && g_state->status.status != GAMEOVER) {
     g_state = get_game_state();
@@ -65,9 +67,12 @@ int main() {
         if (user_inp_key != ERR) {
           userInput(get_user_action(user_inp_key), false);
 
-          g_info = copy_game_to_gi(g_state);
+          // g_info =
+          copy_game_to_gi(g_state, &g_info);
           render_game_gi(tetris, g_info);
-          }
+
+          free_game_gi(&g_info);
+        }
 
         if (g_state->status.status != PAUSE) {
           g_state->status.status = MOVING;
@@ -77,28 +82,26 @@ int main() {
 
     userInput(get_user_action(user_inp_key), false);
 
-    g_info = copy_game_to_gi(g_state);
+    // g_info =
+    copy_game_to_gi(g_state, &g_info);
     render_game_gi(tetris, g_info);
 
-    states_info = print_states(g_state, user_inp_key);
+    // states_info = print_states(g_state, user_inp_key);
     status = print_status_gi(&g_info);
     next = next_display(&g_info);
 
     wrefresh(tetris);
     wrefresh(status);
-    wrefresh(states_info);
+    // wrefresh(states_info);
     wrefresh(next);
+
+    free_game_gi(&g_info);
 
     struct timespec req;
     req.tv_sec = 0;
     req.tv_nsec = 1000000 / (g_info.speed * 10);
     nanosleep(&req, NULL);
   }
-
-  free_game(g_state);
-  g_state = NULL;
-  // free_game_gi(&g_info);
-  // g_info.field = NULL;
 
   nodelay(tetris, FALSE);
   mvwprintw(tetris, 0, 3, "Game Over");
@@ -107,9 +110,18 @@ int main() {
   delwin(status);
 
   delwin(tetris);
-  delwin(states_info);
+  // delwin(states_info);
   refresh();
   endwin();
+
+  free_game(g_state);
+  free_game_gi(&g_info);
+  // free_array(ROWS_GAME, g_info.field);
+  // free_array(4, g_info.next);
+  // g_state = NULL;
+  // g_info.field = NULL;
+  // g_info.next = NULL;
+
   return 0;
 }
 

@@ -15,7 +15,8 @@ GameInfo_t updateCurrentState();
 // ___________custom functions_________
 
 Game_state_t *get_game_state();
-GameInfo_t copy_game_to_gi(Game_state_t *g_state);
+// GameInfo_t copy_game_to_gi();
+void copy_game_to_gi(Game_state_t *g_state, GameInfo_t *current_state);
 
 // ________inits________
 int init_field(Game_state_t *g_state);
