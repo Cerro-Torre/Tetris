@@ -55,5 +55,8 @@ clean:
 rebuild:
 	make clean && make $(GAMENAME)
 
+vg_game: 
+	$(VALGRIND) ./game
+
 vg: tests
 	$(VALGRIND) ./test_res

@@ -67,7 +67,7 @@ int main() {
 
           g_info = copy_game_to_gi(g_state);
           render_game_gi(tetris, g_info);
-        }
+          }
 
         if (g_state->status.status != PAUSE) {
           g_state->status.status = MOVING;
@@ -91,7 +91,7 @@ int main() {
 
     struct timespec req;
     req.tv_sec = 0;
-    req.tv_nsec = 1000000 / (10 * 10);
+    req.tv_nsec = 1000000 / (g_info.speed * 10);
     nanosleep(&req, NULL);
   }
 

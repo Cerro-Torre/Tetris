@@ -150,7 +150,7 @@ START_TEST(test_init_game_info) {
 }
 END_TEST
 
-START_TEST(test_init_copy_field) {
+START_TEST(test_copy_field) {
   int **a = init_array(4, 4);
   int **b = init_array(4, 4);
 
@@ -179,17 +179,62 @@ START_TEST(test_init_copy_field) {
 }
 END_TEST
 
+START_TEST(test_init_and_free_game) {
+  Game_state_t *g_state = get_game_state();
+  GameInfo_t game_info = init_game_info();
+
+  init_game_state(g_state);
+
+  updateCurrentState();
+  get_game_state();
+
+  free_game(g_state);
+  free_game_gi(&game_info);
+
+  g_state = NULL;
+  // game_info = NULL;
+
+  ck_assert_ptr_eq(g_state, NULL);
+  // ck_assert_ptr_eq(&game_info, NULL);
+
+  ck_assert_ptr_eq(game_info.field, NULL);
+  ck_assert_ptr_eq(game_info.next, NULL);
+}
+END_TEST
+
 START_TEST(test_copy_game_to_gi) {
   Game_state_t *g_state = get_game_state();
   GameInfo_t game_info = init_game_info();
 
   init_game_state(g_state);
 
+  for (int i = 0; i < ROWS_GAME; i++) {
+    for (int j = 0; j < COLS_GAME; j++) {
+      g_state->field.field[i][j] = 2;
+    }
+  }
+
+  g_state->stats.speed = 3;
+
+  game_info = copy_game_to_gi(g_state);
+
+  ck_assert_int_eq(game_info.score, g_state->stats.score);
+
+  for (int i = 0; i < ROWS_GAME; i++) {
+    for (int j = 0; j < COLS_GAME; j++) {
+      ck_assert_int_eq(g_state->field.field[i][j], game_info.field[i][j]);
+    }
+  }
+
   free_game(g_state);
-  g_state = NULL;
   free_game_gi(&game_info);
 
+  g_state = NULL;
+  // game_info = NULL;
+
   ck_assert_ptr_eq(g_state, NULL);
+  // ck_assert_ptr_eq(&game_info, NULL);
+
   ck_assert_ptr_eq(game_info.field, NULL);
   ck_assert_ptr_eq(game_info.next, NULL);
 }
@@ -205,7 +250,9 @@ Suite *test_init_field_suite(void) {
   tcase_add_test(tc_core, test_init_next_figure);
   tcase_add_test(tc_core, test_init_game_state);
   tcase_add_test(tc_core, test_init_game_info);
-  tcase_add_test(tc_core, test_init_copy_field);
+  tcase_add_test(tc_core, test_init_and_free_game);
+  //______________
+  tcase_add_test(tc_core, test_copy_field);
   tcase_add_test(tc_core, test_copy_game_to_gi);
 
   suite_add_tcase(s, tc_core);

@@ -41,6 +41,10 @@ WINDOW *print_tetris_overlay() {
 }
 
 WINDOW *print_status_gi(GameInfo_t *g_info) {
+  if (!g_info) {
+    return NULL;
+  }
+
   int yMax = 0;
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
@@ -98,6 +102,10 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
 }
 
 WINDOW *print_states(Game_state_t *g_state, int key) {
+  if (!g_state) {
+    return NULL;
+  }
+
   int yMax = 0;
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
@@ -163,11 +171,14 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 
   mvwprintw(status, 16, 1, "bot_fig_coll: %d",
             bottom_figure_collision(g_state));
-
   return status;
 }
 
 void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
+  if (!g_info.field) {
+    return;
+  }
+
   for (int i = 0; i < 20; i++) {
     for (int j = 0; j < 10; j++) {
       if (g_info.field[i][j] == 1) {
@@ -184,10 +195,15 @@ void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
       }
     }
   }
+
   wrefresh(tetris_window);
 }
 
 WINDOW *next_display(GameInfo_t *g_info) {
+  if (!g_info) {
+    return NULL;
+  }
+
   int yMax = 0;
   int xMax = 0;
   getmaxyx(stdscr, yMax, xMax);
