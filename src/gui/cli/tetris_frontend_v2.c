@@ -214,7 +214,7 @@ WINDOW *next_display(GameInfo_t *g_info) {
   box(next, 0, 0);
 
   // wrefresh(next);
-  if (g_info->next) {
+  if (g_info && g_info->next) {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         if (g_info->next[i][j] == 1) {

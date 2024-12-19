@@ -406,9 +406,9 @@ void copy_game_to_gi(Game_state_t *g_state, GameInfo_t *g_info) {
 }
 
 void shift_lines(Game_state_t *g_state, int i) {
-  for (int j = i; j > 0; j--) {
+  for (int row = i; row > 0; row--) {
     for (int k = 0; k < FIELD_M; k++) {
-      g_state->field.field[j][k] = g_state->field.field[j - 1][k];
+      g_state->field.field[row][k] = g_state->field.field[row - 1][k];
     }
   }
 }
