@@ -150,11 +150,11 @@ void move_down(Game_state_t *g_state) {
   g_state->figure.y++;
 }
 
-void move_up(Game_state_t *g_state) {
-  g_state = get_game_state();
+// void move_up(Game_state_t *g_state) {
+//   g_state = get_game_state();
 
-  g_state->figure.y--;
-}
+//   g_state->figure.y--;
+// }
 
 bool figure_is_attaching(Game_state_t *g_state) {
   bool is_attaching = false;
@@ -198,8 +198,8 @@ void on_move_state(Game_state_t *g_state, UserAction_t action) {
         move_down(g_state);
       }
       break;
-    case Up:
-      break;
+    // case Up:
+    //   break;
     case Pause:
       g_state->status.pause = true;
       g_state->status.status = PAUSE;

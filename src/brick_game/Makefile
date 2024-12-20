@@ -9,7 +9,7 @@ TESTS_C = $(wildcard tests/*.c)
 TESTS_O = $(patsubst tests/%.c, tests/%.o, $(TESTS_C))
 VALGRIND = valgrind --track-origins=yes --tool=memcheck --leak-check=full --show-leak-kinds=all -s
 
-
+all: $(GAMENAME)
 
 $(LIBNAME): $(OBJS_FSMTABLE)
 	if [ ! -d "libs" ]; then \
@@ -45,7 +45,6 @@ gcov_report: $(LIBNAME)
 	# Генерируем HTML-отчет
 	genhtml coverage_filtered.info --output-directory report
 	xdg-open report/index.html
-
 
 clean:
 	rm -f out/*.o tests/*.o $(GAMENAME) test_res *.a libs/* *.out 
