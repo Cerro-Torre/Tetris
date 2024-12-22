@@ -19,6 +19,7 @@ $(LIBNAME): $(OBJS_FSMTABLE)
 
 $(GAMENAME): $(OBJS_FSMTABLE)
 	$(CC) $(CFLAGS) $^ -o $@ -lncurses
+	echo "0" > high_score.txt
 
 out/%.o: tetris/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -53,6 +54,7 @@ clean:
 	
 rebuild:
 	make clean && make $(GAMENAME)
+	echo "0" > high_score.txt
 
 vg_game: 
 	$(VALGRIND) ./game

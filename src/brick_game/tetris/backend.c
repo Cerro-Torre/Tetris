@@ -162,8 +162,14 @@ void init_figure(Game_state_t *g_state) {
 void init_game_stats(Game_stats_t *game_stats) {
   game_stats->level = 1;
   game_stats->score = 0;
-  game_stats->high_score = 0;
+  // game_stats->high_score = 0;
   game_stats->speed = 1;
+
+  FILE *file = fopen("high_score.txt", "r");
+  if (file) {
+    fscanf(file, "%d", &game_stats->high_score);
+    fclose(file);
+  }
 }
 
 Game_state_t *get_game_state() {
@@ -448,5 +454,14 @@ void update_score(Game_state_t *g_state, int num_full_lines) {
       break;
     default:
       break;
+  }
+
+  if (g_state->stats.score > g_state->stats.high_score) {
+    FILE *file = fopen("high_score.txt", "w");
+
+    if (file) {
+      fprintf(file, "%d", g_state->stats.score);
+      fclose(file);
+    }
   }
 }

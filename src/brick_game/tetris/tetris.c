@@ -98,6 +98,7 @@ int main() {
 
   nodelay(tetris, FALSE);
   mvwprintw(tetris, 0, 3, "Game Over");
+
   wgetch(tetris);
 
   delwin(status);
