@@ -166,7 +166,7 @@ START_TEST(test_move_left) {
 
   ck_assert_int_eq(g_state->figure.x, 4);
 
-  g_state->field.field[g_state->figure.y][g_state->figure.x - 1] = 1;
+  g_state->field.field[g_state->figure.y][g_state->figure.x - 1] = 9;
   move_left(g_state);
 
   ck_assert_int_eq(g_state->figure.x, 4);
@@ -193,7 +193,7 @@ START_TEST(test_move_right) {
   ck_assert_int_eq(g_state->figure.x, 6);
 
   g_state->field.field[g_state->figure.y]
-                      [g_state->figure.x + g_state->figure.figure_width] = 1;
+                      [g_state->figure.x + g_state->figure.figure_width] = 9;
   move_right(g_state);
 
   ck_assert_int_eq(g_state->figure.x, 6);

@@ -417,10 +417,10 @@ void collapse_full_lines(Game_state_t *g_state) {
   for (int i = ROWS_GAME - 1; i >= 0; i--) {
     int line_is_full = 0;
     for (int j = 0; j < COLS_GAME; j++) {
-      line_is_full += g_state->field.field[i][j];
+      line_is_full += g_state->field.field[i][j] / 9;
     }
 
-    if (line_is_full / 9 == COLS_GAME) {
+    if (line_is_full == COLS_GAME) {
       shift_lines(g_state, i);
       num_full_lines++;
       i++;
