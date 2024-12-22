@@ -1,6 +1,6 @@
-#include "../../brick_game/inc/tetris_frontend.h"
+#include "../../brick_game/tetris/inc/tetris_frontend.h"
 
-#include "../../brick_game/inc/tetris.h"
+#include "../../brick_game/tetris/inc/tetris.h"
 
 WINDOW *print_menu() {
   int yMax = 0;

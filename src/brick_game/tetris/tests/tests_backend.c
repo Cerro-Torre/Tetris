@@ -237,13 +237,11 @@ START_TEST(test_shift_lines) {
     }
   }
 
-  // g_state->field.field[0][0] = 1;
   g_state->field.field[1][0] = 2;
   g_state->field.field[2][0] = 3;
 
   shift_lines(g_state, 2);
 
-  // ck_assert_int_eq(g_state->field.field[0][0], 3);
   ck_assert_int_eq(g_state->field.field[1][0], 1);
   ck_assert_int_eq(g_state->field.field[2][0], 2);
 
@@ -294,10 +292,8 @@ START_TEST(test_clear_figure) {
     }
   }
 
-  // Place the figure in the field
   figure_to_field(g_state);
 
-  // Verify that the figure is in the field
   for (int i = 0; i < g_state->figure.figure_height; i++) {
     for (int j = 0; j < g_state->figure.figure_width; j++) {
       int field_y = g_state->figure.y + i;
@@ -306,10 +302,8 @@ START_TEST(test_clear_figure) {
     }
   }
 
-  // Clear the figure from the field
   clear_figure(g_state);
 
-  // Verify that the figure has been cleared
   for (int i = 0; i < g_state->figure.figure_height; i++) {
     for (int j = 0; j < g_state->figure.figure_width; j++) {
       int field_y = g_state->figure.y + i;

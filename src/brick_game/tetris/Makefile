@@ -23,11 +23,11 @@ $(GAMENAME): $(OBJS_FSMTABLE)
 	$(CC) $(CFLAGS) $^ -o $@ -lncurses
 	echo "0" > high_score.txt
 
-out/%.o: tetris/%.c
+out/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-out/%.o: ../gui/cli/%.c
+out/%.o: ../../gui/cli/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 tests: $(LIBNAME) $(TESTS_O) 
@@ -35,13 +35,13 @@ tests: $(LIBNAME) $(TESTS_O)
 	./test_res
 
 gcov_report: $(LIBNAME)
-	$(CC) $(CFLAGS) $(GCOV_FLAGS) -c tetris/backend.c -o out/backend.o
-	$(CC) $(CFLAGS) $(GCOV_FLAGS) -c tetris/fsm.c -o out/fsm.o
+	$(CC) $(CFLAGS) $(GCOV_FLAGS) -c src/backend.c -o out/backend.o
+	$(CC) $(CFLAGS) $(GCOV_FLAGS) -c src/fsm.c -o out/fsm.o
 
 	$(CC) $(CFLAGS) $(GCOV_FLAGS) tests/*.c out/backend.o out/fsm.o -o test_res -lcheck -lsubunit -lm
 	./test_res
 
-	mkdir -p report
+	@mkdir -p report
 	# Собираем все данные покрытия
 	lcov --capture --directory . --output-file coverage.info
 	# Убираем файлы из директории tests
