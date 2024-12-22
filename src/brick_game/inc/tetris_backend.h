@@ -1,3 +1,14 @@
+/**
+ * @file tetris_backend.h
+ * @author whatarml
+ * @brief The backend of the tetris game
+ * @version 1
+ * @date 2024-22-12
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
+
 #ifndef TETRIS_BACKEND_H
 #define TETRIS_BACKEND_H
 

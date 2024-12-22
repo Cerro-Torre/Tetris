@@ -8,8 +8,7 @@ GAMENAME = game
 TESTS_C = $(wildcard tests/*.c)
 TESTS_O = $(patsubst tests/%.c, tests/%.o, $(TESTS_C))
 VALGRIND = valgrind --track-origins=yes --tool=memcheck --leak-check=full --show-leak-kinds=all -s
-# DOXY_DIR = doxygen_doc
-# DOXYGEN = doxygen
+DOXY_DIR = doxygen_folder
 
 
 all: $(GAMENAME)
@@ -54,7 +53,8 @@ clean:
 	rm -f out/*.o tests/*.o $(GAMENAME) test_res *.a libs/* *.out 
 	rm -f $(VG_LOG_FILE) *.info *.gc* coverage.info ./out/*
 	rm -rf libs report gcov
-	
+	rm -rf $(DOXY_DIR)
+
 rebuild:
 	make clean && make $(GAMENAME)
 	echo "0" > high_score.txt
@@ -65,12 +65,7 @@ vg_game:
 vg: tests
 	$(VALGRIND) ./test_res
 
-# dvi:
-# 	mkdir -p $(DOXY_DIR)
-# 	doxygen
+dvi:
+	mkdir -p doxygen_folder
+	doxygen
 
-# install_doxy:
-# 	@command -v $(DOXYGEN) >/dev/null 2>&1 || { \
-# 	echo "Doxygen не установлен. Устанавливаю..."; \
-# 	sudo apt-get install doxygen; \
-# 	}

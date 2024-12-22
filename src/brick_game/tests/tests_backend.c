@@ -221,6 +221,8 @@ START_TEST(test_update_score) {
 
   ck_assert_int_eq(g_state->stats.score, 1500);
 
+  g_state->stats.score = 0;
+
   free_game(g_state);
 }
 END_TEST
