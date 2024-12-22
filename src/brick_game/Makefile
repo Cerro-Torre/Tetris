@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -std=c11 -Wall -Werror -Wextra
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 SRC_DIRS = gui/cli tetris
-OBJS_FSMTABLE = out/tetris.o out/backend.o out/fsm.o out/tetris_frontend_v2.o
+OBJS_FSMTABLE = out/tetris.o out/backend.o out/fsm.o out/tetris_frontend.o
 LIBNAME = s21_tetris.a
 GAMENAME = game
 TESTS_C = $(wildcard tests/*.c)
@@ -24,6 +24,7 @@ $(GAMENAME): $(OBJS_FSMTABLE)
 	echo "0" > high_score.txt
 
 out/%.o: tetris/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 out/%.o: ../gui/cli/%.c

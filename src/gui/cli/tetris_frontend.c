@@ -1,5 +1,6 @@
-#include "../../brick_game/inc/tetris.h"
 #include "../../brick_game/inc/tetris_frontend.h"
+
+#include "../../brick_game/inc/tetris.h"
 
 WINDOW *print_menu() {
   int yMax = 0;
@@ -17,12 +18,9 @@ WINDOW *print_menu() {
   mvwprintw(menu, yMax / 4 - 1, xMax / 4 - (INTRO_MESSAGE_LEN / 2 - 1),
             INTRO_MESSAGE);
 
-  // wrefresh(menu);
-
   return menu;
 }
 
-// print_tetris_overlay_v2
 WINDOW *print_tetris_overlay() {
   int yMax = 0;
   int xMax = 0;
@@ -35,15 +33,13 @@ WINDOW *print_tetris_overlay() {
 
   box(tetris, 0, 0);
 
-  // wrefresh(tetris);
-
   return tetris;
 }
 
 WINDOW *print_status_gi(GameInfo_t *g_info) {
-  // if (!g_info) {
-  //   return NULL;
-  // }
+  if (!g_info) {
+    return NULL;
+  }
 
   int yMax = 0;
   int xMax = 0;
@@ -53,8 +49,6 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
                           yMax / 10, xMax / 2.5 + 5);
 
   box(status, 0, 0);
-
-  // wrefresh(status);
 
   mvwprintw(status, 1, 1, "Score: %d", g_info->score);
   mvwprintw(status, 4, 1, "High Score: %d", g_info->high_score);
@@ -96,15 +90,13 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
       break;
   }
 
-  // mvwprintw(status, 9, 1, "t: %ld", g_state->time);
-  // mvwprintw(status, 10, 1, "test: %ld", g_state->test);
   return status;
 }
 
 WINDOW *print_states(Game_state_t *g_state, int key) {
-  // if (!g_state) {
-  //   return NULL;
-  // }
+  if (!g_state) {
+    return NULL;
+  }
 
   int yMax = 0;
   int xMax = 0;
@@ -115,13 +107,10 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 
   box(status, 0, 0);
 
-  // wrefresh(status);
-
   mvwprintw(status, 1, 1, "Key: %d", key);
   mvwprintw(status, 2, 1, "Status: %d", g_state->status.status);
   mvwprintw(status, 3, 1, "Win: %d", g_state->status.win);
   mvwprintw(status, 4, 1, "Playing: %d", g_state->status.is_playing);
-  // mvwprintw(status, 5, 1, "Attaching: %d", attaching);
 
   mvwprintw(status, 6, 1, "Coord: %d, %d", g_state->figure.x,
             g_state->figure.y);
@@ -175,17 +164,10 @@ WINDOW *print_states(Game_state_t *g_state, int key) {
 }
 
 void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
-  // if (!g_info.field) {
-  //   return;
-  // }
-
   for (int i = 0; i < 20; i++) {
     for (int j = 0; j < 10; j++) {
       if (g_info.field[i][j] == 1) {
-        //   // attron(A_ALTCHARSET);
         mvwprintw(tetris_window, i + 1, j + 2, "#");
-        // }
-        // attroff(A_ALTCHARSET);
       } else if (g_info.field[i][j] == 3) {
         mvwprintw(tetris_window, i + 1, j + 2, "*");
       } else if (g_info.field[i][j] == 9) {
@@ -195,14 +177,12 @@ void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info) {
       }
     }
   }
-
-  // wrefresh(tetris_window);
 }
 
 WINDOW *next_display(GameInfo_t *g_info) {
-  // if (!g_info) {
-  //   return NULL;
-  // }
+  if (!g_info) {
+    return NULL;
+  }
 
   int yMax = 0;
   int xMax = 0;
@@ -213,7 +193,6 @@ WINDOW *next_display(GameInfo_t *g_info) {
 
   box(next, 0, 0);
 
-  // wrefresh(next);
   if (g_info && g_info->next) {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
