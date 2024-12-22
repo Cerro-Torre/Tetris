@@ -8,6 +8,9 @@ GAMENAME = game
 TESTS_C = $(wildcard tests/*.c)
 TESTS_O = $(patsubst tests/%.c, tests/%.o, $(TESTS_C))
 VALGRIND = valgrind --track-origins=yes --tool=memcheck --leak-check=full --show-leak-kinds=all -s
+# DOXY_DIR = doxygen_doc
+# DOXYGEN = doxygen
+
 
 all: $(GAMENAME)
 
@@ -61,3 +64,13 @@ vg_game:
 
 vg: tests
 	$(VALGRIND) ./test_res
+
+# dvi:
+# 	mkdir -p $(DOXY_DIR)
+# 	doxygen
+
+# install_doxy:
+# 	@command -v $(DOXYGEN) >/dev/null 2>&1 || { \
+# 	echo "Doxygen не установлен. Устанавливаю..."; \
+# 	sudo apt-get install doxygen; \
+# 	}

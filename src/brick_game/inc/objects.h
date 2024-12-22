@@ -60,8 +60,6 @@ typedef enum {
 } CollisionType;
 
 typedef struct {
-  int x;
-  int y;
   int **field;
 } Game_field_t;
 
