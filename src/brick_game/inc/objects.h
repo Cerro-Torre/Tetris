@@ -3,6 +3,8 @@
 
 #include "./defines.h"
 
+// _________spec objects_________
+
 typedef enum {
   Start,
   Pause,
@@ -47,14 +49,6 @@ typedef enum {
   Z_SHAPE,
   NUM_SHAPES
 } ShapeType;
-
-typedef enum {
-  NO_ROTATION = 0,
-  ROTATION_90,
-  ROTATION_180,
-  ROTATION_270,
-  ROTATIONS_ALL
-} ROTATIONS;
 
 typedef enum {
   COLLISION_LEFT = 1,
@@ -106,7 +100,6 @@ typedef struct {
   Figure_t figure;
   Game_status_t status;
   Game_stats_t stats;
-  long time;
   long test;
 
 } Game_state_t;

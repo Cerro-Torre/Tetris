@@ -7,13 +7,6 @@ void init_game_status(Game_status_t *game_status) {
   game_status->is_playing = 0;
 }
 
-// void finish_game(Game_state_t *g_state) {
-//   if (g_state->status.status != GAMEOVER && !g_state->status.win) {
-//     g_state->status.is_playing = false;
-//     free_game(g_state);
-//   }
-// }
-
 void on_init_state(Game_state_t *g_state, UserAction_t action) {
   switch (action) {
     case Start:
@@ -150,12 +143,6 @@ void move_down(Game_state_t *g_state) {
   g_state->figure.y++;
 }
 
-// void move_up(Game_state_t *g_state) {
-//   g_state = get_game_state();
-
-//   g_state->figure.y--;
-// }
-
 bool figure_is_attaching(Game_state_t *g_state) {
   bool is_attaching = false;
 
@@ -253,9 +240,6 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
 void userInput(UserAction_t action, bool hold) {
   Game_state_t *g_state = get_game_state();
   int current_fsm_state = g_state->status.status;
-  bool f_collision = bottom_figure_collision(g_state);
-  int b_collision = border_collision(g_state);
-  g_state->time = clock();
 
   (hold) ? printf("hold") : false;
 
@@ -271,27 +255,8 @@ void userInput(UserAction_t action, bool hold) {
       figure_to_field(g_state);
       break;
     case MOVING:
-      f_collision = bottom_figure_collision(g_state);
-
-      if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
-          b_collision != COLLISION_DR && !f_collision &&
-          g_state->status.pause == false) {
-        if (action != Action && g_state->status.status != SHIFTING) {
-          clear_figure(g_state);
-          on_move_state(g_state, action);
-          figure_to_field(g_state);
-        }
-      }
-
-      if (b_collision == COLLISION_DOWN || b_collision == COLLISION_DL ||
-          b_collision == COLLISION_DR || f_collision) {
-        g_state->status.status = ATTACHING;
-      }
-      if (!g_state->status.pause && action >= 0) {
-        g_state->status.status = SHIFTING;
-      }
+      on_moving(g_state, action);
       break;
-
     case SHIFTING:
       on_shift_state(g_state, action);
       break;
@@ -355,5 +320,28 @@ void on_pause_state(Game_state_t *g_state, UserAction_t action) {
       break;
     default:
       break;
+  }
+}
+
+void on_moving(Game_state_t *g_state, UserAction_t action) {
+  bool f_collision = bottom_figure_collision(g_state);
+  int b_collision = border_collision(g_state);
+
+  if (b_collision != COLLISION_DOWN && b_collision != COLLISION_DL &&
+      b_collision != COLLISION_DR && !f_collision &&
+      g_state->status.pause == false) {
+    if (action != Action && g_state->status.status != SHIFTING) {
+      clear_figure(g_state);
+      on_move_state(g_state, action);
+      figure_to_field(g_state);
+    }
+  }
+
+  if (b_collision == COLLISION_DOWN || b_collision == COLLISION_DL ||
+      b_collision == COLLISION_DR || f_collision) {
+    g_state->status.status = ATTACHING;
+  }
+  if (!g_state->status.pause && action >= 0) {
+    g_state->status.status = SHIFTING;
   }
 }

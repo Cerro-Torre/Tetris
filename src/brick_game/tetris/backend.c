@@ -2,9 +2,6 @@
 #include "../inc/tetris_backend.h"
 
 int **init_array(int rows, int cols) {
-  // array = NULL;
-
-  // int error = 0;
   int **array = (int **)calloc(rows, sizeof(int *));
 
   if (array != NULL) {
@@ -14,7 +11,6 @@ int **init_array(int rows, int cols) {
   } else {
     free(array);
     array = NULL;
-    // error = 1;
   }
 
   return array;
@@ -162,7 +158,6 @@ void init_figure(Game_state_t *g_state) {
 void init_game_stats(Game_stats_t *game_stats) {
   game_stats->level = 1;
   game_stats->score = 0;
-  // game_stats->high_score = 0;
   game_stats->speed = 1;
 
   FILE *file = fopen("high_score.txt", "r");
@@ -180,18 +175,11 @@ Game_state_t *get_game_state() {
 void init_game_state(Game_state_t *g_state) {
   g_state = get_game_state();
 
-  // init_field(g_state);
-  // init_array(ROWS_GAME, COLS_GAME, g_state->field.field);
-  // g_state->field = field;
-
   g_state->field.field = init_array(ROWS_GAME, COLS_GAME);
-  // g_state->figure.next_figure = init_array(4, 4);
 
   init_next_figure(g_state);
 
-  // if (!error_on_init_next) {
   init_figure(g_state);
-  // }
 
   init_game_status(&g_state->status);
 
@@ -394,18 +382,18 @@ void copy_field(int rows, int cols, int **src_matrix, int **dest_matrix) {
   }
 }
 
-void copy_game_to_gi(Game_state_t *g_state, GameInfo_t *g_info) {
-  g_info->score = g_state->stats.score;
-  g_info->high_score = g_state->stats.high_score;
-  g_info->level = g_state->stats.level;
-  g_info->speed = g_state->stats.speed;
-  g_info->pause = g_state->status.pause;
+void copy_game_to_gi(Game_state_t *scr, GameInfo_t *dest) {
+  dest->score = scr->stats.score;
+  dest->high_score = scr->stats.high_score;
+  dest->level = scr->stats.level;
+  dest->speed = scr->stats.speed;
+  dest->pause = scr->status.pause;
 
-  g_info->field = init_array(ROWS_GAME, COLS_GAME);
-  copy_field(ROWS_GAME, COLS_GAME, g_state->field.field, g_info->field);
+  dest->field = init_array(ROWS_GAME, COLS_GAME);
+  copy_field(ROWS_GAME, COLS_GAME, scr->field.field, dest->field);
 
-  g_info->next = init_array(4, 4);
-  copy_field(4, 4, g_state->figure.next_figure, g_info->next);
+  dest->next = init_array(4, 4);
+  copy_field(4, 4, scr->figure.next_figure, dest->next);
 }
 
 void shift_lines(Game_state_t *g_state, int i) {

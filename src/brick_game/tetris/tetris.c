@@ -5,108 +5,34 @@ int main() {
   noecho();
   curs_set(0);
 
-  WINDOW *menu = print_menu();
-  wrefresh(menu);
-
   Game_state_t *g_state = get_game_state();
 
   init_game_state(g_state);
-  int key = 0;
-
-  while (g_state->status.status == INIT) {
-    key = wgetch(menu);
-    userInput(get_user_action(key), false);
-  }
-
-  delwin(menu);
+  brick_game_menu(g_state);
   refresh();
 
   GameInfo_t g_info = init_game_info();
 
   WINDOW *tetris = print_tetris_overlay();
   wrefresh(tetris);
-
   WINDOW *status = print_status_gi(&g_info);
   wrefresh(status);
-
   WINDOW *next = next_display(&g_info);
   wrefresh(next);
 
   int user_inp_key = 0;
 
-  wrefresh(tetris);
-  wrefresh(status);
-  wrefresh(next);
+  refresh_windows(tetris, status, next);
 
   keypad(tetris, TRUE);
-
   free_game_gi(&g_info);
-
-  while (g_state->status.is_playing && g_state->status.status != GAMEOVER) {
-    g_state = get_game_state();
-    g_info = updateCurrentState();
-    nodelay(tetris, TRUE);
-
-    if (g_state->status.status == START || g_state->status.status == PAUSE) {
-      nodelay(tetris, FALSE);
-
-      userInput(get_user_action(wgetch(tetris)), false);
-      nodelay(tetris, TRUE);
-    }
-
-    if (g_state->status.status == MOVING) {
-      clock_t start_time = clock();
-      while (clock() - start_time <
-             CLOCKS_PER_SEC / g_state->stats.speed * 0.7) {
-        nodelay(tetris, TRUE);
-        int user_inp_key = wgetch(tetris);
-
-        if (user_inp_key != ERR) {
-          userInput(get_user_action(user_inp_key), false);
-
-          copy_game_to_gi(g_state, &g_info);
-          render_game_gi(tetris, g_info);
-
-          free_game_gi(&g_info);
-        }
-
-        if (g_state->status.status != PAUSE) {
-          g_state->status.status = MOVING;
-        }
-      }
-    }
-
-    userInput(get_user_action(user_inp_key), false);
-
-    copy_game_to_gi(g_state, &g_info);
-    render_game_gi(tetris, g_info);
-
-    status = print_status_gi(&g_info);
-    next = next_display(&g_info);
-
-    wrefresh(tetris);
-    wrefresh(status);
-    wrefresh(next);
-
-    free_game_gi(&g_info);
-
-    struct timespec req;
-    req.tv_sec = 0;
-    req.tv_nsec = 1000000 / (g_info.speed * 10);
-    nanosleep(&req, NULL);
-  }
-
+  game_loop(g_state, g_info, tetris, status, next, user_inp_key);
   nodelay(tetris, FALSE);
   mvwprintw(tetris, 0, 3, "Game Over");
 
   wgetch(tetris);
-
-  delwin(status);
-
-  delwin(tetris);
   refresh();
   endwin();
-
   free_game(g_state);
   free_game_gi(&g_info);
 
@@ -146,4 +72,89 @@ UserAction_t get_user_action(int ch) {
   }
 
   return action;
+}
+
+void brick_game_menu(Game_state_t *g_state) {
+  WINDOW *menu = print_menu();
+  wrefresh(menu);
+
+  int key = 0;
+
+  while (g_state->status.status == INIT) {
+    key = wgetch(menu);
+    userInput(get_user_action(key), false);
+  }
+
+  delwin(menu);
+}
+
+void game_loop(Game_state_t *g_state, GameInfo_t g_info, WINDOW *tetris,
+               WINDOW *status, WINDOW *next, int user_inp_key) {
+  while (g_state->status.is_playing && g_state->status.status != GAMEOVER) {
+    g_state = get_game_state();
+    g_info = updateCurrentState();
+    nodelay(tetris, TRUE);
+
+    if (g_state->status.status == START || g_state->status.status == PAUSE) {
+      nodelay(tetris, FALSE);
+
+      userInput(get_user_action(wgetch(tetris)), false);
+      nodelay(tetris, TRUE);
+    }
+
+    if (g_state->status.status == MOVING) {
+      moving_loop(g_state, g_info, tetris);
+    }
+
+    userInput(get_user_action(user_inp_key), false);
+    copy_game_to_gi(g_state, &g_info);
+    render_game_gi(tetris, g_info);
+
+    status = print_status_gi(&g_info);
+    next = next_display(&g_info);
+
+    refresh_windows(tetris, status, next);
+    free_game_gi(&g_info);
+    process_delay(g_info);
+  }
+}
+
+void refresh_windows(WINDOW *tetris, WINDOW *status, WINDOW *next) {
+  wrefresh(tetris);
+  wrefresh(status);
+  wrefresh(next);
+}
+
+void delete_windows(WINDOW *tetris, WINDOW *status, WINDOW *next) {
+  delwin(tetris);
+  delwin(status);
+  delwin(next);
+}
+
+void moving_loop(Game_state_t *g_state, GameInfo_t g_info, WINDOW *tetris) {
+  clock_t start_time = clock();
+  while (clock() - start_time < CLOCKS_PER_SEC / g_state->stats.speed * 0.7) {
+    nodelay(tetris, TRUE);
+    int user_inp_key = wgetch(tetris);
+
+    if (user_inp_key != ERR) {
+      userInput(get_user_action(user_inp_key), false);
+
+      copy_game_to_gi(g_state, &g_info);
+      render_game_gi(tetris, g_info);
+
+      free_game_gi(&g_info);
+    }
+
+    if (g_state->status.status != PAUSE) {
+      g_state->status.status = MOVING;
+    }
+  }
+}
+
+void process_delay(GameInfo_t g_info) {
+  struct timespec req;
+  req.tv_sec = 0;
+  req.tv_nsec = 1000000 / (g_info.speed * 10);
+  nanosleep(&req, NULL);
 }

@@ -9,14 +9,15 @@
 #include "defines.h"
 #include "objects.h"
 
+// ___________spec functions_________
+
 void userInput(UserAction_t action, bool hold);
 GameInfo_t updateCurrentState();
 
 // ___________custom functions_________
 
 Game_state_t *get_game_state();
-// GameInfo_t copy_game_to_gi();
-void copy_game_to_gi(Game_state_t *g_state, GameInfo_t *current_state);
+void copy_game_to_gi(Game_state_t *scr, GameInfo_t *dest);
 
 // ________inits________
 // int init_field(Game_state_t *g_state);
@@ -70,5 +71,6 @@ void shift_lines(Game_state_t *g_state, int i);
 
 void update_score(Game_state_t *g_state, int num_full_lines);
 void update_level(Game_state_t *g_state);
+void rotate(Game_state_t *g_state);
 
 #endif
