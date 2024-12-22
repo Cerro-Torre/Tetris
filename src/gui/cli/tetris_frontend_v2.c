@@ -225,21 +225,5 @@ WINDOW *next_display(GameInfo_t *g_info) {
     }
   }
 
-  // mvwprintw(next, 1, 1, "cur_height: %d", g_state->figure.figure_height);
-  // mvwprintw(next, 2, 1, "cur_width: %d", g_state->figure.figure_width);
-
-  // mvwprintw(next, 3, 1, "x: %d", g_state->figure.x);
-  // mvwprintw(next, 4, 1, "y: %d", g_state->figure.y);
-  // mvwprintw(next, 5, 1, "height: %d", figure_min_height(g_state));
-  // mvwprintw(next, 6, 1, "width: %d", figure_min_width(g_state));
-  // mvwprintw(next, 7, 1, "type: %d", g_state->figure.type);
-
-  // // mvwprintw(next, 7, 1, "nxt_x: %d", g_state->figure.next_x);
-  // // mvwprintw(next, 8, 1, "nxt_y: %d", g_state->figure.next_y);
-  // mvwprintw(next, 8, 1, "nxt_height: %d",
-  // g_state->figure.next_figure_height); mvwprintw(next, 9, 1, "nxt_width: %d",
-  // g_state->figure.next_figure_width);
-
-  // wrefresh(next);
   return next;
 }

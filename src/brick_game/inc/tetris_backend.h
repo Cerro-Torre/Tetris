@@ -30,9 +30,9 @@ void init_next_figure(Game_state_t *g_state);
 int **init_array(int rows, int cols);
 
 // ________frees________
-void free_field(Game_state_t *g_state);
-void free_field_gi(GameInfo_t *field_t);
-void free_next_figure(int **figure_t);
+// void free_field(Game_state_t *g_state);
+// void free_field_gi(GameInfo_t *field_t);
+// void free_next_figure(int **figure_t);
 void free_array(int rows, int **array);
 
 // void free_field_gs(Game_state_t *game_state);
@@ -69,5 +69,6 @@ void shift_lines(Game_state_t *g_state, int i);
 // void rotate_figure(Game_state_t *g_state);
 
 void update_score(Game_state_t *g_state, int num_full_lines);
+void update_level(Game_state_t *g_state);
 
 #endif

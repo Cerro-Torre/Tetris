@@ -286,7 +286,6 @@ int figure_min_width(Game_state_t *g_state) {
              g_state->figure.type == Z_SHAPE) {
     figure_width = 3;
   }
-
   return figure_width;
 }
 
@@ -411,7 +410,7 @@ void copy_game_to_gi(Game_state_t *g_state, GameInfo_t *g_info) {
 
 void shift_lines(Game_state_t *g_state, int i) {
   for (int row = i; row > 0; row--) {
-    for (int k = 0; k < FIELD_M; k++) {
+    for (int k = 0; k < COLS_GAME; k++) {
       g_state->field.field[row][k] = g_state->field.field[row - 1][k];
     }
   }
@@ -434,6 +433,7 @@ void collapse_full_lines(Game_state_t *g_state) {
   }
 
   update_score(g_state, num_full_lines);
+  update_level(g_state);
 }
 
 void update_score(Game_state_t *g_state, int num_full_lines) {
@@ -463,5 +463,14 @@ void update_score(Game_state_t *g_state, int num_full_lines) {
       fprintf(file, "%d", g_state->stats.score);
       fclose(file);
     }
+  }
+}
+
+void update_level(Game_state_t *g_state) {
+  g_state = get_game_state();
+
+  if (g_state && g_state->stats.score >= 600 && g_state->stats.level < 10) {
+    g_state->stats.level++;
+    g_state->stats.speed++;
   }
 }

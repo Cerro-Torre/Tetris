@@ -18,6 +18,4 @@ WINDOW *print_states(Game_state_t *g_state, int key);
 WINDOW *next_display(GameInfo_t *g_info);
 
 void render_game_gi(WINDOW *tetris_window, GameInfo_t g_info);
-// void render_game_gs(WINDOW *tetris_window, Game_state_t *g_state);
-
 #endif

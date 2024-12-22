@@ -164,7 +164,8 @@ bool figure_is_attaching(Game_state_t *g_state) {
       int x = g_state->figure.x + j;
       int y = g_state->figure.y + i;
 
-      if ((y > FIELD_N - 1 || (y > -1 && (g_state->field.field[y][x] == 9)))) {
+      if ((y > ROWS_GAME - 1 ||
+           (y > -1 && (g_state->field.field[y][x] == 9)))) {
         is_attaching = true;
       }
     }
