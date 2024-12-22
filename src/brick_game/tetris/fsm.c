@@ -106,7 +106,7 @@ void move_left(Game_state_t *g_state) {
       int field_x = g_state->figure.x + j;
 
       if (g_state->field.field &&
-          g_state->field.field[field_y][field_x - 1] == 1 &&
+          g_state->field.field[field_y][field_x - 1] == 9 &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1) {
         figure_collision = true;
       }
@@ -132,7 +132,7 @@ void move_right(Game_state_t *g_state) {
       int field_x = g_state->figure.x + j;
 
       if (g_state->field.field &&
-          g_state->field.field[field_y][field_x + 1] == 1 &&
+          g_state->field.field[field_y][field_x + 1] == 9 &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1) {
         figure_collision = true;
       }
@@ -164,7 +164,7 @@ bool figure_is_attaching(Game_state_t *g_state) {
       int x = g_state->figure.x + j;
       int y = g_state->figure.y + i;
 
-      if ((y > FIELD_N - 1 || (y > -1 && (g_state->field.field[y][x] == 1)))) {
+      if ((y > FIELD_N - 1 || (y > -1 && (g_state->field.field[y][x] == 9)))) {
         is_attaching = true;
       }
     }
@@ -230,6 +230,17 @@ void on_attach_state(Game_state_t *g_state, UserAction_t action) {
           !f_collision) {
         g_state->status.status = MOVING;
       } else {
+        for (int i = 0; i < figure_min_height(g_state); i++) {
+          for (int j = 0; j < figure_min_width(g_state); j++) {
+            int field_y = g_state->figure.y + i;
+            int field_x = g_state->figure.x + j;
+
+            if (g_state->field.field &&
+                (g_state->figure.figure[g_state->figure.type][i][j] == 1)) {
+              g_state->field.field[field_y][field_x] = 9;
+            }
+          }
+        }
         collapse_full_lines(g_state);
         g_state->status.status = SPAWN;
       }

@@ -162,7 +162,7 @@ void init_figure(Game_state_t *g_state) {
 void init_game_stats(Game_stats_t *game_stats) {
   game_stats->level = 1;
   game_stats->score = 0;
-  game_stats->high_score = 1;
+  game_stats->high_score = 0;
   game_stats->speed = 1;
 }
 
@@ -330,8 +330,7 @@ bool bottom_figure_collision(Game_state_t *g_state) {
 
       if ((g_state->field.field) && (y < ROWS_GAME - 1) &&
           g_state->figure.figure[g_state->figure.type][i][j] == 1 &&
-          (g_state->figure.figure[g_state->figure.type][i + 1][j] != 1) &&
-          (g_state->field.field[y + 1][x] == 1))
+          (g_state->field.field[y + 1][x] == 9))
 
       {
         f_collision = true;
@@ -375,8 +374,7 @@ void clear_figure(Game_state_t *g_state) {
 
       if (g_state->field.field &&
           (g_state->figure.figure[g_state->figure.type][i][j] == 1) &&
-          (g_state->field.field[field_y][field_x] == 1 ||
-           g_state->field.field[field_y][field_x] == 3)) {
+          (g_state->field.field[field_y][field_x] == 1)) {
         g_state->field.field[field_y][field_x] = 0;
       }
     }
@@ -422,7 +420,7 @@ void collapse_full_lines(Game_state_t *g_state) {
       line_is_full += g_state->field.field[i][j];
     }
 
-    if (line_is_full == COLS_GAME) {
+    if (line_is_full / 9 == COLS_GAME) {
       shift_lines(g_state, i);
       num_full_lines++;
       i++;

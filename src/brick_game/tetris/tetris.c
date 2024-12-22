@@ -33,10 +33,7 @@ int main() {
   wrefresh(next);
 
   int user_inp_key = 0;
-  // WINDOW *states_info = print_states(g_state, user_inp_key);
-  // wrefresh(states_info);
 
-  // wrefresh(states_info);
   wrefresh(tetris);
   wrefresh(status);
   wrefresh(next);
@@ -67,7 +64,6 @@ int main() {
         if (user_inp_key != ERR) {
           userInput(get_user_action(user_inp_key), false);
 
-          // g_info =
           copy_game_to_gi(g_state, &g_info);
           render_game_gi(tetris, g_info);
 
@@ -82,17 +78,14 @@ int main() {
 
     userInput(get_user_action(user_inp_key), false);
 
-    // g_info =
     copy_game_to_gi(g_state, &g_info);
     render_game_gi(tetris, g_info);
 
-    // states_info = print_states(g_state, user_inp_key);
     status = print_status_gi(&g_info);
     next = next_display(&g_info);
 
     wrefresh(tetris);
     wrefresh(status);
-    // wrefresh(states_info);
     wrefresh(next);
 
     free_game_gi(&g_info);
@@ -110,17 +103,11 @@ int main() {
   delwin(status);
 
   delwin(tetris);
-  // delwin(states_info);
   refresh();
   endwin();
 
   free_game(g_state);
   free_game_gi(&g_info);
-  // free_array(ROWS_GAME, g_info.field);
-  // free_array(4, g_info.next);
-  // g_state = NULL;
-  // g_info.field = NULL;
-  // g_info.next = NULL;
 
   return 0;
 }

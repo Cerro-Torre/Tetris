@@ -19,8 +19,8 @@ Game_state_t *get_game_state();
 void copy_game_to_gi(Game_state_t *g_state, GameInfo_t *current_state);
 
 // ________inits________
-int init_field(Game_state_t *g_state);
-int init_field_gi(GameInfo_t *field_t);
+// int init_field(Game_state_t *g_state);
+// int init_field_gi(GameInfo_t *field_t);
 GameInfo_t init_game_info();
 void init_figure(Game_state_t *g_state);
 void init_game_status(Game_status_t *game_status);
@@ -38,7 +38,7 @@ void free_array(int rows, int **array);
 // void free_field_gs(Game_state_t *game_state);
 void free_game(Game_state_t *g_state);
 void free_game_gi(GameInfo_t *g_info);
-void finish_game(Game_state_t *g_state);
+// void finish_game(Game_state_t *g_state);
 
 // ________draws________
 
@@ -58,7 +58,7 @@ void clear_figure(Game_state_t *g_state);
 void move_left(Game_state_t *g_state);
 void move_right(Game_state_t *g_state);
 void move_down(Game_state_t *g_state);
-void move_up(Game_state_t *g_state);
+// void move_up(Game_state_t *g_state);
 
 bool figure_is_attaching(Game_state_t *g_state);
 
