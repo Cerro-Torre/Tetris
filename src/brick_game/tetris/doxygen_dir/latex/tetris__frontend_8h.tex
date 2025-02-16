@@ -1,0 +1,152 @@
+\hypertarget{tetris__frontend_8h}{}\doxysection{inc/tetris\+\_\+frontend.h File Reference}
+\label{tetris__frontend_8h}\index{inc/tetris\_frontend.h@{inc/tetris\_frontend.h}}
+
+
+The frontend of the tetris game.  
+
+
+{\ttfamily \#include $<$locale.\+h$>$}\newline
+{\ttfamily \#include $<$ncurses.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}defines.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}objects.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tetris__frontend_8h_abf15e4551fd729806881dbb91dcee2b7}\label{tetris__frontend_8h_abf15e4551fd729806881dbb91dcee2b7}} 
+void \mbox{\hyperlink{tetris__frontend_8h_abf15e4551fd729806881dbb91dcee2b7}{print\+\_\+overlay}} (void)
+\begin{DoxyCompactList}\small\item\em Prints the initial overlay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tetris__frontend_8h_a94d1da028d97b1462dcf804b3a52efa1}\label{tetris__frontend_8h_a94d1da028d97b1462dcf804b3a52efa1}} 
+void \mbox{\hyperlink{tetris__frontend_8h_a94d1da028d97b1462dcf804b3a52efa1}{print\+\_\+levelerror}} (void)
+\begin{DoxyCompactList}\small\item\em Prints the level error. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tetris__frontend_8h_aeb53ca730262f0690c9b253aed75eb6c}{render\+\_\+game\+\_\+gi}} (WINDOW $\ast$tetris\+\_\+window, \mbox{\hyperlink{structGameInfo__t}{Game\+Info\+\_\+t}} g\+\_\+info)
+\begin{DoxyCompactList}\small\item\em Renders the game. \end{DoxyCompactList}\item 
+WINDOW $\ast$ \mbox{\hyperlink{tetris__frontend_8h_a076ad4b766c90e3674217bab4d521979}{print\+\_\+menu}} ()
+\begin{DoxyCompactList}\small\item\em Prints the menu. \end{DoxyCompactList}\item 
+WINDOW $\ast$ \mbox{\hyperlink{tetris__frontend_8h_a994e2184c4afdf7914133ccf3b9acf15}{print\+\_\+tetris\+\_\+overlay}} ()
+\begin{DoxyCompactList}\small\item\em Prints the tetris overlay. \end{DoxyCompactList}\item 
+WINDOW $\ast$ \mbox{\hyperlink{tetris__frontend_8h_a4f760b60b964e172bdc31daf8bfa94fe}{print\+\_\+status\+\_\+gi}} (\mbox{\hyperlink{structGameInfo__t}{Game\+Info\+\_\+t}} $\ast$g\+\_\+info)
+\begin{DoxyCompactList}\small\item\em Prints the status. \end{DoxyCompactList}\item 
+WINDOW $\ast$ \mbox{\hyperlink{tetris__frontend_8h_a9765cbb039574f68e9e5a6e9a89e510c}{print\+\_\+states}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, int key)
+\begin{DoxyCompactList}\small\item\em Prints the states. \end{DoxyCompactList}\item 
+WINDOW $\ast$ \mbox{\hyperlink{tetris__frontend_8h_aec077fd1866219bc5e5919f21ae1a1b0}{next\+\_\+display}} (\mbox{\hyperlink{structGameInfo__t}{Game\+Info\+\_\+t}} $\ast$g\+\_\+info)
+\begin{DoxyCompactList}\small\item\em Prints the next display. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The frontend of the tetris game. 
+
+\begin{DoxyAuthor}{Author}
+whatarml 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2024-\/22-\/12
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tetris__frontend_8h_aec077fd1866219bc5e5919f21ae1a1b0}\label{tetris__frontend_8h_aec077fd1866219bc5e5919f21ae1a1b0}} 
+\index{tetris\_frontend.h@{tetris\_frontend.h}!next\_display@{next\_display}}
+\index{next\_display@{next\_display}!tetris\_frontend.h@{tetris\_frontend.h}}
+\doxysubsubsection{\texorpdfstring{next\_display()}{next\_display()}}
+{\footnotesize\ttfamily WINDOW$\ast$ next\+\_\+display (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGameInfo__t}{Game\+Info\+\_\+t}} $\ast$}]{g\+\_\+info }\end{DoxyParamCaption})}
+
+
+
+Prints the next display. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+info} & The game information.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The next display window. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tetris__frontend_8h_a076ad4b766c90e3674217bab4d521979}\label{tetris__frontend_8h_a076ad4b766c90e3674217bab4d521979}} 
+\index{tetris\_frontend.h@{tetris\_frontend.h}!print\_menu@{print\_menu}}
+\index{print\_menu@{print\_menu}!tetris\_frontend.h@{tetris\_frontend.h}}
+\doxysubsubsection{\texorpdfstring{print\_menu()}{print\_menu()}}
+{\footnotesize\ttfamily WINDOW$\ast$ print\+\_\+menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Prints the menu. 
+
+\begin{DoxyReturn}{Returns}
+The menu window. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tetris__frontend_8h_a9765cbb039574f68e9e5a6e9a89e510c}\label{tetris__frontend_8h_a9765cbb039574f68e9e5a6e9a89e510c}} 
+\index{tetris\_frontend.h@{tetris\_frontend.h}!print\_states@{print\_states}}
+\index{print\_states@{print\_states}!tetris\_frontend.h@{tetris\_frontend.h}}
+\doxysubsubsection{\texorpdfstring{print\_states()}{print\_states()}}
+{\footnotesize\ttfamily WINDOW$\ast$ print\+\_\+states (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{int}]{key }\end{DoxyParamCaption})}
+
+
+
+Prints the states. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & The game state. \\
+\hline
+{\em key} & The key.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The states window. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tetris__frontend_8h_a4f760b60b964e172bdc31daf8bfa94fe}\label{tetris__frontend_8h_a4f760b60b964e172bdc31daf8bfa94fe}} 
+\index{tetris\_frontend.h@{tetris\_frontend.h}!print\_status\_gi@{print\_status\_gi}}
+\index{print\_status\_gi@{print\_status\_gi}!tetris\_frontend.h@{tetris\_frontend.h}}
+\doxysubsubsection{\texorpdfstring{print\_status\_gi()}{print\_status\_gi()}}
+{\footnotesize\ttfamily WINDOW$\ast$ print\+\_\+status\+\_\+gi (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGameInfo__t}{Game\+Info\+\_\+t}} $\ast$}]{g\+\_\+info }\end{DoxyParamCaption})}
+
+
+
+Prints the status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+info} & The game information.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status window. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tetris__frontend_8h_a994e2184c4afdf7914133ccf3b9acf15}\label{tetris__frontend_8h_a994e2184c4afdf7914133ccf3b9acf15}} 
+\index{tetris\_frontend.h@{tetris\_frontend.h}!print\_tetris\_overlay@{print\_tetris\_overlay}}
+\index{print\_tetris\_overlay@{print\_tetris\_overlay}!tetris\_frontend.h@{tetris\_frontend.h}}
+\doxysubsubsection{\texorpdfstring{print\_tetris\_overlay()}{print\_tetris\_overlay()}}
+{\footnotesize\ttfamily WINDOW$\ast$ print\+\_\+tetris\+\_\+overlay (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Prints the tetris overlay. 
+
+\begin{DoxyReturn}{Returns}
+The tetris overlay window. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tetris__frontend_8h_aeb53ca730262f0690c9b253aed75eb6c}\label{tetris__frontend_8h_aeb53ca730262f0690c9b253aed75eb6c}} 
+\index{tetris\_frontend.h@{tetris\_frontend.h}!render\_game\_gi@{render\_game\_gi}}
+\index{render\_game\_gi@{render\_game\_gi}!tetris\_frontend.h@{tetris\_frontend.h}}
+\doxysubsubsection{\texorpdfstring{render\_game\_gi()}{render\_game\_gi()}}
+{\footnotesize\ttfamily void render\+\_\+game\+\_\+gi (\begin{DoxyParamCaption}\item[{WINDOW $\ast$}]{tetris\+\_\+window,  }\item[{\mbox{\hyperlink{structGameInfo__t}{Game\+Info\+\_\+t}}}]{g\+\_\+info }\end{DoxyParamCaption})}
+
+
+
+Renders the game. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tetris\+\_\+window} & The window to render the game in. \\
+\hline
+{\em g\+\_\+info} & The game information. \\
+\hline
+\end{DoxyParams}

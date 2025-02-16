@@ -1,0 +1,204 @@
+\hypertarget{tetris__fsm_8h}{}\doxysection{inc/tetris\+\_\+fsm.h File Reference}
+\label{tetris__fsm_8h}\index{inc/tetris\_fsm.h@{inc/tetris\_fsm.h}}
+
+
+The state machine of the tetris game.  
+
+
+{\ttfamily \#include \char`\"{}../inc/defines.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../inc/tetris\+\_\+backend.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tetris__fsm_8h_aa4adaf700e62770c8c7bd44332ea1f19}{on\+\_\+init\+\_\+state}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, \mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}} action)
+\begin{DoxyCompactList}\small\item\em State machine functions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tetris__fsm_8h_af9e5d5fcd546d4e765b00a737ad60173}{on\+\_\+start\+\_\+state}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, \mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}} action)
+\begin{DoxyCompactList}\small\item\em Start game state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tetris__fsm_8h_adbc07265f68178b9683faf3824fbcbcd}{on\+\_\+spawn\+\_\+state}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, \mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}} action)
+\begin{DoxyCompactList}\small\item\em Spawn new figure state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tetris__fsm_8h_a28397559ee1a637603779c901a54adc7}{on\+\_\+moving}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, \mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}} action)
+\begin{DoxyCompactList}\small\item\em Move figure state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tetris__fsm_8h_a8452aa8f2eec2b414e753f2ab012bb03}{on\+\_\+move\+\_\+state}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, \mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}} action)
+\begin{DoxyCompactList}\small\item\em Move state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tetris__fsm_8h_a4ca93ca8c0e0f81cd66c4dee7c89a1da}{on\+\_\+attach\+\_\+state}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, \mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}} action)
+\begin{DoxyCompactList}\small\item\em Attach figure state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tetris__fsm_8h_a7a0f5149b5b5df04ad8cfa2ef9a18f5b}{on\+\_\+pause\+\_\+state}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, \mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}} action)
+\begin{DoxyCompactList}\small\item\em Pause game state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tetris__fsm_8h_a4c559220e732e7671b6f31b53493186f}{on\+\_\+shift\+\_\+state}} (\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$g\+\_\+state, \mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}} action)
+\begin{DoxyCompactList}\small\item\em Shift game state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The state machine of the tetris game. 
+
+\begin{DoxyAuthor}{Author}
+whatarml 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2024-\/22-\/12
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tetris__fsm_8h_a4ca93ca8c0e0f81cd66c4dee7c89a1da}\label{tetris__fsm_8h_a4ca93ca8c0e0f81cd66c4dee7c89a1da}} 
+\index{tetris\_fsm.h@{tetris\_fsm.h}!on\_attach\_state@{on\_attach\_state}}
+\index{on\_attach\_state@{on\_attach\_state}!tetris\_fsm.h@{tetris\_fsm.h}}
+\doxysubsubsection{\texorpdfstring{on\_attach\_state()}{on\_attach\_state()}}
+{\footnotesize\ttfamily void on\+\_\+attach\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{\mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}}}]{action }\end{DoxyParamCaption})}
+
+
+
+Attach figure state. 
+
+Function that handles the attachment of a figure to the game field.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & Pointer to the game state. \\
+\hline
+{\em action} & User action. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tetris__fsm_8h_aa4adaf700e62770c8c7bd44332ea1f19}\label{tetris__fsm_8h_aa4adaf700e62770c8c7bd44332ea1f19}} 
+\index{tetris\_fsm.h@{tetris\_fsm.h}!on\_init\_state@{on\_init\_state}}
+\index{on\_init\_state@{on\_init\_state}!tetris\_fsm.h@{tetris\_fsm.h}}
+\doxysubsubsection{\texorpdfstring{on\_init\_state()}{on\_init\_state()}}
+{\footnotesize\ttfamily void on\+\_\+init\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{\mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}}}]{action }\end{DoxyParamCaption})}
+
+
+
+State machine functions. 
+
+Functions that handle the state machine logic.
+
+Initialize game state.
+
+Function that handles the initialization of the game state.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & Pointer to the game state. \\
+\hline
+{\em action} & User action. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tetris__fsm_8h_a8452aa8f2eec2b414e753f2ab012bb03}\label{tetris__fsm_8h_a8452aa8f2eec2b414e753f2ab012bb03}} 
+\index{tetris\_fsm.h@{tetris\_fsm.h}!on\_move\_state@{on\_move\_state}}
+\index{on\_move\_state@{on\_move\_state}!tetris\_fsm.h@{tetris\_fsm.h}}
+\doxysubsubsection{\texorpdfstring{on\_move\_state()}{on\_move\_state()}}
+{\footnotesize\ttfamily void on\+\_\+move\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{\mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}}}]{action }\end{DoxyParamCaption})}
+
+
+
+Move state. 
+
+Function that handles the movement of a figure.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & Pointer to the game state. \\
+\hline
+{\em action} & User action. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tetris__fsm_8h_a28397559ee1a637603779c901a54adc7}\label{tetris__fsm_8h_a28397559ee1a637603779c901a54adc7}} 
+\index{tetris\_fsm.h@{tetris\_fsm.h}!on\_moving@{on\_moving}}
+\index{on\_moving@{on\_moving}!tetris\_fsm.h@{tetris\_fsm.h}}
+\doxysubsubsection{\texorpdfstring{on\_moving()}{on\_moving()}}
+{\footnotesize\ttfamily void on\+\_\+moving (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{\mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}}}]{action }\end{DoxyParamCaption})}
+
+
+
+Move figure state. 
+
+Function that handles the movement of a figure.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & Pointer to the game state. \\
+\hline
+{\em action} & User action. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tetris__fsm_8h_a7a0f5149b5b5df04ad8cfa2ef9a18f5b}\label{tetris__fsm_8h_a7a0f5149b5b5df04ad8cfa2ef9a18f5b}} 
+\index{tetris\_fsm.h@{tetris\_fsm.h}!on\_pause\_state@{on\_pause\_state}}
+\index{on\_pause\_state@{on\_pause\_state}!tetris\_fsm.h@{tetris\_fsm.h}}
+\doxysubsubsection{\texorpdfstring{on\_pause\_state()}{on\_pause\_state()}}
+{\footnotesize\ttfamily void on\+\_\+pause\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{\mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}}}]{action }\end{DoxyParamCaption})}
+
+
+
+Pause game state. 
+
+Function that handles the pause of the game.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & Pointer to the game state. \\
+\hline
+{\em action} & User action. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tetris__fsm_8h_a4c559220e732e7671b6f31b53493186f}\label{tetris__fsm_8h_a4c559220e732e7671b6f31b53493186f}} 
+\index{tetris\_fsm.h@{tetris\_fsm.h}!on\_shift\_state@{on\_shift\_state}}
+\index{on\_shift\_state@{on\_shift\_state}!tetris\_fsm.h@{tetris\_fsm.h}}
+\doxysubsubsection{\texorpdfstring{on\_shift\_state()}{on\_shift\_state()}}
+{\footnotesize\ttfamily void on\+\_\+shift\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{\mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}}}]{action }\end{DoxyParamCaption})}
+
+
+
+Shift game state. 
+
+Function that handles the shifting of the game state.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & Pointer to the game state. \\
+\hline
+{\em action} & User action. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tetris__fsm_8h_adbc07265f68178b9683faf3824fbcbcd}\label{tetris__fsm_8h_adbc07265f68178b9683faf3824fbcbcd}} 
+\index{tetris\_fsm.h@{tetris\_fsm.h}!on\_spawn\_state@{on\_spawn\_state}}
+\index{on\_spawn\_state@{on\_spawn\_state}!tetris\_fsm.h@{tetris\_fsm.h}}
+\doxysubsubsection{\texorpdfstring{on\_spawn\_state()}{on\_spawn\_state()}}
+{\footnotesize\ttfamily void on\+\_\+spawn\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{\mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}}}]{action }\end{DoxyParamCaption})}
+
+
+
+Spawn new figure state. 
+
+Function that handles the spawning of a new figure.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & Pointer to the game state. \\
+\hline
+{\em action} & User action. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tetris__fsm_8h_af9e5d5fcd546d4e765b00a737ad60173}\label{tetris__fsm_8h_af9e5d5fcd546d4e765b00a737ad60173}} 
+\index{tetris\_fsm.h@{tetris\_fsm.h}!on\_start\_state@{on\_start\_state}}
+\index{on\_start\_state@{on\_start\_state}!tetris\_fsm.h@{tetris\_fsm.h}}
+\doxysubsubsection{\texorpdfstring{on\_start\_state()}{on\_start\_state()}}
+{\footnotesize\ttfamily void on\+\_\+start\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGame__state__t}{Game\+\_\+state\+\_\+t}} $\ast$}]{g\+\_\+state,  }\item[{\mbox{\hyperlink{objects_8h_a7ba289d7b97db30e0b7041ca2cef75a9}{User\+Action\+\_\+t}}}]{action }\end{DoxyParamCaption})}
+
+
+
+Start game state. 
+
+Function that handles the start of the game.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g\+\_\+state} & Pointer to the game state. \\
+\hline
+{\em action} & User action. \\
+\hline
+\end{DoxyParams}
