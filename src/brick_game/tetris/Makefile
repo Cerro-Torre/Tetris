@@ -76,9 +76,10 @@ clean:
 	rm -rf $(DIST_DIR)
 	rm -rf $(DOXY_DIR)
 	rm -rf $(GAME_DIR)
+	echo "0" > high_score.txt
+
 
 rebuild: clean all
-	echo "0" > high_score.txt
 
 vg_game: install
 	$(VALGRIND) ./$(GAME_DIR)/$(GAMENAME)
