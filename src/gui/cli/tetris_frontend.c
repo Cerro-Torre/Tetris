@@ -58,7 +58,7 @@ WINDOW *print_status_gi(GameInfo_t *g_info) {
 
   Game_state_t *g_state = get_game_state();
 
-  mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
+  // mvwprintw(status, 7, 1, "Status: %d", g_state->status.status);
 
   switch (g_state->status.status) {
     case INIT:
@@ -193,11 +193,16 @@ WINDOW *next_display(GameInfo_t *g_info) {
 
   box(next, 0, 0);
 
+  mvwprintw(next, 1, 1, "Pause: p");
+  mvwprintw(next, 2, 1, "Exit: q");
+  mvwprintw(next, 3, 1, "Move: Arrow btns");
+  mvwprintw(next, 5, 1, "Next figure:");
+
   if (g_info && g_info->next) {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         if (g_info->next[i][j] == 1) {
-          mvwprintw(next, i + 2 + 4, (j + 2 + NEXT_FIELD_X / 2) + (4 / 2) - 2,
+          mvwprintw(next, i + 2 + 5, (j + 2 + NEXT_FIELD_X / 2) + (5 / 2) - 2,
                     "#");
         }
       }
